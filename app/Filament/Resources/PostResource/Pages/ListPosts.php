@@ -31,15 +31,19 @@ class ListPosts extends ListRecords
     {
         return $table
             ->columns([
-                TextColumn::make('category.name'),
+                TextColumn::make('category.name')
+                    ->label('التصنيف'),
                 TextColumn::make('title')
+                    ->label('العنوان')
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('type')
+                    ->label('النوع')
                     ->searchable()
                     ->sortable()
                     ->formatStateUsing(fn($state) => ucfirst($state)),
-                ToggleColumn::make('is_published'),
+                ToggleColumn::make('is_published')
+                    ->label('حالة النشر'),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

@@ -19,6 +19,12 @@ class CategoryResource extends Resource
 {
     protected static ?string $model = Category::class;
 
+    protected static ?int $navigationSort = 2;
+
+    protected static ?string $modelLabel = 'تصنيف';
+
+    protected static ?string $navigationLabel = 'التصنيفات';
+
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
@@ -26,11 +32,14 @@ class CategoryResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
+                    ->label(__('Name'))
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('parent_category_id')
+                    ->label(__('Parent category'))
                     ->numeric(),
-                Forms\Components\Toggle::make('is_published'),
+                Forms\Components\Toggle::make('is_published')
+                    ->label(__("Is published")),
             ]);
     }
 
@@ -39,17 +48,21 @@ class CategoryResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('name')
+                    ->label(__('Name'))
                     ->searchable(),
                 TextColumn::make('parent_category_id')
-                    ->label('Parent category')
+                    ->label(__('Parent category'))
                     ->numeric()
                     ->sortable(),
-                ToggleColumn::make('is_published'),
+                ToggleColumn::make('is_published')
+                    ->label(__('Is published')),
                 TextColumn::make('created_at')
+                    ->label(__('Created at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')
+                    ->label(__('Updated at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

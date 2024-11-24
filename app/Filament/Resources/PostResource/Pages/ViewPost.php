@@ -19,24 +19,30 @@ class ViewPost extends ViewRecord
     {
         return $infolist
             ->schema([
-                TextEntry::make('title'),
-                TextEntry::make('category.name'),
+                TextEntry::make('title')
+                    ->label(__('Title')),
+                TextEntry::make('category.name')
+                    ->label(__('Category')),
                 TextEntry::make('type')
+                    ->label(__('Type'))
                     ->formatStateUsing(fn($state) => ucfirst($state)),
                 AudioPlayerEntry::make('audio')
-                    ->visible(fn($state) => !!$state)
-                    ->label('Audio'),
+                    ->label(__('Audio'))
+                    ->visible(fn($state) => !!$state),
                 TextEntry::make('video')
-                    ->label('Video URL')
+                    ->label(__('Video'))
                     ->visible(fn($state) => !!$state)
                     ->color(Color::Blue)
                     ->url(fn($state) => $state)
                     ->openUrlInNewTab(),
                 ImageEntry::make('image')
+                    ->label(__('Image'))
                     ->placeholder('N/A'),
                 TextEntry::make('description')
+                    ->label(__('Description'))
                     ->placeholder('N/A')->html(),
                 TextEntry::make('body')
+                    ->label(__('Body'))
                     ->visible(fn($state) => !!$state),
             ]);
     }

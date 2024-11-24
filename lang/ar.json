@@ -1,0 +1,17 @@
+{
+    "Title": "العنوان",
+    "Type": "النوع",
+    "Image": "الصورة",
+    "Description": "التفاصيل",
+    "Audio": "مقطع الصوت",
+    "Category": "ألتصنيف",
+    "Categories": "ألتصنيفات",
+    "Parent category": "التصنيف الأب",
+    "Is published": "حالة النشر",
+    "Video": "مقطع الفيديو",
+    "Name": "الاسم",
+    "Email": "البريد الالكتروني",
+    "Created at": "تاريخ الانشاء",
+    "Updated at": "اخر تعديل",
+    "Body": "المحتوى"
+}
