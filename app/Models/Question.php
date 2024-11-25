@@ -8,9 +8,11 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Question extends Model
 {
+    protected $guarded = ['id', 'created_at', 'updated_at'];
+
     public function examination(): BelongsTo
     {
-        return $this->belongsTo(Examination::class);
+        return $this->belongsTo(Examination::                                                                                                   class);
     }
 
     public function answers(): HasMany

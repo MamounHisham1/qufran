@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d4c65d037befab00d8a6a391a5c43a53",
+    "content-hash": "c783a1e9f96736aaa83bbeb5eb92fccf",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -1961,6 +1961,87 @@
                 }
             ],
             "time": "2023-12-03T19:50:20+00:00"
+        },
+        {
+            "name": "icetalker/filament-table-repeater",
+            "version": "v1.3.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/icetalker/filament-table-repeater.git",
+                "reference": "2d9fa7738d6aa6939b6dfcb49d53aed44da6b8ba"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/icetalker/filament-table-repeater/zipball/2d9fa7738d6aa6939b6dfcb49d53aed44da6b8ba",
+                "reference": "2d9fa7738d6aa6939b6dfcb49d53aed44da6b8ba",
+                "shasum": ""
+            },
+            "require": {
+                "filament/forms": "^3.0",
+                "illuminate/contracts": "^8.6|^9.0|^10.0|^11.0",
+                "php": "^8.0",
+                "spatie/laravel-package-tools": "^1.9.2"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^3.8",
+                "nunomaduro/collision": "^6.0|^8.0",
+                "nunomaduro/larastan": "^2.0.1",
+                "orchestra/testbench": "^7.0|^9.0",
+                "pestphp/pest": "^1.21|^2.34",
+                "pestphp/pest-plugin-laravel": "^1.1|^2.3",
+                "phpstan/extension-installer": "^1.1",
+                "phpstan/phpstan-deprecation-rules": "^1.0",
+                "phpstan/phpstan-phpunit": "^1.0",
+                "phpunit/phpunit": "^9.5|^10.5",
+                "spatie/laravel-ray": "^1.26"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Icetalker\\FilamentTableRepeater\\FilamentTableRepeaterServiceProvider"
+                    ],
+                    "aliases": {
+                        "FilamentTableRepeater": "Icetalker\\FilamentTableRepeater\\Facades\\FilamentTableRepeater"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Icetalker\\FilamentTableRepeater\\": "src",
+                    "Icetalker\\FilamentTableRepeater\\Database\\Factories\\": "database/factories"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Martin Hwang",
+                    "email": "martin.hwang@outlook.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "This is a package for Filament form component. Extends form Repeater, but shows in Table Layout.",
+            "homepage": "https://github.com/icetalker/filament-table-repeater",
+            "keywords": [
+                "filament",
+                "filament-table-repeater",
+                "icetalker",
+                "laravel"
+            ],
+            "support": {
+                "issues": "https://github.com/icetalker/filament-table-repeater/issues",
+                "source": "https://github.com/icetalker/filament-table-repeater/tree/v1.3.1"
+            },
+            "funding": [
+                {
+                    "url": "https://paypal.me/termlong",
+                    "type": "custom"
+                }
+            ],
+            "time": "2024-05-07T12:46:22+00:00"
         },
         {
             "name": "kirschbaum-development/eloquent-power-joins",

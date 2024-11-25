@@ -4,8 +4,8 @@
     "Image": "الصورة",
     "Description": "التفاصيل",
     "Audio": "مقطع الصوت",
-    "Category": "ألتصنيف",
-    "Categories": "ألتصنيفات",
+    "Category": "التصنيف",
+    "Categories": "التصنيفات",
     "Parent category": "التصنيف الأب",
     "Is published": "حالة النشر",
     "Video": "مقطع الفيديو",
@@ -13,5 +13,8 @@
     "Email": "البريد الالكتروني",
     "Created at": "تاريخ الانشاء",
     "Updated at": "اخر تعديل",
-    "Body": "المحتوى"
+    "Body": "المحتوى",
+    "Correct answer": "الاجابة الصحيحة",
+    "Start date": "تاريخ البداية",
+    "End date": "تاريخ النهاية"
 }

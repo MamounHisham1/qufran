@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
-            $table->integer('category_id');
+            $table->integer('category_id')->constrained()->cascadeOnDelete();
             $table->string('title');
             $table->string('type');
             $table->longText('description')->nullable();
