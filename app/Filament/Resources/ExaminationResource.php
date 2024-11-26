@@ -9,6 +9,7 @@ use App\Models\Examination;
 use App\Models\Category;
 use Filament\Forms;
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -19,13 +20,13 @@ class ExaminationResource extends Resource
 {
     protected static ?string $model = Examination::class;
 
-    protected static ?int $navigationSort = 4;
+    protected static ?int $navigationSort = 50;
 
     protected static ?string $modelLabel = 'امتحان';
 
     protected static ?string $navigationLabel = 'الامتحانات';
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-check';
 
     public static function form(Form $form): Form
     {
@@ -37,7 +38,7 @@ class ExaminationResource extends Resource
                 Select::make('category_id')
                     ->label('Category')
                     ->options(Category::pluck('name', 'id')),
-                Textarea::make('description')
+                RichEditor::make('description')
                     ->columnSpanFull(),
                 DatePicker::make('start_at')
                     ->label(__('Start date'))
