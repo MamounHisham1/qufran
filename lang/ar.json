@@ -11,10 +11,20 @@
     "Video": "مقطع الفيديو",
     "Name": "الاسم",
     "Email": "البريد الالكتروني",
+    "Password": "كلمة المرور",
+    "Confirm Password": "تأكيد كلمة المرور",
+    "Remember me": "تذكرني",
+    "Log in": "تسجيل الدخول",
+    "Register": "تسجيل جديد",
+    "Already registered?": "لدي حساب بالفعل",
+    "Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.": "هل نسيت كلمة المرور؟ لا مشكلة. فقط أخبرنا بعنوان بريدك الإلكتروني، وسنرسل لك رابطًا لإعادة تعيين كلمة المرور يسمح لك باختيار كلمة مرور جديدة.",
+    "Forgot your password?": "نسيت كلمة المرور؟",
+    "Email Password Reset Link": "إرسال رابط إعادة تعيين كلمة المرور",
     "Created at": "تاريخ الانشاء",
     "Updated at": "اخر تعديل",
     "Body": "المحتوى",
     "Correct answer": "الاجابة الصحيحة",
     "Start date": "تاريخ البداية",
-    "End date": "تاريخ النهاية"
+    "End date": "تاريخ النهاية",
+    "Dashboard": "الرئيسية"
 }
