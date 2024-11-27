@@ -15,6 +15,7 @@
     "Confirm Password": "تأكيد كلمة المرور",
     "Remember me": "تذكرني",
     "Log in": "تسجيل الدخول",
+    "Log Out": "تسجيل الخروج",
     "Register": "تسجيل جديد",
     "Already registered?": "لدي حساب بالفعل",
     "Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.": "هل نسيت كلمة المرور؟ لا مشكلة. فقط أخبرنا بعنوان بريدك الإلكتروني، وسنرسل لك رابطًا لإعادة تعيين كلمة المرور يسمح لك باختيار كلمة مرور جديدة.",
@@ -26,5 +27,16 @@
     "Correct answer": "الاجابة الصحيحة",
     "Start date": "تاريخ البداية",
     "End date": "تاريخ النهاية",
-    "Dashboard": "الرئيسية"
+    "Dashboard": "الرئيسية",
+    "Profile": "الملف الشخصي",
+    "Save": "حفظ",
+    "Update Password": "تحديث كلمة المرور",
+    "Ensure your account is using a long, random password to stay secure.": "تأكد من أن حسابك يستخدم كلمة مرور طويلة وعشوائية للحفاظ على الأمان.",
+    "Current Password": "كلمة المرور الحالية",
+    "New Password": "كلمة المرور الجديدة",
+    "Delete Account": "حذف الحساب",
+    "Once your account is deleted, all of its resources and data will be permanently deleted. Before deleting your account, please download any data or information that you wish to retain.": "بمجرد حذف حسابك، سيتم حذف جميع موارده وبياناته بشكل دائم. قبل حذف حسابك، يرجى تحميل أي بيانات أو معلومات ترغب في الاحتفاظ بها.",
+    "DELETE ACCOUNT": "حذف الحساب",
+    "Profile Information": "معلومات الحساب",
+    "Update your account's profile information and email address.": "قم بتحديث معلومات حسابك وعنوان بريدك الإلكتروني."
 }
