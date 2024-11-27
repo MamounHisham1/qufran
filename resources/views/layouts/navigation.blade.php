@@ -1,3 +1,17 @@
+<?php
+$links = [
+    [
+        'name' => __('Dashboard'),
+        'href' => route('dashboard'),
+        'active' => request()->routeIs('dashboard'),
+    ],
+    [
+        'name' => __('Posts'),
+        'href' => route('posts.index'),
+        'active' => request()->routeIs('posts.index'),
+    ],
+];
+?>
 <nav x-data="{ open: false }" class="bg-teal-600 top-0 sticky z-50">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -12,9 +26,11 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex gap-3">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
-                    </x-nav-link>
+                    @foreach ($links as $link)
+                        <x-nav-link :href="$link['href']" :active="$link['active']">
+                            {{ $link['name'] }}
+                        </x-nav-link>
+                    @endforeach
                 </div>
             </div>
 
@@ -57,15 +73,17 @@
                     </x-dropdown>
                 @endauth
                 @guest
-                    <a href="{{ route('login') }}"
-                        class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20]">
-                        {{ __('Log in') }}
-                    </a>
+                    <div class="flex gap-2">
+                        <a href="{{ route('login') }}"
+                            class="rounded-md px-3 py-1 border border-teal-400 text-white ring-1 ring-transparent transition hover:bg-teal-700 hover:border-teal-800 focus:outline-none focus-visible:ring-[#FF2D20]">
+                            {{ __('Log in') }}
+                        </a>
 
-                    <a href="{{ route('register') }}"
-                        class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20]">
-                        {{ __('Register') }}
-                    </a>
+                        <a href="{{ route('register') }}"
+                            class="rounded-md px-3 py-1 border border-teal-400 text-white ring-1 ring-transparent transition hover:bg-teal-700 hover:border-teal-800 focus:outline-none focus-visible:ring-[#FF2D20]">
+                            {{ __('Register') }}
+                        </a>
+                    </div>
                 @endguest
             </div>
 
@@ -88,33 +106,50 @@
     <!-- Responsive Navigation Menu -->
     <div :class="{ 'block': open, 'hidden': !open }" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
-            </x-responsive-nav-link>
+            @foreach ($links as $link)
+                <x-responsive-nav-link :href="$link['href']" :active="$link['active']">
+                    {{ $link['name'] }}
+                </x-responsive-nav-link>
+            @endforeach
         </div>
 
         <!-- Responsive Settings Options -->
         <div class="pt-4 pb-1 border-t border-gray-200">
             <div class="px-4">
-                <div class="font-medium text-base text-gray-800">{{ Auth::user()?->name }}</div>
-                <div class="font-medium text-sm text-gray-500">{{ Auth::user()?->email }}</div>
+                <div class="font-medium text-base text-white">{{ Auth::user()?->name }}</div>
+                <div class="font-medium text-sm text-gray-300">{{ Auth::user()?->email }}</div>
             </div>
 
             <div class="mt-3 space-y-1">
-                <x-responsive-nav-link :href="route('profile.edit')">
-                    {{ __('Profile') }}
-                </x-responsive-nav-link>
-
-                <!-- Authentication -->
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-
-                    <x-responsive-nav-link :href="route('logout')"
-                        onclick="event.preventDefault();
-                                        this.closest('form').submit();">
-                        {{ __('Log Out') }}
+                @auth
+                    <x-responsive-nav-link :href="route('profile.edit')">
+                        {{ __('Profile') }}
                     </x-responsive-nav-link>
-                </form>
+
+                    <!-- Authentication -->
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+
+                        <x-responsive-nav-link :href="route('logout')"
+                            onclick="event.preventDefault();
+                                        this.closest('form').submit();">
+                            {{ __('Log Out') }}
+                        </x-responsive-nav-link>
+                    </form>
+                @endauth
+                @guest
+                    <div class="flex flex-col">
+                        <a href="{{ route('login') }}"
+                            class="rounded-md px-3 py-2 text-white ring-1 ring-transparent transition hover:text-white/70 focus:outline-none focus-visible:ring-[#FF2D20]">
+                            {{ __('Log in') }}
+                        </a>
+
+                        <a href="{{ route('register') }}"
+                            class="rounded-md px-3 py-2 text-white ring-1 ring-transparent transition hover:text-white/70 focus:outline-none focus-visible:ring-[#FF2D20]">
+                            {{ __('Register') }}
+                        </a>
+                    </div>
+                @endguest
             </div>
         </div>
     </div>

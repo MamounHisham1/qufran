@@ -2,6 +2,12 @@
 
 namespace Database\Seeders;
 
+use App\Models\Answer;
+use App\Models\Author;
+use App\Models\Category;
+use App\Models\Examination;
+use App\Models\Post;
+use App\Models\Question;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -15,9 +21,11 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::factory()->create([
-            'name' => 'Admin',
-            'email' => 'admin@admin.com',
-        ]);
+        Author::factory(30)->create();
+        Category::factory(50)->create();
+        Post::factory(100)->create();
+        Examination::factory(10)->create();
+        Question::factory(50)->create();
+        Answer::factory(100)->create();
     }
 }
