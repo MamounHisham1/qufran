@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\PostTypes;
+use DB;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
@@ -10,10 +12,11 @@ class PostController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function lessonIndex()
     {
-        $posts = Post::all();
-        return view('posts.index', ['posts' => $posts]);
+        $lessons = Post::where('type', '!=', 'fatwa')->orderBy('created_at')->paginate(10);
+        // dd($lessons);
+        return view('lessons.index', ['lessons' => $lessons]);
     }
 
     /**
@@ -37,7 +40,7 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        //
+        dd($post);
     }
 
     /**

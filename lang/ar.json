@@ -2,6 +2,10 @@
     "Title": "العنوان",
     "Type": "النوع",
     "Image": "الصورة",
+    "photo": "صورة",
+    "article": "مقال",
+    "audio": "مقطع صوتي",
+    "video": "مقطع فيديو",
     "Description": "التفاصيل",
     "Audio": "مقطع الصوت",
     "Category": "التصنيف",
@@ -28,6 +32,8 @@
     "Start date": "تاريخ البداية",
     "End date": "تاريخ النهاية",
     "Dashboard": "الرئيسية",
+    "Lessons": "الدروس",
+    "Lesson type": "نوع الدرس",
     "Profile": "الملف الشخصي",
     "Save": "حفظ",
     "Update Password": "تحديث كلمة المرور",
@@ -38,5 +44,10 @@
     "Once your account is deleted, all of its resources and data will be permanently deleted. Before deleting your account, please download any data or information that you wish to retain.": "بمجرد حذف حسابك، سيتم حذف جميع موارده وبياناته بشكل دائم. قبل حذف حسابك، يرجى تحميل أي بيانات أو معلومات ترغب في الاحتفاظ بها.",
     "DELETE ACCOUNT": "حذف الحساب",
     "Profile Information": "معلومات الحساب",
-    "Update your account's profile information and email address.": "قم بتحديث معلومات حسابك وعنوان بريدك الإلكتروني."
+    "Update your account's profile information and email address.": "قم بتحديث معلومات حسابك وعنوان بريدك الإلكتروني.",
+    "Ananymos": "مجهول الهوية",
+    "Showing": "عرض",
+    "to": "إلى",
+    "of": "من",
+    "results": "نتيجة"
 }

@@ -6,9 +6,9 @@ $links = [
         'active' => request()->routeIs('dashboard'),
     ],
     [
-        'name' => __('Posts'),
-        'href' => route('posts.index'),
-        'active' => request()->routeIs('posts.index'),
+        'name' => __('Lessons'),
+        'href' => route('lessons.index'),
+        'active' => request()->routeIs('lessons.index'),
     ],
 ];
 ?>

@@ -10,7 +10,7 @@ enum PostTypes: string implements HasLabel
     case Article = 'article';
     case Audio = 'audio';
     case Photo = 'photo';
-    case Lesson = 'lesson';
+    case Fatwa = 'fatwa';
 
     public function getLabel(): string
     { 
@@ -19,7 +19,7 @@ enum PostTypes: string implements HasLabel
             self::Article => 'مقال',
             self::Audio => 'صوتي',
             self::Photo => 'صورة',
-            self::Lesson => 'درس',
+            self::Fatwa => 'فتوى',
         };
     }
 }

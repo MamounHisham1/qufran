@@ -10,7 +10,9 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Route::get('/', HomeController::class)->name('dashboard');
-Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
+
+Route::get('/lessons', [PostController::class, 'lessonIndex'])->name('lessons.index');
+Route::get('/lessons/{lesson:id}', [PostController::class, 'lessonShow'])->name('lessons.show');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

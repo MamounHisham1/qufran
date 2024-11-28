@@ -23,7 +23,7 @@ class DatabaseSeeder extends Seeder
 
         Author::factory(30)->create();
         Category::factory(50)->create();
-        Post::factory(100)->create();
+        Post::factory(200)->create();
         Examination::factory(10)->create();
         Question::factory(50)->create();
         Answer::factory(100)->create();
