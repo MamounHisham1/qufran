@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\FatwaController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PostController;
@@ -13,6 +14,8 @@ Route::get('/', HomeController::class)->name('dashboard');
 
 Route::get('/lessons', [PostController::class, 'lessonIndex'])->name('lessons.index');
 Route::get('/lessons/{lesson:id}', [PostController::class, 'lessonShow'])->name('lessons.show');
+
+Route::resource('/fatawa', FatwaController::class)->middleware('auth');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

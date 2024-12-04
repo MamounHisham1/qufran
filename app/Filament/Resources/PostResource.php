@@ -44,7 +44,7 @@ class PostResource extends Resource
                     ->live()
                     ->required(),
                 RichEditor::make('body')
-                    ->visible(fn($get) => $get('type') === PostTypes::Article)
+                    ->visible(fn($get) => $get('type') === PostTypes::Article || $get('type') === PostTypes::Fatwa)
                     ->columnSpanFull()
                     ->required(),
                 FileUpload::make('audio')

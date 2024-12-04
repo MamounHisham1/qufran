@@ -5,7 +5,8 @@
                 <li>
                     <a href="{{ route('lessons.show', $lesson->id) }}" class="block group px-2 py-4">
                         <span class="text-sm block mb-1 text-gray-500">
-                            {{ $lesson->created_at->diffForHumans() }} بواسطة {{ $lesson->author?->name ?? __('Ananymos') }}
+                            {{ $lesson->created_at->diffForHumans() }} بواسطة
+                            {{ $lesson->author?->name ?? __('Ananymos') }}
                         </span>
                         <span class="font-bold text-lg group-hover:text-indigo-600">{{ $lesson->title }}</span>
                         <div class="flex gap-2 items-center mt-1">

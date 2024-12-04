@@ -31,15 +31,7 @@ class CategoryResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->label(__('Name'))
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('parent_category_id')
-                    ->label(__('Parent category'))
-                    ->numeric(),
-                Forms\Components\Toggle::make('is_published')
-                    ->label(__("Is published")),
+                p
             ]);
     }
 
