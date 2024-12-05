@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\Setting;
 use App\PostTypes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -15,7 +16,17 @@ class FatwaController extends Controller
     public function index()
     {
         $fatawa = Post::where('type', 'fatwa')->paginate(10);
-        return view('fatawa.index', ['fatawa' => $fatawa]);
+
+        $settings = Setting::firstWhere('page', 'fatawa')?->value;
+
+        $latest = Post::findByMap($settings['latest']);
+        $mostAsked = Post::findByMap($settings['most_asked']);
+
+        return view('fatawa.index', [
+            'fatawa' => $fatawa,
+            'latest' => $latest,
+            'mostAsked' => $mostAsked,
+        ]);
     }
 
     /**

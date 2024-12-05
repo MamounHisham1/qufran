@@ -2,14 +2,15 @@
 
 namespace App\Models;
 
+use App\Traits\HasSettings;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Post extends Model
 {
-    use HasFactory;
-    
+    use HasFactory, HasSettings;
+
     protected $guarded = ['id', 'created_at', 'updated_at'];
     protected $rules = [
         'audio' => 'required|file|mimes:mp3,wav,ogg|max:10240',

@@ -12,8 +12,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', HomeController::class)->name('dashboard');
 
-Route::get('/lessons', [PostController::class, 'lessonIndex'])->name('lessons.index');
-Route::get('/lessons/{lesson:id}', [PostController::class, 'lessonShow'])->name('lessons.show');
+Route::get('/lessons', [PostController::class, 'index'])->name('lessons.index');
+Route::get('/lessons/{lesson:id}', [PostController::class, 'show'])->name('lessons.show');
 
 Route::resource('/fatawa', FatwaController::class)->middleware('auth');
 
