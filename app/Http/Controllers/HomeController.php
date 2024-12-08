@@ -17,10 +17,10 @@ class HomeController extends Controller
     {
         $settings = Setting::firstWhere('page', 'home')?->value;
 
-        $suggestedCategories = Category::findByMap($settings['suggested_categories']);
-        $suggestedLessons = Post::findByMap($settings['suggested_lessons']);
-        $latestLessons = Post::findByMap($settings['latest_lessons']);
-        $famousTeachers = Author::findByMap($settings['famous_teachers']);
+        $suggestedCategories = Category::whereIn('id', $settings['suggested_categories'] ?? []);
+        $suggestedLessons = Post::whereIn('id', $settings['suggested_lessons'] ?? []);
+        $latestLessons = Post::whereIn('id', $settings['latest_lessons'] ?? []);
+        $famousTeachers = Author::whereIn('id', $settings['famous_teachers'] ?? []);
 
         return view('home', [
             'suggestedCategories' => $suggestedCategories,

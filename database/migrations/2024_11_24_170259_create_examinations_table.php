@@ -13,6 +13,7 @@ return new class extends Migration {
         Schema::create('examinations', function (Blueprint $table) {
             $table->id();
             $table->foreignId('category_id')->nullable()->constrained()->cascadeOnDelete();
+            $table->foreignId('post_id')->nullable()->constrained()->cascadeOnDelete();
             $table->string('name');
             $table->longText('description')->nullable();
             $table->date('start_at')->default(now()->format('Y-m-d-H'));

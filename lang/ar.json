@@ -22,6 +22,7 @@
     "Log Out": "تسجيل الخروج",
     "Register": "تسجيل جديد",
     "Already registered?": "لدي حساب بالفعل",
+    "Do not have an account": "ليس لدي حساب",
     "Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.": "هل نسيت كلمة المرور؟ لا مشكلة. فقط أخبرنا بعنوان بريدك الإلكتروني، وسنرسل لك رابطًا لإعادة تعيين كلمة المرور يسمح لك باختيار كلمة مرور جديدة.",
     "Forgot your password?": "نسيت كلمة المرور؟",
     "Email Password Reset Link": "إرسال رابط إعادة تعيين كلمة المرور",
@@ -36,6 +37,7 @@
     "Lesson type": "نوع الدرس",
     "Profile": "الملف الشخصي",
     "Save": "حفظ",
+    "Submit": "ارسال",
     "Update Password": "تحديث كلمة المرور",
     "Ensure your account is using a long, random password to stay secure.": "تأكد من أن حسابك يستخدم كلمة مرور طويلة وعشوائية للحفاظ على الأمان.",
     "Current Password": "كلمة المرور الحالية",
@@ -58,5 +60,11 @@
     "Most liked": "الأكثر اعجابا",
     "Suggested": "المقترحة",
     "Latest": "الأخيرة",
-    "Most asked": "الأكثر سؤالا"
+    "Most asked": "الأكثر سؤالا",
+    "Recommended": "المختارة",
+    "Most taken": "الأكثر شيوعا",
+    "Fatawa": "الفتاوى",
+    "Exams": "الامتحانات",
+    "Questions count": "عدد الأسألة",
+    "Question": "سؤال"
 }

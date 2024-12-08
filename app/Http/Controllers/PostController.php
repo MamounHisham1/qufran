@@ -12,15 +12,15 @@ class PostController extends Controller
 {
     public function index()
     {
-        $lessons = Post::where('type', '!=', 'fatwa')->orderBy('created_at')->paginate(10);
+        $lessons = Post::with('author')->where('type', '!=', 'fatwa')->orderBy('created_at')->paginate(10);
 
         $settings = Setting::firstWhere('page', 'lessons')?->value;
 
-        $latest = Post::findByMap($settings['latest']);
-        $suggested = Post::findByMap($settings['suggested']);
-        $mostLiked = Post::findByMap($settings['most_liked']);
-        $mostWatched = Post::findByMap($settings['most_watched']);
-        $suggestedCategories = Post::findByMap($settings['suggested_categories']);
+        $latest = Post::whereIn('id', $settings['latest'] ?? []);
+        $suggested = Post::whereIn('id', $settings['suggested'] ?? []);
+        $mostLiked = Post::whereIn('id', $settings['most_liked'] ?? []);
+        $mostWatched = Post::whereIn('id', $settings['most_watched'] ?? []);
+        $suggestedCategories = Post::whereIn('id', $settings['suggested_categories'] ?? []);
         
         return view('lessons.index', [
             'lessons' => $lessons,

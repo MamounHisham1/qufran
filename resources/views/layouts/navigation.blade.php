@@ -10,6 +10,16 @@ $links = [
         'href' => route('lessons.index'),
         'active' => request()->routeIs('lessons.index'),
     ],
+    [
+        'name' => __('Fatawa'),
+        'href' => route('fatawa.index'),
+        'active' => request()->routeIs('fatawa.index'),
+    ],
+    [
+        'name' => __('Exams'),
+        'href' => route('exams.index'),
+        'active' => request()->routeIs('exams.index'),
+    ],
 ];
 ?>
 <nav x-data="{ open: false }" class="bg-teal-600 top-0 sticky z-50">
@@ -25,7 +35,7 @@ $links = [
                 </div>
 
                 <!-- Navigation Links -->
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex gap-3">
+                <div class="hidden sm:-my-px sm:ms-10 sm:flex gap-3">
                     @foreach ($links as $link)
                         <x-nav-link :href="$link['href']" :active="$link['active']">
                             {{ $link['name'] }}
@@ -75,12 +85,12 @@ $links = [
                 @guest
                     <div class="flex gap-2">
                         <a href="{{ route('login') }}"
-                            class="rounded-md px-3 py-1 border border-teal-400 text-white ring-1 ring-transparent transition hover:bg-teal-700 hover:border-teal-800 focus:outline-none focus-visible:ring-[#FF2D20]">
+                            class="rounded-md px-3 py-1 border border-teal-500 text-white ring-1 ring-transparent transition bg-teal-700 hover:bg-teal-600 hover:border-teal-700 focus:outline-none focus-visible:ring-[#FF2D20]">
                             {{ __('Log in') }}
                         </a>
 
                         <a href="{{ route('register') }}"
-                            class="rounded-md px-3 py-1 border border-teal-400 text-white ring-1 ring-transparent transition hover:bg-teal-700 hover:border-teal-800 focus:outline-none focus-visible:ring-[#FF2D20]">
+                            class="rounded-md px-3 py-1 border border-teal-500 text-white ring-1 ring-transparent transition bg-teal-700 hover:bg-teal-600 hover:border-teal-700 focus:outline-none focus-visible:ring-[#FF2D20]">
                             {{ __('Register') }}
                         </a>
                     </div>

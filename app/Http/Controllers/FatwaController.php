@@ -19,8 +19,8 @@ class FatwaController extends Controller
 
         $settings = Setting::firstWhere('page', 'fatawa')?->value;
 
-        $latest = Post::findByMap($settings['latest']);
-        $mostAsked = Post::findByMap($settings['most_asked']);
+        $latest = Post::whereIn('id', $settings['latest'] ?? []);
+        $mostAsked = Post::whereIn('id', $settings['most_asked'] ?? []);
 
         return view('fatawa.index', [
             'fatawa' => $fatawa,

@@ -4,6 +4,7 @@ namespace App\Filament\Pages;
 
 use App\Models\Author;
 use App\Models\Category;
+use App\Models\Examination;
 use App\Models\Post;
 use App\Models\Setting;
 use Filament\Forms\Components\ColorPicker;
@@ -33,13 +34,14 @@ class Settings extends Page
     public ?array $data = [];
 
     public function mount(): void
-{
-    $this->form->fill([
-        'home' => Setting::firstWhere(['page' => 'home', 'key' => 'home'])?->value,
-        'lessons' => Setting::firstWhere(['page' => 'lessons', 'key' => 'lessons'])?->value,
-        'fatawa' => Setting::firstWhere(['page' => 'fatawa', 'key' => 'fatawa'])?->value,
-    ]);
-}
+    {
+        $this->form->fill([
+            'home' => Setting::firstWhere(['page' => 'home', 'key' => 'home'])?->value,
+            'lessons' => Setting::firstWhere(['page' => 'lessons', 'key' => 'lessons'])?->value,
+            'fatawa' => Setting::firstWhere(['page' => 'fatawa', 'key' => 'fatawa'])?->value,
+            'exams' => Setting::firstWhere(['page' => 'exams', 'key' => 'exams'])?->value,
+        ]);
+    }
 
 
     public function form(Form $form): Form
@@ -133,6 +135,28 @@ class Settings extends Page
                             ->multiple()
                             ->maxItems(10),
                     ])->statePath('fatawa'),
+                    Tab::make('الامتحانات')->schema([
+                        Select::make('categories')
+                            ->label(__('Categories'))
+                            ->options(Category::pluck('name', 'id'))
+                            ->multiple()
+                            ->maxItems(10),
+                        Select::make('lessons')
+                            ->label(__('Lessons'))
+                            ->options(Post::where('type', '!=', 'fatwa')->pluck('title', 'id'))
+                            ->multiple()
+                            ->maxItems(10),
+                        Select::make('recommended')
+                            ->label(__('Recommended'))
+                            ->options(Examination::pluck('name', 'id'))
+                            ->multiple()
+                            ->maxItems(10),
+                        Select::make('most_taken')
+                            ->label(__('Most taken'))
+                            ->options(Examination::pluck('name', 'id'))
+                            ->multiple()
+                            ->maxItems(10),
+                    ])->statePath('exams'),
                     // Tab::make('المشايخ')->schema([
                     //     TextInput::make('fatawa_name'),
                     // ]),
@@ -146,15 +170,16 @@ class Settings extends Page
             ])->statePath('data');
     }
 
-   public function create(): void
-{
-    $data = $this->form->getState();
+    public function create(): void
+    {
+        $data = $this->form->getState();
 
-    Setting::set('home', 'home', $data['home'] ?? []);
-    Setting::set('lessons', 'lessons', $data['lessons'] ?? []);
-    Setting::set('fatawa', 'fatawa', $data['fatawa'] ?? []);
+        Setting::set('home', 'home', $data['home'] ?? []);
+        Setting::set('lessons', 'lessons', $data['lessons'] ?? []);
+        Setting::set('fatawa', 'fatawa', $data['fatawa'] ?? []);
+        Setting::set('exams', 'exams', $data['exams'] ?? []);
 
-    Notification::make()->success()->title('تم الحفظ بنجاح.')->send();
-}
+        Notification::make()->success()->title('تم الحفظ بنجاح.')->send();
+    }
 
 }
