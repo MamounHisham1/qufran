@@ -15,6 +15,8 @@
             }
         </style>
         <!-- Scripts -->
+        <script src="//unpkg.com/alpinejs" defer></script>
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="font-sans antialiased">
@@ -28,12 +30,22 @@
                         {{ $header }}
                     </div>
                 </header>
-            @endisset
+            @endissetfetchSurah
             
             <!-- Page Content -->
             <main>
                 {{ $slot }}
             </main>
+            <div class="flex flex-col md:flex-row">
+                @yield('content')
+                <!-- Aside for Suggestions -->
+                <aside class="w-full md:w-1/3 bg-gray-100 p-5 border-x border-gray-300">
+                    <h2 class="text-lg mb-3 font-bold">{{ __('Suggested') }} :</h2>
+                    @yield('aside')
+                </aside>
+            </div>
+            @include('layouts.footer')
         </div>
+        @stack('scripts')
     </body>
 </html>

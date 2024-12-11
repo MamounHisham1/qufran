@@ -12,64 +12,121 @@
                 وجل.</p>
         </div>
     </section>
+
     <x-container>
-        <section class="my-5 grid gap-5 md:grid-cols-2">
-            <!-- Suggested Categories -->
-            <div>
-              <h2 class="mb-4 text-xl font-bold text-center md:text-right">
-                {{ __('Suggested categories') }}
-              </h2>
-              <div class="grid grid-cols-2 gap-3">
-                @foreach ($suggestedCategories as $category)
-                  <a href="#" class="bg-teal-700 text-white p-2 flex items-center justify-center text-sm h-14 rounded-md shadow-md">
-                    {{ $category->name }}
-                  </a>
-                @endforeach
-              </div>
-            </div>
-          
-            <!-- Suggested Lessons -->
-            <div class="border-t md:border-t-0 md:border-r border-gray-300 pt-5 md:pt-0 md:ps-5">
-              <h2 class="mb-4 text-xl font-bold text-center md:text-right">
-                {{ __('Suggested lessons') }}
-              </h2>
-              <div class="grid grid-cols-2 gap-3">
-                @foreach ($suggestedLessons as $lesson)
-                  <a href="#" class="bg-teal-700 text-white p-2 flex items-center justify-center text-sm h-14 rounded-md shadow-md">
-                    {{ $lesson->title }}
-                  </a>
-                @endforeach
-              </div>
-            </div>
-          
-            <!-- Latest Lessons -->
-            <div class="border-t md:border-t-0 border-gray-300 pt-5 md:pt-0">
-              <h2 class="mb-4 text-xl font-bold text-center md:text-right">
-                {{ __('Latest lessons') }}
-              </h2>
-              <div class="grid grid-cols-2 gap-3">
-                @foreach ($latestLessons as $lesson)
-                  <a href="#" class="bg-teal-700 text-white p-2 flex items-center justify-center text-sm h-14 rounded-md shadow-md">
-                    {{ $lesson->title }}
-                  </a>
-                @endforeach
-              </div>
-            </div>
-          
-            <!-- Famous Teachers -->
-            <div class="border-t md:border-t-0 md:border-r border-gray-300 pt-5 md:pt-0 md:ps-5">
-              <h2 class="mb-4 text-xl font-bold text-center md:text-right">
-                {{ __('Famous teachers') }}
-              </h2>
-              <div class="grid grid-cols-2 gap-3">
-                @foreach ($famousTeachers as $teacher)
-                  <a href="#" class="bg-teal-700 text-white p-2 flex items-center justify-center text-sm h-14 rounded-md shadow-md">
-                    {{ $teacher->name }}
-                  </a>
-                @endforeach
-              </div>
-            </div>
-          </section>
-          
+
+        @section('content')
+            <!-- Main Content -->
+            <main class="flex-grow md:p-5" x-data="home()" x-init="quran = fetchSurah()">
+                <!-- Place other content here -->
+                <h1 class="text-2xl font-bold mb-5">الرئيسية</h1>
+                <div>
+                    <div class="flex justify-around bg-gray-200 md:rounded-md">
+                        <h2 x-on:click="active = 'quran'"
+                            class="text-lg font-semibold p-2 my-3 rounded-lg bg-teal-800 text-gray-100 hover:bg-red-950 hover:text-white cursor-pointer transition ease-in"
+                            :class="{ 'bg-red-800 text-white': active == 'quran' }">
+                            {{ __('The Quran') }}
+                        </h2>
+                        <h2 x-on:click="active = 'hadith'"
+                            class="text-lg font-semibold p-2 my-3 rounded-lg bg-teal-800 text-gray-100 hover:bg-red-950 hover:text-white cursor-pointer transition ease-in"
+                            :class="{ 'bg-red-800 text-white': active == 'hadith' }">
+                            {{ __('The Hadith') }}
+                        </h2>
+                        <h2 x-on:click="active = 'adhkar'"
+                            class="text-lg font-semibold p-2 my-3 rounded-lg bg-teal-800 text-gray-100 hover:bg-red-950 hover:text-white cursor-pointer transition ease-in"
+                            :class="{ 'bg-red-800 text-white': active == 'adhkar' }">
+                            {{ __('The Adhkar') }}
+                        </h2>
+                    </div>
+
+                    <div x-show="active == 'quran'">
+                        <template x-for="surah in quran">
+                            <p x-text="surah.name"></p>
+                        </template>
+                    </div>
+                </div>
+
+            </main>
+        @endsection
+
+        @section('aside')
+            <section class="mb-8">
+                <h2 class="mb-4 text-xl font-semibold text-center md:text-right">
+                    {{ __('Suggested categories') }}
+                </h2>
+                <div class="flex flex-wrap gap-2">
+                    @foreach ($suggestedCategories ?? [] as $category)
+                        <a href="#"
+                            class="bg-teal-700 text-white px-3 py-2 flex items-center justify-center text-sm rounded-md shadow-md break-words text-center hover:bg-teal-950">
+                            {{ $category->name }}
+                        </a>
+                    @endforeach
+                </div>
+            </section>
+
+            <section class="mb-8">
+                <h2 class="mb-4 text-xl font-semibold text-center md:text-right">
+                    {{ __('Suggested lessons') }}
+                </h2>
+                <div class="flex flex-wrap gap-2">
+                    @foreach ($suggestedLessons ?? [] as $lesson)
+                        <a href="#"
+                            class="bg-teal-700 text-white px-3 py-2 flex items-center justify-center text-sm rounded-md shadow-md break-words text-center hover:bg-teal-950">
+                            {{ $lesson->title }}
+                        </a>
+                    @endforeach
+                </div>
+            </section>
+
+            <section class="mb-8">
+                <h2 class="mb-4 text-xl font-semibold text-center md:text-right">
+                    {{ __('Latest lessons') }}
+                </h2>
+                <div class="flex flex-wrap gap-2">
+                    @foreach ($latestLessons ?? [] as $lesson)
+                        <a href="#"
+                            class="bg-teal-700 text-white px-3 py-2 flex items-center justify-center text-sm rounded-md shadow-md break-words text-center hover:bg-teal-950">
+                            {{ $lesson->title }}
+                        </a>
+                    @endforeach
+                </div>
+            </section>
+
+            <section>
+                <h2 class="mb-4 text-xl font-semibold text-center md:text-right">
+                    {{ __('Famous teachers') }}
+                </h2>
+                <div class="flex flex-wrap gap-2">
+                    @foreach ($famousTeachers ?? [] as $teacher)
+                        <a href="#"
+                            class="bg-teal-700 text-white px-3 py-2 flex items-center justify-center text-sm rounded-md shadow-md break-words text-center hover:bg-teal-950">
+                            {{ $teacher->name }}
+                        </a>
+                    @endforeach
+                </div>
+            </section>
+        @endsection
     </x-container>
+
+    @push('scripts')
+    <script>
+        function home() {
+            return {
+                active: 'quran',
+                quran: [],
+                fetchSurah() {
+                    let response = [];
+                    $.ajax({
+                        type: "GET",
+                        url: 'https://api.alquran.cloud/v1/surah',
+                        success: function(response) {
+                            response = response.data.slice(0, 9);
+                        },
+                    });
+                    return response
+                }
+            }
+        }
+    </script>
+    @endpush
 </x-app-layout>
