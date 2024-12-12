@@ -30,7 +30,7 @@
                         {{ $header }}
                     </div>
                 </header>
-            @endissetfetchSurah
+            @endisset
             
             <!-- Page Content -->
             <main>
@@ -39,13 +39,12 @@
             <div class="flex flex-col md:flex-row">
                 @yield('content')
                 <!-- Aside for Suggestions -->
-                <aside class="w-full md:w-1/3 bg-gray-100 p-5 border-x border-gray-300">
+                <aside class="w-full md:w-1/3 bg-gray-100 p-5 border-y mt-5 md:mt-0 md:border-x border-gray-300">
                     <h2 class="text-lg mb-3 font-bold">{{ __('Suggested') }} :</h2>
                     @yield('aside')
                 </aside>
             </div>
             @include('layouts.footer')
         </div>
-        @stack('scripts')
     </body>
 </html>

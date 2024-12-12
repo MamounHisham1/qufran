@@ -16,34 +16,50 @@
     <x-container>
 
         @section('content')
-            <!-- Main Content -->
-            <main class="flex-grow md:p-5" x-data="home()" x-init="quran = fetchSurah()">
-                <!-- Place other content here -->
+            <main class="flex-grow md:p-5" x-data="home()">
                 <h1 class="text-2xl font-bold mb-5">الرئيسية</h1>
-                <div>
-                    <div class="flex justify-around bg-gray-200 md:rounded-md">
-                        <h2 x-on:click="active = 'quran'"
-                            class="text-lg font-semibold p-2 my-3 rounded-lg bg-teal-800 text-gray-100 hover:bg-red-950 hover:text-white cursor-pointer transition ease-in"
-                            :class="{ 'bg-red-800 text-white': active == 'quran' }">
-                            {{ __('The Quran') }}
-                        </h2>
-                        <h2 x-on:click="active = 'hadith'"
-                            class="text-lg font-semibold p-2 my-3 rounded-lg bg-teal-800 text-gray-100 hover:bg-red-950 hover:text-white cursor-pointer transition ease-in"
-                            :class="{ 'bg-red-800 text-white': active == 'hadith' }">
-                            {{ __('The Hadith') }}
-                        </h2>
-                        <h2 x-on:click="active = 'adhkar'"
-                            class="text-lg font-semibold p-2 my-3 rounded-lg bg-teal-800 text-gray-100 hover:bg-red-950 hover:text-white cursor-pointer transition ease-in"
-                            :class="{ 'bg-red-800 text-white': active == 'adhkar' }">
-                            {{ __('The Adhkar') }}
-                        </h2>
-                    </div>
+                <div class="flex justify-around bg-gray-200 md:rounded-md">
+                    <h2 x-on:click="active = 'quran'"
+                        class="text-lg font-semibold p-2 my-3 rounded-lg bg-teal-800 text-gray-100 hover:bg-red-950 hover:text-white cursor-pointer transition ease-in"
+                        :class="{ 'bg-red-800 text-white': active == 'quran' }">
+                        {{ __('The Quran') }}
+                    </h2>
+                    <h2 x-on:click="active = 'hadith'"
+                        class="text-lg font-semibold p-2 my-3 rounded-lg bg-teal-800 text-gray-100 hover:bg-red-950 hover:text-white cursor-pointer transition ease-in"
+                        :class="{ 'bg-red-800 text-white': active == 'hadith' }">
+                        {{ __('The Hadith') }}
+                    </h2>
+                    <h2 x-on:click="active = 'adhkar'"
+                        class="text-lg font-semibold p-2 my-3 rounded-lg bg-teal-800 text-gray-100 hover:bg-red-950 hover:text-white cursor-pointer transition ease-in"
+                        :class="{ 'bg-red-800 text-white': active == 'adhkar' }">
+                        {{ __('The Adhkar') }}
+                    </h2>
+                </div>
 
-                    <div x-show="active == 'quran'">
+                <div x-show="active == 'quran'">
+                    <ul class="divide-y divide-teal-400">
                         <template x-for="surah in quran">
-                            <p x-text="surah.name"></p>
+                            <li>
+                                <a :href="`/quran-hadith/surah/${surah.id}`" class="block group px-2 py-4">
+                                    <span class="font-bold text-xl group-hover:text-teal-600" x-text="surah.name_arabic"></span>
+                                </a>
+                            </li>
                         </template>
-                    </div>
+                    </ul>
+                    <a href="/quran-hadith" class="text-sm hover:text-blue-700">{{ __('Read more') }}</a>
+                </div>
+
+                <div x-show="active == 'hadith'">
+                    <ul class="divide-y divide-teal-400">
+                        <template x-for="hadith in hadiths">
+                            <li>
+                                <a :href="`/quran-hadith/hadith/${hadith.id}`" class="block group px-2 py-4">
+                                    <span class="font-bold text-xl group-hover:text-teal-600" x-text="hadith.name"></span>
+                                </a>
+                            </li>
+                        </template>
+                    </ul>
+                    <a href="/quran-hadith" class="text-sm hover:text-blue-700">{{ __('Read more') }}</a>
                 </div>
 
             </main>
@@ -108,25 +124,30 @@
         @endsection
     </x-container>
 
-    @push('scripts')
     <script>
         function home() {
             return {
                 active: 'quran',
                 quran: [],
-                fetchSurah() {
-                    let response = [];
+                hadiths: [],
+                init() {
+                    const self = this;
                     $.ajax({
                         type: "GET",
-                        url: 'https://api.alquran.cloud/v1/surah',
-                        success: function(response) {
-                            response = response.data.slice(0, 9);
+                        url: 'https://api.quran.com/api/v4/chapters',
+                        success: function(response) {   
+                            self.quran = response.chapters.slice(0, 9);
                         },
                     });
-                    return response
+                    $.ajax({
+                        type: "GET",
+                        url: "https://hadis-api-id.vercel.app/hadith",
+                        success: function (response) {
+                            self.hadiths = response;
+                        }
+                    });
                 }
-            }
+            };
         }
     </script>
-    @endpush
 </x-app-layout>
