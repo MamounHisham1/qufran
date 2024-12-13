@@ -31,7 +31,13 @@ class CategoryResource extends Resource
     {
         return $form
             ->schema([
-                p
+                Forms\Components\TextInput::make('name')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\FileUpload::make('image')
+                    ->image(),
+                Forms\Components\Textarea::make('description')
+                    ->columnSpanFull(),
             ]);
     }
 
