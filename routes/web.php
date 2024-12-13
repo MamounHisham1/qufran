@@ -5,11 +5,20 @@ use App\Http\Controllers\FatwaController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\QuranHadithController;
 use Illuminate\Support\Facades\Route;
 
 // Route::get('/', function () {
 //     return view('welcome');
 // });
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+require __DIR__ . '/auth.php';
 
 Route::get('/', HomeController::class)->name('dashboard');
 
@@ -23,10 +32,7 @@ Route::get('/exams/{exam:id}', [ExaminationController::class, 'show'])->middlewa
 Route::post('/exams/{exam:id}', [ExaminationController::class, 'store'])->middleware('auth')->name('exams.store');
 Route::get('/exams/{exam:id}/completed', [ExaminationController::class, 'completed'])->middleware('auth')->name('exams.completed');
 
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
-
-require __DIR__ . '/auth.php';
+Route::get('/quran-hadith', [QuranHadithController::class, 'index'])->name(name: 'quran-hadith.index');
+Route::get('/quran-hadith/surah/{id}', [QuranHadithController::class, 'showSurah'])->name('surah');
+Route::get('/quran-hadith/hadith/{id}', [QuranHadithController::class, 'showHadith'])->name('hadith');
+Route::get('/quran-hadith/hadith/book/{id}', [QuranHadithController::class, 'showBook'])->name('book');

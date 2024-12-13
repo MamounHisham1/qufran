@@ -16,6 +16,11 @@ $links = [
         'active' => request()->routeIs('fatawa.index'),
     ],
     [
+        'name' => __('Quran-Hadith'),
+        'href' => route('quran-hadith.index'),
+        'active' => request()->routeIs('quran-hadith.index'),
+    ],
+    [
         'name' => __('Exams'),
         'href' => route('exams.index'),
         'active' => request()->routeIs('exams.index'),

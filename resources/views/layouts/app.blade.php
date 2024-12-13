@@ -13,6 +13,15 @@
             *{
                 font-family: 'Cairo', sans-serif;
             }
+            /* Custom CSS for the blurred word transition */
+            .blur-word {
+                filter: blur(5px);
+                transition: filter 0.3s ease;
+            }
+        
+            .blur-word.revealed {
+                filter: blur(0);
+            }
         </style>
         <!-- Scripts -->
         <script src="//unpkg.com/alpinejs" defer></script>
@@ -38,13 +47,11 @@
             </main>
             <div class="flex flex-col md:flex-row">
                 @yield('content')
-                <!-- Aside for Suggestions -->
-                <aside class="w-full md:w-1/3 bg-gray-100 p-5 border-y mt-5 md:mt-0 md:border-x border-gray-300">
-                    <h2 class="text-lg mb-3 font-bold">{{ __('Suggested') }} :</h2>
-                    @yield('aside')
-                </aside>
+                @yield('aside')
             </div>
             @include('layouts.footer')
         </div>
+
+        @stack('scripts')
     </body>
 </html>
