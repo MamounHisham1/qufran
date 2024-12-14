@@ -13,7 +13,10 @@ class QuranHadithController extends Controller
     public function index()
     {
         $books = Http::get('https://cdn.jsdelivr.net/gh/fawazahmed0/hadith-api@1/editions.json')->json();
-        dd($books);
+        
+        $customOrder = ["bukhari", "muslim", "abudawud", "tirmidhi", "nasai", "ibnmajah", "malik", "nawawi", "dehlawi", "qudsi"];
+        $books = reorderArray($books, $customOrder);
+
         return view('quran-hadith.index', ['books' => $books]);
     }
 
@@ -27,8 +30,14 @@ class QuranHadithController extends Controller
         return view('quran-hadith.show-hadith');
     }
 
-    public function showBook(int $id)
+    public function showBook(string $slug)
     {
-        return view('quran-hadith.show-book');
+        $data = Http::get("https://cdn.jsdelivr.net/gh/fawazahmed0/hadith-api@1/editions/ara-{$slug}.json")->json();
+        $metadata = $data['metadata'];
+        array_shift($metadata['sections']);
+        array_shift($metadata['section_details']);
+        strcap
+        // $hadiths = $data['hadiths'];
+        return view('quran-hadith.show-book', ['metadata' => $metadata, 'slug' => $slug]);
     }
 }

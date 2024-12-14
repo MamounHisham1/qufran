@@ -34,5 +34,5 @@ Route::get('/exams/{exam:id}/completed', [ExaminationController::class, 'complet
 
 Route::get('/quran-hadith', [QuranHadithController::class, 'index'])->name(name: 'quran-hadith.index');
 Route::get('/quran-hadith/surah/{id}', [QuranHadithController::class, 'showSurah'])->name('surah');
+Route::get('/quran-hadith/hadith/book/{slug}', [QuranHadithController::class, 'showBook'])->name('book');
 Route::get('/quran-hadith/hadith/{id}', [QuranHadithController::class, 'showHadith'])->name('hadith');
-Route::get('/quran-hadith/hadith/book/{id}', [QuranHadithController::class, 'showBook'])->name('book');
