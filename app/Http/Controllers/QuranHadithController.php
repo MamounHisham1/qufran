@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 
 class QuranHadithController extends Controller
 {
@@ -11,7 +12,9 @@ class QuranHadithController extends Controller
      */
     public function index()
     {
-        return view('quran-hadith.index');
+        $books = Http::get('https://cdn.jsdelivr.net/gh/fawazahmed0/hadith-api@1/editions.json')->json();
+        dd($books);
+        return view('quran-hadith.index', ['books' => $books]);
     }
 
     public function showSurah(int $id)

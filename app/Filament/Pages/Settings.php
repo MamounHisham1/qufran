@@ -124,6 +124,22 @@ class Settings extends Page
                         ])
                     ])->statePath('lessons'),
                     Tab::make('الفتاوى')->schema([
+                        Select::make('suggested_categories')
+                            ->label(__('Suggested categories'))
+                            ->options(Category::pluck('name', 'id'))
+                            ->multiple()
+                            ->maxItems(8)
+                            ->createOptionForm([
+                                TextInput::make('name')
+                                    ->label(__('Name'))
+                                    ->required()
+                                    ->maxLength(255),
+                                TextInput::make('parent_category_id')
+                                    ->label(__('Parent category'))
+                                    ->numeric(),
+                                Toggle::make('is_published')
+                                    ->label(__("Is published")),
+                            ])->createOptionUsing(fn($data) => Category::create($data)),
                         Select::make('most_asked')
                             ->label(__('Most asked'))
                             ->options(Post::where('type', '=', 'fatwa')->pluck('title', 'id'))

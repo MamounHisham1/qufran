@@ -39,7 +39,7 @@
           <form class="flex items-center space-x-2">
             <input
               type="email"
-              class="w-full px-4 py-2 rounded-r bg-teal-700 text-white placeholder-gray-300 focus:outline-none focus:ring-teal-900"
+              class="w-full px-4 py-2 rounded-r bg-teal-300 text-gray-900 placeholder-white-800 focus:outline-none focus:ring-teal-600"
               placeholder="أدخل بريدك الإلكتروني"
             />
             <button

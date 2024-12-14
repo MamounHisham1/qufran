@@ -14,10 +14,9 @@
     </section>
 
     <x-container>
-
         @section('content')
             <main class="flex-grow md:p-5 md:w-2/3 md:m-0 mx-2" x-data="home()">
-                <h1 class="text-2xl font-bold mb-5">الرئيسية</h1>
+                <h1 class="text-2xl font-bold mb-5">{{ __('Home') }}</h1>
                 <div class="flex justify-around bg-gray-200 md:rounded-md">
                     <h2 x-on:click="active = 'quran'"
                         class="text-lg font-semibold p-2 my-3 rounded-lg bg-teal-800 text-gray-100 hover:bg-red-950 hover:text-white cursor-pointer select-none transition ease-in"

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use App\Models\Setting;
+use App\Models\Category;
 use App\PostTypes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -19,11 +20,13 @@ class FatwaController extends Controller
 
         $settings = Setting::firstWhere('page', 'fatawa')?->value;
 
-        $latest = Post::whereIn('id', $settings['latest'] ?? []);
-        $mostAsked = Post::whereIn('id', $settings['most_asked'] ?? []);
+        $suggestedCategories = Category::whereIn('id', $settings['suggested_categories'] ?? [])->get();
+        $latest = Post::whereIn('id', $settings['latest'] ?? [])->get();
+        $mostAsked = Post::whereIn('id', $settings['most_asked'] ?? [])->get();
 
         return view('fatawa.index', [
             'fatawa' => $fatawa,
+            'suggestedCategories' => $suggestedCategories,
             'latest' => $latest,
             'mostAsked' => $mostAsked,
         ]);
@@ -61,9 +64,7 @@ class FatwaController extends Controller
      */
     public function show(Post $post)
     {
-        Gate::authorize('fatwa-auth', $post);
-
-        return view('fatwa.show', ['post' => $post]);
+        return view('fatawa.show', ['post' => $post]);
     }
 
     /**

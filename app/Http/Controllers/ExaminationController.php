@@ -26,7 +26,7 @@ class ExaminationController extends Controller
 
         $takenExams = Examination::whereIn('id', $takenExams)->get();
 
-        $exams = Examination::where('end_at', '>', $time)->where('start_at', '<', $time)->paginate(9);
+        $exams = Examination::where('end_at', '>', $time)->where('start_at', '<', $time)->paginate(3);
 
         $settings = Setting::firstWhere('page', 'exams')?->value;
 

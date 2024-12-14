@@ -17,9 +17,9 @@ class AuthorFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->name(),
-            'image' => fake()->imageUrl(),
-            'description' => fake()->paragraph(),
-        ];
+            'name' => fake('ar_SA')->name(), // Random Arabic name
+            'image' => fake()->imageUrl(),   // Random image URL (no need to localize)
+            'description' => fake('ar_SA')->paragraph(), // Random Arabic paragraph
+        ];        
     }
 }

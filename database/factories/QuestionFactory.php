@@ -23,7 +23,7 @@ class QuestionFactory extends Factory
             'examination_id' => fake()->randomElement(Examination::all()->pluck('id')->toArray()),  // Random Examination ID
             'correct_answer_id' => fake()->randomElement(Answer::all()->pluck('id')->toArray()),  // Random correct answer ID, or null if required
             'type' => fake()->randomElement(['pick_one_answer']),  // Random type (adjust types as needed)
-            'body' => fake()->paragraph(),  // Random body of the question
+            'body' => fake('ar_SA')->paragraph(),  // Random body of the question
         ];
     }
 
@@ -31,7 +31,7 @@ class QuestionFactory extends Factory
     {
         return $this->afterCreating(function (Question $question) {
             // Create an Answer for the created Question
-            Answer::factory()->create([
+            Answer::factory(3)->create([
                 'question_id' => $question->id,  // Link the answer to the created question
             ]);
         });

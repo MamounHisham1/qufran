@@ -4,26 +4,31 @@ $links = [
         'name' => __('Dashboard'),
         'href' => route('dashboard'),
         'active' => request()->routeIs('dashboard'),
+        'when' => fn() => true,
     ],
     [
         'name' => __('Lessons'),
         'href' => route('lessons.index'),
         'active' => request()->routeIs('lessons.index'),
+        'when' => fn() => true,
     ],
     [
         'name' => __('Fatawa'),
         'href' => route('fatawa.index'),
         'active' => request()->routeIs('fatawa.index'),
+        'when' => fn() => true,
     ],
     [
         'name' => __('Quran-Hadith'),
         'href' => route('quran-hadith.index'),
         'active' => request()->routeIs('quran-hadith.index'),
+        'when' => fn() => true,
     ],
     [
         'name' => __('Exams'),
         'href' => route('exams.index'),
         'active' => request()->routeIs('exams.index'),
+        'when' => fn() => auth()->check(),
     ],
 ];
 ?>
@@ -42,9 +47,11 @@ $links = [
                 <!-- Navigation Links -->
                 <div class="hidden sm:-my-px sm:ms-10 sm:flex gap-3">
                     @foreach ($links as $link)
-                        <x-nav-link :href="$link['href']" :active="$link['active']">
-                            {{ $link['name'] }}
-                        </x-nav-link>
+                        @if ($link['when']())
+                            <x-nav-link :href="$link['href']" :active="$link['active']">
+                                {{ $link['name'] }}
+                            </x-nav-link>
+                        @endif
                     @endforeach
                 </div>
             </div>
@@ -122,9 +129,11 @@ $links = [
     <div :class="{ 'block': open, 'hidden': !open }" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
             @foreach ($links as $link)
-                <x-responsive-nav-link :href="$link['href']" :active="$link['active']">
-                    {{ $link['name'] }}
-                </x-responsive-nav-link>
+                @if ($link['when']())
+                    <x-responsive-nav-link :href="$link['href']" :active="$link['active']">
+                        {{ $link['name'] }}
+                    </x-responsive-nav-link>
+                @endif
             @endforeach
         </div>
 

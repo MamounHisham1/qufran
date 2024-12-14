@@ -27,8 +27,8 @@
                             <li>
                                 <a :href="`/quran-hadith/surah/${surah.id}`"
                                     class="block group p-3 hover:p-2 border-b rounded-full bg-gray-200 border-teal-400 transition ease-linear">
-                                    <span><span class="font-bold text-xl group-hover:text-teal-600"
-                                            x-text="key + 1"></span> - </span>
+                                    <span><span class="font-bold text-xl group-hover:text-teal-600" x-text="key + 1"></span>
+                                        - </span>
                                     <span class="font-bold text-xl group-hover:text-teal-600"
                                         x-text="surah.name_arabic"></span>
                                 </a>
@@ -38,21 +38,16 @@
                 </div>
 
                 <div x-show="active == 'hadith'">
-                    <ul class="flex flex-wrap items-center gap-5">
-                        <template x-for="book in hadithBooks">
+                    <ul>
+                        @foreach ($books as $book)
                             <li>
-                                <a :href="`/quran-hadith/hadith/${book.bookSlug}`"
-                                    class="block group py-3 border-b border-teal-400">
-                                    <span class="font-bold text-xl group-hover:text-teal-600" x-text="book.bookName"></span>
+                                <a href="{{ route('book', $book['collection'][0]['name']) }}"
+                                    class="block group py-5 border-b border-teal-400">
+                                    <span class="font-bold text-xl group-hover:text-teal-600">{{ __($book['name']) }}</span>
                                 </a>
                             </li>
-                        </template>
+                        @endforeach
                     </ul>
-                    <li>
-                        <a href="/quran-hadith" class="block group text-center">
-                            <span class="font-bold text-xs group-hover:text-blue-600">{{ __('More') }}</span>
-                        </a>
-                    </li>
                 </div>
 
             </main>

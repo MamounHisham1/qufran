@@ -25,7 +25,7 @@ Route::get('/', HomeController::class)->name('dashboard');
 Route::get('/lessons', [PostController::class, 'index'])->name('lessons.index');
 Route::get('/lessons/{lesson:id}', [PostController::class, 'show'])->name('lessons.show');
 
-Route::resource('/fatawa', FatwaController::class)->middleware('auth');
+Route::resource('/fatawa', FatwaController::class);
 
 Route::get('/exams', [ExaminationController::class, 'index'])->middleware('auth')->name('exams.index');
 Route::get('/exams/{exam:id}', [ExaminationController::class, 'show'])->middleware('auth')->name('exams.show');

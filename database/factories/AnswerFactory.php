@@ -19,7 +19,7 @@ class AnswerFactory extends Factory
     {
         return [
             'question_id' => fake()->randomElement(Question::all()->pluck('id')->toArray()),  // Random Question ID
-            'body' => fake()->sentence(),  // Random body for the answer (you can adjust to paragraph or other types)
-        ];
+            'body' => fake('ar_SA')->sentence(),  // Random Arabic sentence
+        ];        
     }
 }

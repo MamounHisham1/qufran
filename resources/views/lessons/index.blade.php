@@ -5,7 +5,7 @@
             @section('content')
                 <main class="flex-grow p-5">
                     <!-- Place other content here -->
-                    <h1 class="text-3xl font-bold mb-5">جميع الدروس</h1>
+                    <h1 class="text-2xl font-bold mb-5">{{ __('Lessons') }}</h1>
                     <ul class="divide-y divide-teal-400">
                         @foreach ($lessons as $lesson)
                             <li>

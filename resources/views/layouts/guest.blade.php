@@ -22,7 +22,7 @@
             
             <div>
                 <a href="/">
-                    <x-application-logo class="w-20 h-20 fill-current" color="text-yellow-900"/>
+                    <x-application-logo class="w-20 h-20 fill-current text-xl" color="text-yellow-200"/>
                 </a>
             </div>
             <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-teal-700 shadow-md overflow-hidden sm:rounded-lg">
