@@ -34,9 +34,11 @@ class QuranHadithController extends Controller
     {
         $data = Http::get("https://cdn.jsdelivr.net/gh/fawazahmed0/hadith-api@1/editions/ara-{$slug}.json")->json();
         $metadata = $data['metadata'];
-        array_shift($metadata['sections']);
-        array_shift($metadata['section_details']);
-        strcap
+        if($metadata['sections'][0] == "") {
+            array_shift($metadata['section_details']);
+            array_shift($metadata['sections']);
+        }
+        
         // $hadiths = $data['hadiths'];
         return view('quran-hadith.show-book', ['metadata' => $metadata, 'slug' => $slug]);
     }
