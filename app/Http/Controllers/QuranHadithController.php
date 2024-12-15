@@ -25,21 +25,44 @@ class QuranHadithController extends Controller
         return view('quran-hadith.show-surah', ['id' => $id]);
     }
 
-    public function showHadith(int $id)
+    public function showBook(string $book)
     {
-        return view('quran-hadith.show-hadith');
-    }
-
-    public function showBook(string $slug)
-    {
-        $data = Http::get("https://cdn.jsdelivr.net/gh/fawazahmed0/hadith-api@1/editions/ara-{$slug}.json")->json();
+        $data = Http::get("https://cdn.jsdelivr.net/gh/fawazahmed0/hadith-api@1/editions/ara-{$book}.json")->json();
         $metadata = $data['metadata'];
         if($metadata['sections'][0] == "") {
             array_shift($metadata['section_details']);
             array_shift($metadata['sections']);
         }
+        // dd($metadata);
         
         // $hadiths = $data['hadiths'];
-        return view('quran-hadith.show-book', ['metadata' => $metadata, 'slug' => $slug]);
+        return view('quran-hadith.show-book', ['metadata' => $metadata, 'book' => $book]);
+    }
+
+    public function showSection($book, $section)
+    {
+        if($section == 0) {
+            abort(404);
+        }
+        $response = Http::get("https://cdn.jsdelivr.net/gh/fawazahmed0/hadith-api@1/editions/ara-{$book}/sections/{$section}.json");
+
+        if(!$response->ok()) {
+            return back();
+        }
+
+        $data = $response->json();
+
+        $hadiths = $data['hadiths'];
+
+        return view('quran-hadith.show-section', [
+            'book' => $book,
+            'section' => $section,
+            'hadiths' => $hadiths,
+        ]);
+    }
+
+    public function showHadith(int $id)
+    {
+        return view('quran-hadith.show-hadith');
     }
 }

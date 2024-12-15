@@ -5,8 +5,8 @@
             <ul>
                 @foreach ($metadata['sections'] as $key => $section)
                     <li>
-                        <a href="/quran-hadith/{{ $slug }}/{{ strtolower(str_replace(' ', '-', $section)) }}}"
-                            class="block group p-4 hover:p-6 hover:my-2 border-b rounded-full bg-gray-200 border-teal-400 transition ease-linear mb-1">
+                        <a href="{{ route('hadith.section', ['book' => $book, 'section' => $key + 1]) }}"
+                            class="block group p-4 hover:p-6 hover:my-2 border-b text-center rounded-full bg-gray-200 border-teal-400 transition ease-linear mb-1">
                             <span class="font-bold text-xl group-hover:text-teal-600">({{ $key + 1 }}) -
                                 {{ __($section) }}</span>
                             <p class="text-sm text-gray-500 mt-2 ms-2">

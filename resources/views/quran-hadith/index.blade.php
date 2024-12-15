@@ -41,7 +41,7 @@
                     <ul>
                         @foreach ($books as $book)
                             <li>
-                                <a href="{{ route('book', $book['collection'][0]['book']) }}"
+                                <a href="{{ route('hadith.book', $book['collection'][0]['book']) }}"
                                     class="block group py-5 border-b border-teal-400">
                                     <span class="font-bold text-xl group-hover:text-teal-600">{{ __($book['name']) }}</span>
                                 </a>
