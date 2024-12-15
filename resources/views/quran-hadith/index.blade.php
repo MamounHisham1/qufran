@@ -50,6 +50,19 @@
                     </ul>
                 </div>
 
+                <div x-show="active == 'adhkar'">
+                    <ul>
+                        @foreach ($adhkar as $key => $name)
+                            <li>
+                                <a href="{{ route('adhkar', $key + 1) }}"
+                                    class="block group py-5 border-b border-teal-400">
+                                    <span class="font-bold text-xl group-hover:text-teal-600">{{ __($name) }}</span>
+                                </a>
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
+
             </main>
         @endsection
     </x-container>

@@ -9,7 +9,7 @@
                     <ul class="divide-y divide-teal-400">
                         @foreach ($lessons as $lesson)
                             <li>
-                                <a href="{{ route('lessons.show', $lesson->id) }}" class="block group px-2 py-4">
+                                <a href="{{ route('lessons.show', $lesson) }}" class="block group px-2 py-4">
                                     <span class="text-lg block mb-1 text-gray-800">
                                         {{ $lesson->created_at->diffForHumans() }} بواسطة
                                         {{ $lesson->author?->name ?? __('Ananymos') }}

@@ -11,7 +11,7 @@ class PostController extends Controller
 {
     public function index()
     {
-        $lessons = Post::with('author')->where('type', '!=', 'fatwa')->orderBy('created_at')->paginate(20);
+        $lessons = Post::with('author')->where('type', '!=', 'fatwa')->latest()->latest('id')->paginate(20);
 
         $settings = Setting::firstWhere('page', 'lessons')?->value;
 
@@ -31,8 +31,8 @@ class PostController extends Controller
         ]);
     }
 
-    public function show(Post $post)
+    public function show(Post $lesson)
     {
-        dd($post);
+        dd($lesson->title);
     }
 }
