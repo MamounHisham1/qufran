@@ -33,6 +33,6 @@ class PostController extends Controller
 
     public function show(Post $lesson)
     {
-        dd($lesson->title);
+        return view('lessons.show', ['lesson' => $lesson]);
     }
 }
