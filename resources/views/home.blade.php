@@ -78,61 +78,69 @@
         @section('aside')
             <aside class="w-full md:w-1/3 bg-gray-100 p-5 border-y mt-5 md:mt-0 md:border-x border-gray-300">
                 <h2 class="text-lg mb-3 font-bold">{{ __('Suggested') }} :</h2>
-                <section class="mb-8">
-                    <h2 class="mb-4 text-xl font-semibold text-center md:text-right">
-                        {{ __('Suggested categories') }}
-                    </h2>
-                    <div class="flex flex-wrap gap-2">
-                        @foreach ($suggestedCategories ?? [] as $category)
-                            <a href="#"
-                                class="bg-teal-700 text-white px-3 py-2 flex items-center justify-center text-sm rounded-md shadow-md break-words text-center hover:bg-teal-950">
-                                {{ $category->name }}
-                            </a>
-                        @endforeach
-                    </div>
-                </section>
+                @if (!$suggestedCategories->isEmpty())
+                    <section class="mb-8">
+                        <h2 class="mb-4 text-xl font-semibold text-center md:text-right">
+                            {{ __('Suggested categories') }}
+                        </h2>
+                        <div class="flex flex-wrap gap-2">
+                            @foreach ($suggestedCategories ?? [] as $category)
+                                <a href="#"
+                                    class="bg-teal-700 text-white px-3 py-2 flex items-center justify-center text-sm rounded-md shadow-md break-words text-center hover:bg-teal-950">
+                                    {{ $category->name }}
+                                </a>
+                            @endforeach
+                        </div>
+                    </section>
+                @endif
 
-                <section class="mb-8">
-                    <h2 class="mb-4 text-xl font-semibold text-center md:text-right">
-                        {{ __('Suggested lessons') }}
-                    </h2>
-                    <div class="flex flex-wrap gap-2">
-                        @foreach ($suggestedLessons ?? [] as $lesson)
-                            <a href="#"
-                                class="bg-teal-700 text-white px-3 py-2 flex items-center justify-center text-sm rounded-md shadow-md break-words text-center hover:bg-teal-950">
-                                {{ $lesson->title }}
-                            </a>
-                        @endforeach
-                    </div>
-                </section>
+                @if (!$suggestedLessons->isEmpty())
+                    <section class="mb-8">
+                        <h2 class="mb-4 text-xl font-semibold text-center md:text-right">
+                            {{ __('Suggested lessons') }}
+                        </h2>
+                        <div class="flex flex-wrap gap-2">
+                            @foreach ($suggestedLessons ?? [] as $lesson)
+                                <a href="#"
+                                    class="bg-teal-700 text-white px-3 py-2 flex items-center justify-center text-sm rounded-md shadow-md break-words text-center hover:bg-teal-950">
+                                    {{ $lesson->title }}
+                                </a>
+                            @endforeach
+                        </div>
+                    </section>
+                @endif
 
-                <section class="mb-8">
-                    <h2 class="mb-4 text-xl font-semibold text-center md:text-right">
-                        {{ __('Latest lessons') }}
-                    </h2>
-                    <div class="flex flex-wrap gap-2">
-                        @foreach ($latestLessons ?? [] as $lesson)
-                            <a href="#"
-                                class="bg-teal-700 text-white px-3 py-2 flex items-center justify-center text-sm rounded-md shadow-md break-words text-center hover:bg-teal-950">
-                                {{ $lesson->title }}
-                            </a>
-                        @endforeach
-                    </div>
-                </section>
+                @if (!$latestLessons->isEmpty())
+                    <section class="mb-8">
+                        <h2 class="mb-4 text-xl font-semibold text-center md:text-right">
+                            {{ __('Latest lessons') }}
+                        </h2>
+                        <div class="flex flex-wrap gap-2">
+                            @foreach ($latestLessons ?? [] as $lesson)
+                                <a href="#"
+                                    class="bg-teal-700 text-white px-3 py-2 flex items-center justify-center text-sm rounded-md shadow-md break-words text-center hover:bg-teal-950">
+                                    {{ $lesson->title }}
+                                </a>
+                            @endforeach
+                        </div>
+                    </section>
+                @endif
 
-                <section>
-                    <h2 class="mb-4 text-xl font-semibold text-center md:text-right">
-                        {{ __('Famous teachers') }}
-                    </h2>
-                    <div class="flex flex-wrap gap-2">
-                        @foreach ($famousTeachers ?? [] as $teacher)
-                            <a href="#"
-                                class="bg-teal-700 text-white px-3 py-2 flex items-center justify-center text-sm rounded-md shadow-md break-words text-center hover:bg-teal-950">
-                                {{ $teacher->name }}
-                            </a>
-                        @endforeach
-                    </div>
-                </section>
+                @if (!$famousTeachers->isEmpty())
+                    <section>
+                        <h2 class="mb-4 text-xl font-semibold text-center md:text-right">
+                            {{ __('Famous teachers') }}
+                        </h2>
+                        <div class="flex flex-wrap gap-2">
+                            @foreach ($famousTeachers ?? [] as $teacher)
+                                <a href="#"
+                                    class="bg-teal-700 text-white px-3 py-2 flex items-center justify-center text-sm rounded-md shadow-md break-words text-center hover:bg-teal-950">
+                                    {{ $teacher->name }}
+                                </a>
+                            @endforeach
+                        </div>
+                    </section>
+                @endif
             </aside>
         @endsection
     </x-container>

@@ -3,21 +3,21 @@
         <div class="flex justify-between flex-1 sm:hidden">
             @if ($paginator->onFirstPage())
                 <span class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-white border border-teal-300 cursor-default leading-5 dark:text-white dark:bg-teal-800 dark:border-teal-600">
-                    {!! __('pagination.previous') !!}
+                    {{  __('previous')  }}
                 </span>
             @else
                 <a href="{{ $paginator->previousPageUrl() }}" class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-white border border-teal-300 leading-5 hover:bg-teal-900 focus:outline-none focus:ring ring-gray-300 focus:border-blue-300 active:bg-teal-500 active:text-white transition ease-in-out duration-150 dark:bg-teal-800 dark:border-teal-600 dark:text-white dark:focus:border-blue-700 dark:active:bg-teal-700 dark:active:text-white">
-                    {!! __('pagination.previous') !!}
+                    {{  __('previous')  }}
                 </a>
             @endif
 
             @if ($paginator->hasMorePages())
                 <a href="{{ $paginator->nextPageUrl() }}" class="relative inline-flex items-center px-4 py-2 ml-3 text-sm font-medium text-white bg-white border border-teal-300 leading-5 hover:bg-teal-900 focus:outline-none focus:ring ring-gray-300 focus:border-blue-300 active:bg-teal-500 active:text-white transition ease-in-out duration-150 dark:bg-teal-800 dark:border-teal-600 dark:text-white dark:focus:border-blue-700 dark:active:bg-teal-700 dark:active:text-white">
-                    {!! __('pagination.next') !!}
+                    {{  __('next')  }}
                 </a>
             @else
                 <span class="relative inline-flex items-center px-4 py-2 ml-3 text-sm font-medium text-white bg-white border border-teal-300 cursor-default leading-5 dark:text-white dark:bg-teal-800 dark:border-teal-600">
-                    {!! __('pagination.next') !!}
+                    {{  __('next')  }}
                 </span>
             @endif
         </div>

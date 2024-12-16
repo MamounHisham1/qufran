@@ -27,7 +27,11 @@ Route::get('/lessons', [PostController::class, 'index'])->name('lessons.index');
 Route::get('/lessons/{lesson:id}', [PostController::class, 'show'])->name('lessons.show');
 
 
-Route::resource('/fatawa', FatwaController::class);
+Route::get('/fatawa', [FatwaController::class, 'index'])->name('fatawa.index');
+Route::get('/fatawa/{id}', [FatwaController::class, 'show'])->middleware('auth')->name('fatawa.show');
+Route::post('/fatawa', [FatwaController::class, 'store'])->middleware('auth')->name('fatawa.store');
+Route::put('/fatawa/{id}', [FatwaController::class, 'update'])->middleware('auth')->name('fatawa.update');
+Route::delete('/fatawa/{id}', [FatwaController::class, 'destroy'])->middleware('auth')->name('fatawa.destroy');
 
 
 Route::get('/exams', [ExaminationController::class, 'index'])->middleware('auth')->name('exams.index');

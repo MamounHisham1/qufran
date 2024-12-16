@@ -5,15 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use App\Models\Setting;
 use App\Models\Category;
+use App\Models\User;
 use App\PostTypes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
 class FatwaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         $fatawa = Post::where('type', 'fatwa')->paginate(10);
@@ -32,54 +30,29 @@ class FatwaController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        return view('fatawa.create');
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
+        // dd($request->is_published ? true : false);
+
         $fatwa = $request->validate([
-            'title' => ['string', 'required'],
+            'title' => ['required', 'string', 'unique:posts,title'],
         ]);
         
-        Post::create([
+        $fatwa = Post::create([
             ...$fatwa,
-            'user_id' => auth()->user()->id,
+            'author_id' => $request->ananymos ? null : auth()->user()->id,
             'type' => PostTypes::Fatwa,
-            'is_published' => true,
+            'is_published' => $request->is_published ? true : false,
         ]);
 
         return back()->with('message', 'تم تقديم الفتوى');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Post $post)
     {
         return view('fatawa.show', ['post' => $post]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Post $post)
-    {
-        Gate::authorize('fatwa-auth', $post);
-
-        return view('fatwa.edit', $post);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, Post $post)
     {
         Gate::authorize('fatwa-auth', $post);
