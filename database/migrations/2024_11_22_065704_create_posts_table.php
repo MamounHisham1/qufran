@@ -13,12 +13,14 @@ return new class extends Migration
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->nullable()->constrained()->cascadeOnDelete();
             $table->foreignId('author_id')->nullable()->constrained()->cascadeOnDelete();
             $table->foreignId('category_id')->nullable()->constrained()->cascadeOnDelete();
             $table->text('title');
             $table->string('type');
             $table->longText('description')->nullable();
             $table->longText('body')->nullable();
+            $table->unsignedBigInteger('fatwa_number')->unique()->nullable();
             $table->string('image')->nullable();
             $table->string('video')->nullable();
             $table->string('audio')->nullable();

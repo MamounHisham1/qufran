@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Traits\HasSettings;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -43,7 +44,6 @@ class Post extends Model
             }
         }
 
-        // If no match found, return the original URL (in case it's already an embed URL)
         return $this->video;
-    }
+    }  
 }

@@ -9,17 +9,18 @@
                     <ul class="divide-y divide-teal-400">
                         @foreach ($lessons as $lesson)
                             <li>
-                                <a href="{{ route('lessons.show', $lesson) }}" class="block group px-2 py-4">
+                                <a href="{{ route('lessons.show', $lesson) }}" class="block group px-2 pt-4">
                                     <span class="text-lg block mb-1 text-gray-800">
                                         {{ $lesson->created_at->diffForHumans() }} بواسطة
                                         {{ $lesson->author?->name ?? __('Ananymos') }}
                                     </span>
                                     <span class="font-bold text-xl group-hover:text-teal-600">{{ $lesson->title }}</span>
-                                    <div class="flex gap-2 items-center mt-1">
-                                        <span class="text-lg block pt-1 text-gray-800">
+                                    <a href="#" class="text-lg block text-gray-800 group mt-1">
+                                        {{ __('Category') }}: <span class="group-hover:text-blue-600 group-hover:underline">{{ $lesson->category->name }}</span>
+                                    </a>
+                                        <span class="text-lg block mb-1 text-gray-800">
                                             {{ __('Lesson type') }} {{ __($lesson->type) }}
                                         </span>
-                                    </div>
                                 </a>
                             </li>
                         @endforeach

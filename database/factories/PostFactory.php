@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Author;
 use App\Models\Category;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -22,6 +23,7 @@ class PostFactory extends Factory
 
         return [
             'author_id' => Author::query()->inRandomOrder()->value('id') ?? null, // Random Author ID or null
+            // 'user_id' => $type['fatwa'] ? User::query()->inRandomOrder()->value('id') : null, // Random user ID if it is a Fatwa
             'category_id' => Category::query()->inRandomOrder()->value('id') ?? null, // Random Category ID or null
             'title' => fake('ar_SA')->sentence(), // Random post title
             'type' => $type, // Assign selected type
