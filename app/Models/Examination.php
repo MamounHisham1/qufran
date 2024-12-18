@@ -11,7 +11,7 @@ class Examination extends Model
 {
     use HasFactory, HasSettings;
     
-    protected $fillable = ['category_id', 'name', 'description', 'start_at', 'end_at'];
+    protected $guarded = ['id', 'created_at', 'updated_at'];
 
     public function questions(): HasMany
     {

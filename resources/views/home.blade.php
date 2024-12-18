@@ -16,21 +16,23 @@
     <x-container>
         @section('content')
             <main class="flex-grow md:p-5 md:w-2/3 md:m-0 mx-2" x-data="home()">
-                <h1 class="text-2xl font-bold mb-5">{{ __('Home') }}</h1>
+                <div class="text-center mb-8">
+                    <h1 class="text-3xl font-extrabold text-gray-800">{{ __('Home') }}</h1>
+                </div>
                 <div class="flex justify-around bg-gray-200 md:rounded-md">
                     <h2 x-on:click="active = 'quran'"
                         class="text-lg font-semibold p-2 my-3 rounded-lg bg-teal-800 text-gray-100 hover:bg-red-950 hover:text-white cursor-pointer select-none transition ease-in"
-                        :class="{ 'bg-red-800 text-white': active == 'quran' }">
+                        :class="{ 'bg-red-800 ? text-white': active == 'quran' }">
                         {{ __('The Quran') }}
                     </h2>
                     <h2 x-on:click="active = 'hadith'"
                         class="text-lg font-semibold p-2 my-3 rounded-lg bg-teal-800 text-gray-100 hover:bg-red-950 hover:text-white cursor-pointer select-none transition ease-in"
-                        :class="{ 'bg-red-800 text-white': active == 'hadith' }">
+                        :class="{ 'bg-red-800 ? text-white': active == 'hadith' }">
                         {{ __('The Hadith') }}
                     </h2>
                     <h2 x-on:click="active = 'adhkar'"
                         class="text-lg font-semibold p-2 my-3 rounded-lg bg-teal-800 text-gray-100 hover:bg-red-950 hover:text-white cursor-pointer select-none transition ease-in"
-                        :class="{ 'bg-red-800 text-white': active == 'adhkar' }">
+                        :class="{ 'bg-red-800 ? text-white': active == 'adhkar' }">
                         {{ __('The Adhkar') }}
                     </h2>
                 </div>
@@ -73,7 +75,7 @@
                 </div>
 
                 <div class="mt-5 border-t border-teal-500">
-                    <h2 class="text-lg font-semibold p-2 my-3 rounded-lg bg-teal-800 text-gray-100 w-fit">{{ __('Prayer Times') }}</h2>
+                    <h2 class="text-2xl font-semibold p-2 my-3 rounded-lg bg-teal-800 text-gray-100 w-fit">{{ __('Prayer Times') }}</h2>
                     <table class="table-auto w-full text-center bg-white rounded-lg shadow-lg">
                       <thead class="bg-gray-200 text-gray-700">
                         <tr>
@@ -104,7 +106,7 @@
                         </h2>
                         <div class="flex flex-wrap gap-2">
                             @foreach ($suggestedCategories ?? [] as $category)
-                                <a href="#"
+                                <a href="{{ route('category', $category) }}"
                                     class="bg-teal-700 text-white px-3 py-2 flex items-center justify-center text-sm rounded-md shadow-md break-words text-center hover:bg-teal-950">
                                     {{ $category->name }}
                                 </a>

@@ -6,6 +6,7 @@ use App\Models\Answer;
 use App\Models\AnswerUser;
 use App\Models\Category;
 use App\Models\Examination;
+use App\Models\Post;
 use App\Models\Question;
 use App\Models\Setting;
 use Illuminate\Http\Request;
@@ -30,10 +31,10 @@ class ExaminationController extends Controller
 
         $settings = Setting::firstWhere('page', 'exams')?->value;
 
-        $categories = Category::whereIn('id', $settings['categories'] ?? []);
-        $lessons = Category::whereIn('id', $settings['lessons'] ?? []);
-        $recommended = Examination::whereIn('id', $settings['recommended'] ?? []);
-        $mostTaken = Examination::whereIn('id', $settings['most_taken'] ?? []);
+        $categories = Category::whereIn('id', $settings['categories'] ?? [])->get();
+        $lessons = Post::whereIn('id', $settings['lessons'] ?? [])->get();
+        $recommended = Examination::whereIn('id', $settings['recommended'] ?? [])->get();
+        $mostTaken = Examination::whereIn('id', $settings['most_taken'] ?? [])->get();
 
         return view('exams.index', [
             'exams' => $exams,
@@ -74,11 +75,11 @@ class ExaminationController extends Controller
 
     public function completed(Examination $exam)
     {
-        $questions = $exam->questions->toArray();
+        $questions = $exam->questions;
 
         $correctAnswers = array_map(function ($question) {
             return $question = $question['correct_answer_id'];
-        }, $questions);
+        }, $questions->toArray());
 
         $userAnswers = array_map(function ($question) {
             return $question =
@@ -86,13 +87,18 @@ class ExaminationController extends Controller
                     ->where('user_id', auth()->user()->id)
                     ->where('question_id', $question['id'])
                     ->pluck('answer_id')->first();
-        }, $questions);
+        }, $questions->toArray());
 
         $percentage = collect($userAnswers)->intersect($correctAnswers)->count() / collect($correctAnswers)->count() * 100;
 
+        // dd($questions);
+
         return view('exams.completed', [
             'exam' => $exam,
-            'percentage' => (int)$percentage,
+            'questions' => collect($questions),
+            'percentage' => (int) $percentage,
+            'userAnswers' => $userAnswers,
+            'correctAnswers' => $correctAnswers,
         ]);
     }
 }

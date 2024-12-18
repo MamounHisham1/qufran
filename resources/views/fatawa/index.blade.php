@@ -14,26 +14,34 @@
 
     @section('content')
         <main class="flex-grow md:p-5 md:w-2/3 md:m-0 mx-2 mb-2">
-            <h1 class="text-2xl font-bold mb-5">{{ __('Fatawa') }}</h1>
-            <ul class="divide-y divide-teal-400">
+            <div class="text-center mb-8">
+                <h1 class="text-3xl font-extrabold text-gray-800">{{ __('Fatawa') }}</h1>
+            </div>
+            
+            <div class="space-y-6">
                 @foreach ($fatawa as $fatwa)
-                    <li>
-                        <a href="{{ route('fatawa.show', $fatwa) }}" class="block group px-2 py-4">
-                            <span class="text-sm block mb-1 text-gray-800">
+                    <div 
+                        class="bg-white shadow-md rounded-lg p-5 hover:shadow-lg hover:p-8 transition cursor-pointer relative group"
+                        onclick="window.location='{{ route('fatawa.show', $fatwa) }}'">
+                        <div class="flex justify-between items-center mb-4">
+                            <span class="text-sm text-gray-500">
                                 {{ $fatwa->created_at->diffForHumans() }}
                             </span>
-                            <span class="font-bold text-lg group-hover:text-teal-600">{{ $fatwa->title }}</span>
-                            <div class="flex gap-2 items-center mt-1">
-                                <span class="text-sm block pt-1 text-gray-800">
-                                    {{ str($fatwa->body)->limit(100, '...', true) }}
-                                </span>
-                            </div>
-                        </a>
-                    </li>
+                        </div>
+        
+                        <h2 class="text-xl font-semibold text-gray-800 group-hover:text-teal-600">{{ $fatwa->title }}</h2>
+                        <p class="text-sm font-semibold text-gray-500">{{ str($fatwa->body)->limit(100, '...', true) }}</p>
+        
+                        <p class="text-gray-700 mt-2">
+                            {{ __('Category') }}: 
+                            <a href="{{ route('category', $fatwa->category) }}" class="text-blue-600 hover:underline z-10 relative" 
+                               onclick="event.stopPropagation();">
+                                {{ $fatwa->category->name }}
+                            </a>
+                        </p>
+                    </div>
                 @endforeach
-            </ul>
-
-            <div class="mb-2">{{ $fatawa->links() }}</div>
+            </div>
 
             <div class="mt-5 border-t border-teal-700">
                 <h2 class="mt-3 text-xl font-bold"><span class="border-b border-gray-900">{{ __('Ask a fatwa') }}</span>
@@ -77,7 +85,7 @@
                     </h2>
                     <div class="flex flex-wrap gap-2">
                         @foreach ($suggestedCategories ?? [] as $category)
-                            <a href="#"
+                            <a href="{{ route('category', $category) }}"
                                 class="bg-teal-700 text-white px-3 py-2 flex items-center justify-center text-sm rounded-md shadow-md break-words text-center hover:bg-teal-950">
                                 {{ $category->name }}
                             </a>

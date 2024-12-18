@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ExaminationController;
 use App\Http\Controllers\FatwaController;
 use App\Http\Controllers\ProfileController;
@@ -21,6 +22,9 @@ Route::middleware('auth')->group(function () {
 require __DIR__ . '/auth.php';
 
 Route::get('/', HomeController::class)->name('dashboard');
+
+
+Route::get('/categories/{category:id}', CategoryController::class)->name('category');
 
 
 Route::get('/lessons', [PostController::class, 'index'])->name('lessons.index');

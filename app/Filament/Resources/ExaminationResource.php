@@ -6,6 +6,7 @@ use App\Filament\Resources\ExaminationResource\Pages;
 use App\Filament\Resources\ExaminationResource\RelationManagers;
 use App\Filament\Resources\ExaminationResource\RelationManagers\QuestionsRelationManager;
 use App\Models\Examination;
+use App\Models\Post;
 use App\Models\Category;
 use Filament\Forms;
 use Filament\Forms\Components\DatePicker;
@@ -34,10 +35,16 @@ class ExaminationResource extends Resource
             ->schema([
                 TextInput::make('name')
                     ->required()
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->columnSpanFull(),
                 Select::make('category_id')
                     ->label('Category')
+                    ->searchable()
                     ->options(Category::pluck('name', 'id')),
+                Select::make('post_id')
+                    ->label('Lesson')
+                    ->searchable()
+                    ->options(Post::where('type', '!=', 'fatwa')->pluck('title', 'id')),
                 RichEditor::make('description')
                     ->columnSpanFull(),
                 DatePicker::make('start_at')
