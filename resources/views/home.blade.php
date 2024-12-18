@@ -72,6 +72,25 @@
                     </li>
                 </div>
 
+                <div class="mt-5 border-t border-teal-500">
+                    <h2 class="text-lg font-semibold p-2 my-3 rounded-lg bg-teal-800 text-gray-100 w-fit">{{ __('Prayer Times') }}</h2>
+                    <table class="table-auto w-full text-center bg-white rounded-lg shadow-lg">
+                      <thead class="bg-gray-200 text-gray-700">
+                        <tr>
+                          <th class="py-2">{{ __('Prayer') }}</th>
+                          <th class="py-2">{{ __('Time') }}</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        @foreach ($prayers as $name => ['time' => $time, 'next' => $isNext])
+                        <tr class="{{ $isNext ? 'bg-teal-200' : 'bg-gray-50 ' }}">
+                            <td class="py-2">{{ __($name) }}</td>
+                            <td class="py-2">{{ __($time) }}</td>
+                          </tr>
+                        @endforeach
+                      </tbody>
+                    </table>
+                  </div>
             </main>
         @endsection
 

@@ -5,7 +5,10 @@
             <ul>
                 @foreach ($metadata['sections'] as $key => $section)
                     <li>
-                        <a href="{{ route('hadith.section', ['book' => $book, 'section' => $key + 1]) }}"
+                        @php
+                            $number = $book == 'ibnmajah' ? $key : $key + 1
+                        @endphp
+                        <a href="{{ route('hadith.section', ['book' => $book, 'section' => $number]) }}"
                             class="block group p-4 hover:p-6 hover:my-2 border-b text-center rounded-full bg-gray-200 border-teal-400 transition ease-linear mb-1">
                             <span class="font-bold text-xl group-hover:text-teal-600">({{ $key + 1 }}) -
                                 {{ __($section) }}</span>

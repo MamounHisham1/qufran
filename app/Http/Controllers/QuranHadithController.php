@@ -17,6 +17,7 @@ class QuranHadithController extends Controller
 
         $customOrder = ["bukhari", "muslim", "abudawud", "tirmidhi", "nasai", "ibnmajah", "malik", "nawawi", "dehlawi", "qudsi"];
         $books = reorderArray($books, $customOrder);
+        // dd($books);
 
         return view('quran-hadith.index', [
             'books' => $books,
@@ -33,7 +34,8 @@ class QuranHadithController extends Controller
     {
         $data = Http::get("https://cdn.jsdelivr.net/gh/fawazahmed0/hadith-api@1/editions/ara-{$book}.json")->json();
         $metadata = $data['metadata'];
-        if ($metadata['sections'][0] == "") {
+        // dd($book == 'muslim' ? array_shift($metadata['section_details']) && array_shift($metadata['sections']) : '');
+        if ($book == 'muslim' || $metadata['sections'][0] == '') {
             array_shift($metadata['section_details']);
             array_shift($metadata['sections']);
         }
@@ -45,9 +47,9 @@ class QuranHadithController extends Controller
 
     public function showSection($book, $section)
     {
-        if ($section == 0) {
-            abort(404);
-        }
+        // if ($section == 0) {
+        //     abort(404);
+        // }
         $response = Http::get("https://cdn.jsdelivr.net/gh/fawazahmed0/hadith-api@1/editions/ara-{$book}/sections/{$section}.json");
 
         if (!$response->ok()) {
