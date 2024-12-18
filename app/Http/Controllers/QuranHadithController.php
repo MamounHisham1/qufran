@@ -27,7 +27,11 @@ class QuranHadithController extends Controller
 
     public function showSurah(int $id)
     {
-        return view('quran-hadith.show-surah', ['id' => $id]);
+        $ayat = Http::get("https://api.quran.com/api/v4/quran/verses/uthmani?chapter_number={$id}")->json();
+        $tafseer = Http::get("https://quranenc.com/api/v1/translation/sura/arabic_moyassar/{$id}")->json()['result'];
+        // dd($tafseer[0]['translation']);
+
+        return view('quran-hadith.show-surah', ['id' => $id, 'ayat' => $ayat, 'tafseer' => $tafseer]);
     }
 
     public function showBook(string $book)
