@@ -19,80 +19,97 @@
                 <div class="text-center mb-8">
                     <h1 class="text-3xl font-extrabold text-gray-800">{{ __('Home') }}</h1>
                 </div>
-                <div class="flex justify-around bg-gray-200 md:rounded-md">
+
+                <!-- Section Tabs -->
+                <div class="flex justify-around bg-gray-200 md:rounded-md p-2">
                     <h2 x-on:click="active = 'quran'"
-                        class="text-lg font-semibold p-2 my-3 rounded-lg bg-teal-800 text-gray-100 hover:bg-red-950 hover:text-white cursor-pointer select-none transition ease-in"
-                        :class="{ 'bg-red-800 ? text-white': active == 'quran' }">
+                        class="text-lg font-semibold px-4 py-2 rounded-lg cursor-pointer select-none transition ease-in-out duration-300"
+                        :class="active === 'quran' ? 'bg-red-800 text-white' :
+                            'bg-teal-800 text-gray-100 hover:bg-red-950 hover:text-white'">
                         {{ __('The Quran') }}
                     </h2>
                     <h2 x-on:click="active = 'hadith'"
-                        class="text-lg font-semibold p-2 my-3 rounded-lg bg-teal-800 text-gray-100 hover:bg-red-950 hover:text-white cursor-pointer select-none transition ease-in"
-                        :class="{ 'bg-red-800 ? text-white': active == 'hadith' }">
+                        class="text-lg font-semibold px-4 py-2 rounded-lg cursor-pointer select-none transition ease-in-out duration-300"
+                        :class="active === 'hadith' ? 'bg-red-800 text-white' :
+                            'bg-teal-800 text-gray-100 hover:bg-red-950 hover:text-white'">
                         {{ __('The Hadith') }}
                     </h2>
                     <h2 x-on:click="active = 'adhkar'"
-                        class="text-lg font-semibold p-2 my-3 rounded-lg bg-teal-800 text-gray-100 hover:bg-red-950 hover:text-white cursor-pointer select-none transition ease-in"
-                        :class="{ 'bg-red-800 ? text-white': active == 'adhkar' }">
+                        class="text-lg font-semibold px-4 py-2 rounded-lg cursor-pointer select-none transition ease-in-out duration-300"
+                        :class="active === 'adhkar' ? 'bg-red-800 text-white' :
+                            'bg-teal-800 text-gray-100 hover:bg-red-950 hover:text-white'">
                         {{ __('The Adhkar') }}
                     </h2>
                 </div>
 
-                <div x-show="active == 'quran'">
+                <!-- Quran Section -->
+                <div x-show="active === 'quran'" class="mt-5">
                     <ul class="flex flex-wrap items-center gap-5">
                         <template x-for="surah in quran">
                             <li>
                                 <a :href="`/quran-hadith/surah/${surah.id}`"
-                                    class="block group py-3 border-b border-teal-400">
-                                    <span class="font-bold text-xl group-hover:text-teal-600"
+                                    class="block group py-3 px-4 border rounded-lg shadow-sm bg-white hover:shadow-md transition">
+                                    <span class="font-bold text-lg group-hover:text-teal-600"
                                         x-text="surah.name_arabic"></span>
                                 </a>
                             </li>
                         </template>
                         <li>
-                            <a href="/quran-hadith" class="block group text-center">
-                                <span class="font-bold text-xs group-hover:text-blue-600">{{ __('More') }}</span>
+                            <a href="/quran-hadith"
+                                class="block group text-center py-3 px-4 border rounded-lg shadow-sm bg-gray-100 hover:shadow-md transition">
+                                <span class="font-bold text-sm group-hover:text-blue-600">{{ __('More') }}</span>
                             </a>
                         </li>
                     </ul>
                 </div>
 
-                <div x-show="active == 'hadith'">
+                <!-- Hadith Section -->
+                <div x-show="active === 'hadith'" class="mt-5">
                     <ul class="flex flex-wrap items-center gap-5">
                         <template x-for="book in hadithBooks">
                             <li>
                                 <a :href="`/quran-hadith/hadith/${book.bookSlug}`"
-                                    class="block group py-3 border-b border-teal-400">
-                                    <span class="font-bold text-xl group-hover:text-teal-600" x-text="book.bookName"></span>
+                                    class="block group py-3 px-4 border rounded-lg shadow-sm bg-white hover:shadow-md transition">
+                                    <span class="font-bold text-lg group-hover:text-teal-600" x-text="book.bookName"></span>
                                 </a>
                             </li>
                         </template>
+                        <li>
+                            <a href="/quran-hadith"
+                                class="block group text-center py-3 px-4 border rounded-lg shadow-sm bg-gray-100 hover:shadow-md transition">
+                                <span class="font-bold text-sm group-hover:text-blue-600">{{ __('More') }}</span>
+                            </a>
+                        </li>
                     </ul>
-                    <li>
-                        <a href="/quran-hadith" class="block group text-center">
-                            <span class="font-bold text-xs group-hover:text-blue-600">{{ __('More') }}</span>
-                        </a>
-                    </li>
                 </div>
 
-                <div class="mt-5 border-t border-teal-500">
-                    <h2 class="text-2xl font-semibold p-2 my-3 rounded-lg bg-teal-800 text-gray-100 w-fit">{{ __('Prayer Times') }}</h2>
-                    <table class="table-auto w-full text-center bg-white rounded-lg shadow-lg">
-                      <thead class="bg-gray-200 text-gray-700">
-                        <tr>
-                          <th class="py-2">{{ __('Prayer') }}</th>
-                          <th class="py-2">{{ __('Time') }}</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        @foreach ($prayers as $name => ['time' => $time, 'next' => $isNext])
-                        <tr class="{{ $isNext ? 'bg-teal-200' : 'bg-gray-50 ' }}">
-                            <td class="py-2">{{ __($name) }}</td>
-                            <td class="py-2">{{ __($time) }}</td>
-                          </tr>
-                        @endforeach
-                      </tbody>
+                <!-- Adhkar Section -->
+                <div x-show="active === 'adhkar'" class="mt-5">
+                    <p class="text-gray-600 text-center">{{ __('Coming soon...') }}</p>
+                </div>
+
+                <!-- Prayer Times Section -->
+                <div class="mt-5 border-t border-teal-500 pt-5">
+                    <h2 class="text-2xl font-semibold mb-3 bg-teal-800 text-gray-100 px-4 py-2 rounded-lg inline-block">
+                        {{ __('Prayer Times') }}
+                    </h2>
+                    <table class="table-auto w-full text-center bg-white rounded-lg shadow-lg overflow-hidden">
+                        <thead class="bg-gray-200 text-gray-700">
+                            <tr>
+                                <th class="py-2 px-4">{{ __('Prayer') }}</th>
+                                <th class="py-2 px-4">{{ __('Time') }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($prayers as $name => ['time' => $time, 'next' => $isNext])
+                                <tr class="{{ $isNext ? 'bg-teal-200' : 'bg-gray-50' }}">
+                                    <td class="py-2 px-4">{{ __($name) }}</td>
+                                    <td class="py-2 px-4">{{ __($time) }}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
                     </table>
-                  </div>
+                </div>
             </main>
         @endsection
 
