@@ -20,7 +20,7 @@
                                     {{ $lesson->created_at->diffForHumans() }} بواسطة 
                                     <span class="font-medium">{{ $lesson->author?->name ?? __('Anonymous') }}</span>
                                 </span>
-                                <span class="text-xs px-3 py-1 rounded-full bg-teal-100 text-teal-600">{{ __($lesson->type) }}</span>
+                                <span class="text-xs px-3 py-1 rounded-full bg-teal-100 text-teal-600 text-nowrap">{{ __($lesson->type) }}</span>
                             </div>
             
                             <h2 class="text-xl font-semibold text-gray-800 group-hover:text-teal-600">{{ $lesson->title }}</h2>

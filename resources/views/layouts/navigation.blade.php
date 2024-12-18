@@ -45,7 +45,7 @@ $links = [
                 </div>
 
                 <!-- Navigation Links -->
-                <div class="hidden sm:-my-px sm:ms-10 sm:flex gap-3">
+                <div class="hidden md:-my-px md:ms-10 md:flex gap-3">
                     @foreach ($links as $link)
                         @if ($link['when']())
                             <x-nav-link :href="$link['href']" :active="$link['active']">
@@ -57,7 +57,7 @@ $links = [
             </div>
 
             <!-- Settings Dropdown -->
-            <div class="hidden sm:flex sm:items-center sm:ms-6">
+            <div class="hidden md:flex md:items-center md:ms-6">
                 @auth
                     <x-dropdown align="right" width="48">
                         <x-slot name="trigger">
@@ -110,7 +110,7 @@ $links = [
             </div>
 
             <!-- Hamburger -->
-            <div class="-me-2 flex items-center sm:hidden">
+            <div class="-me-2 flex items-center md:hidden">
                 <button @click="open = ! open"
                     class="inline-flex items-center justify-center p-2 rounded-md text-gray-200 hover:text-white hover:bg-teal-100 focus:outline-none focus:bg-teal-400 focus:text-gray-300 transition duration-150 ease-in-out">
                     <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
@@ -126,7 +126,7 @@ $links = [
     </div>
 
     <!-- Responsive Navigation Menu -->
-    <div :class="{ 'block': open, 'hidden': !open }" class="hidden sm:hidden">
+    <div :class="{ 'block': open, 'hidden': !open }" class="hidden md:hidden">
         <div class="pt-2 pb-3 space-y-1">
             @foreach ($links as $link)
                 @if ($link['when']())

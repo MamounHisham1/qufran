@@ -14,7 +14,7 @@ class FatwaController extends Controller
 {
     public function index()
     {
-        $fatawa = Post::where('type', 'fatwa')->where('body', '!=', null)->where('is_published', true)->paginate(10);
+        $fatawa = Post::where('type', 'fatwa')->where('body', '!=', null)->where('is_published', true)->paginate(perPage: 5);
 
         $settings = Setting::firstWhere('page', 'fatawa')?->value;
 

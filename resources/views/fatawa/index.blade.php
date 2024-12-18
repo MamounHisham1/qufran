@@ -17,30 +17,34 @@
             <div class="text-center mb-8">
                 <h1 class="text-3xl font-extrabold text-gray-800">{{ __('Fatawa') }}</h1>
             </div>
-            
+
             <div class="space-y-6">
                 @foreach ($fatawa as $fatwa)
-                    <div 
-                        class="bg-white shadow-md rounded-lg p-5 hover:shadow-lg hover:p-8 transition cursor-pointer relative group"
+                    <div class="bg-white shadow-md rounded-lg p-5 hover:shadow-lg hover:p-8 transition cursor-pointer relative group"
                         onclick="window.location='{{ route('fatawa.show', $fatwa) }}'">
                         <div class="flex justify-between items-center mb-4">
                             <span class="text-sm text-gray-500">
                                 {{ $fatwa->created_at->diffForHumans() }}
                             </span>
                         </div>
-        
+
                         <h2 class="text-xl font-semibold text-gray-800 group-hover:text-teal-600">{{ $fatwa->title }}</h2>
                         <p class="text-sm font-semibold text-gray-500">{{ str($fatwa->body)->limit(100, '...', true) }}</p>
-        
+
                         <p class="text-gray-700 mt-2">
-                            {{ __('Category') }}: 
-                            <a href="{{ route('category', $fatwa->category) }}" class="text-blue-600 hover:underline z-10 relative" 
-                               onclick="event.stopPropagation();">
+                            {{ __('Category') }}:
+                            <a href="{{ route('category', $fatwa->category) }}"
+                                class="text-blue-600 hover:underline z-10 relative" onclick="event.stopPropagation();">
                                 {{ $fatwa->category->name }}
                             </a>
                         </p>
                     </div>
                 @endforeach
+            </div>
+
+            <!-- Pagination -->
+            <div class="mt-8">
+                {{ $fatawa->links() }}
             </div>
 
             <div class="mt-5 border-t border-teal-700">
