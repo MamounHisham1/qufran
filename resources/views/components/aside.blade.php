@@ -7,7 +7,7 @@
         <div class="flex flex-wrap gap-2">
             @foreach ($suggestedCategories as $category)
                 <a href="#"
-                    class="bg-teal-700 text-white px-3 py-2 flex items-center justify-center text-sm rounded-md shadow-md break-words text-center hover:bg-teal-950">
+                    class="bg-teal-700 text-white px-3 py-2 flex items-center justify-center text-sm rounded-md shadow-md break-words text-center hover:bg-teal-950  hover:scale-110 transition-transform duration-300">
                     {{ $category->name }}
                 </a>
             @endforeach
@@ -21,7 +21,7 @@
         <div class="flex flex-wrap gap-2">
             @foreach ($suggestedLessons as $lesson)
                 <a href="#"
-                    class="bg-teal-700 text-white px-3 py-2 flex items-center justify-center text-sm rounded-md shadow-md break-words text-center hover:bg-teal-950">
+                    class="bg-teal-700 text-white px-3 py-2 flex items-center justify-center text-sm rounded-md shadow-md break-words text-center hover:bg-teal-950  hover:scale-110 transition-transform duration-300">
                     {{ $lesson->title }}
                 </a>
             @endforeach
@@ -35,7 +35,7 @@
         <div class="flex flex-wrap gap-2">
             @foreach ($latestLessons as $lesson)
                 <a href="#"
-                    class="bg-teal-700 text-white px-3 py-2 flex items-center justify-center text-sm rounded-md shadow-md break-words text-center hover:bg-teal-950">
+                    class="bg-teal-700 text-white px-3 py-2 flex items-center justify-center text-sm rounded-md shadow-md break-words text-center hover:bg-teal-950  hover:scale-110 transition-transform duration-300">
                     {{ $lesson->title }}
                 </a>
             @endforeach
@@ -49,7 +49,7 @@
         <div class="flex flex-wrap gap-2">
             @foreach ($famousTeachers as $teacher)
                 <a href="#"
-                    class="bg-teal-700 text-white px-3 py-2 flex items-center justify-center text-sm rounded-md shadow-md break-words text-center hover:bg-teal-950">
+                    class="bg-teal-700 text-white px-3 py-2 flex items-center justify-center text-sm rounded-md shadow-md break-words text-center hover:bg-teal-950  hover:scale-110 transition-transform duration-300">
                     {{ $teacher->name }}
                 </a>
             @endforeach

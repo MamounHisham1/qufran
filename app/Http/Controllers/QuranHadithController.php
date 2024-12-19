@@ -13,15 +13,17 @@ class QuranHadithController extends Controller
     public function index()
     {
         $books = Http::get('https://cdn.jsdelivr.net/gh/fawazahmed0/hadith-api@1/editions.json')->json();
-        $adhkar = Http::get('https://raw.githubusercontent.com/nawafalqari/azkar-api/56df51279ab6eb86dc2f6202c7de26c8948331c1/azkar.json')->json();
-
         $customOrder = ["bukhari", "muslim", "abudawud", "tirmidhi", "nasai", "ibnmajah", "malik", "nawawi", "dehlawi", "qudsi"];
         $books = reorderArray($books, $customOrder);
-        // dd($books);
+
+        $adhkar = Http::get('https://raw.githubusercontent.com/nawafalqari/azkar-api/56df51279ab6eb86dc2f6202c7de26c8948331c1/azkar.json')->json();
+
+        $quran = Http::get('https://api.quran.com/api/v4/chapters')->json()['chapters'];
 
         return view('quran-hadith.index', [
             'books' => $books,
             'adhkar' => array_keys($adhkar),
+            'quran' => $quran,
         ]);
     }
 
@@ -73,12 +75,9 @@ class QuranHadithController extends Controller
 
     public function showAdhkar(int $id)
     {
-        if($id > 7 || $id < 0) {
-            abort(404);
-        }
-
         $adhkar = Http::get('https://raw.githubusercontent.com/nawafalqari/azkar-api/56df51279ab6eb86dc2f6202c7de26c8948331c1/azkar.json')->json();
-        $keys = [            
+
+        $keys = [
             "أذكار الصباح",
             "أذكار المساء",
             "أذكار بعد السلام من الصلاة المفروضة",
@@ -88,9 +87,20 @@ class QuranHadithController extends Controller
             "أدعية قرآنية",
             "أدعية الأنبياء"
         ];
-        $name = $keys[$id];
-        $adhkar = $adhkar[$keys[$id]];
-        
+
+        $name = $keys[$id-1];
+
+        if ($name === "أذكار الصباح") {
+            $adhkar[$name] = collect($adhkar[$name])->flatMap(function ($item) {
+                if (is_array($item) && !isset($item['category'])) {
+                    return collect($item)->filter(fn($subItem) => isset ($subItem['category']));
+                }
+                return isset($item['category']) && $item['category'] !== 'stop' ? [$item] : [];
+            })->values()->all();
+        }
+
+        $adhkar = $adhkar[$name];
+
         return view('quran-hadith.show-adhkar', ['adhkar' => $adhkar, 'name' => $name]);
     }
 }

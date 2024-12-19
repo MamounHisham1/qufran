@@ -24,7 +24,8 @@
                         @endforeach
                     </ul>
 
-                    <h2 class="text-2xl font-bold mb-5 border-t border-teal-600">{{ __('Fatawa') }} ({{ $fatawa->count() }}):</h2>
+                    <h2 class="text-2xl font-bold mb-5 border-t border-teal-600">{{ __('Fatawa') }}
+                        ({{ $fatawa->count() }}):</h2>
                     <ul class="divide-y divide-teal-400">
                         @foreach ($fatawa as $fatwa)
                             <li>
@@ -56,7 +57,7 @@
                         <div class="flex flex-wrap gap-2">
                             @foreach ($categories ?? [] as $category)
                                 <a href="{{ route('category', $category) }}"
-                                    class="bg-teal-700 text-white px-3 py-2 flex items-center justify-center text-sm rounded-md shadow-md break-words text-center hover:bg-teal-950">
+                                    class="bg-teal-700 text-white px-3 py-2 flex items-center justify-center text-sm rounded-md shadow-md break-words text-center hover:bg-teal-950  hover:scale-110 transition-transform duration-300">
                                     {{ $category->name }}
                                 </a>
                             @endforeach

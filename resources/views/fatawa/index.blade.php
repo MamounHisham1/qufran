@@ -20,7 +20,7 @@
 
             <div class="space-y-6">
                 @foreach ($fatawa as $fatwa)
-                    <div class="bg-white shadow-md rounded-lg p-5 hover:shadow-lg hover:p-8 transition cursor-pointer relative group"
+                    <div class="bg-white shadow-md rounded-lg p-5 hover:shadow-lg hover:scale-105 transition-transform duration-300 cursor-pointer relative group"
                         onclick="window.location='{{ route('fatawa.show', $fatwa) }}'">
                         <div class="flex justify-between items-center mb-4">
                             <span class="text-sm text-gray-500">
@@ -90,7 +90,7 @@
                     <div class="flex flex-wrap gap-2">
                         @foreach ($suggestedCategories ?? [] as $category)
                             <a href="{{ route('category', $category) }}"
-                                class="bg-teal-700 text-white px-3 py-2 flex items-center justify-center text-sm rounded-md shadow-md break-words text-center hover:bg-teal-950">
+                                class="bg-teal-700 text-white px-3 py-2 flex items-center justify-center text-sm rounded-md shadow-md break-words text-center hover:bg-teal-950  hover:scale-110 transition-transform duration-300">
                                 {{ $category->name }}
                             </a>
                         @endforeach
@@ -106,7 +106,7 @@
                     <div class="flex flex-wrap gap-2">
                         @foreach ($latest ?? [] as $fatwa)
                             <a href="#"
-                                class="bg-teal-700 text-white px-3 py-2 flex items-center justify-center text-sm rounded-md shadow-md break-words text-center hover:bg-teal-950">
+                                class="bg-teal-700 text-white px-3 py-2 flex items-center justify-center text-sm rounded-md shadow-md break-words text-center hover:bg-teal-950  hover:scale-110 transition-transform duration-300">
                                 {{ $fatwa->title }}
                             </a>
                         @endforeach
@@ -122,7 +122,7 @@
                     <div class="flex flex-wrap gap-2">
                         @foreach ($mostAsked ?? [] as $fatwa)
                             <a href="#"
-                                class="bg-teal-700 text-white px-3 py-2 flex items-center justify-center text-sm rounded-md shadow-md break-words text-center hover:bg-teal-950">
+                                class="bg-teal-700 text-white px-3 py-2 flex items-center justify-center text-sm rounded-md shadow-md break-words text-center hover:bg-teal-950  hover:scale-110 transition-transform duration-300">
                                 {{ $fatwa->title }}
                             </a>
                         @endforeach

@@ -70,7 +70,7 @@
                         <div class="flex flex-wrap gap-2">
                             @foreach ($lesson->exams as $exam)
                                 <a href="{{ route('exams.show', $exam) }}"
-                                    class="bg-teal-700 text-white px-3 py-2 flex items-center justify-center text-sm rounded-md shadow-md break-words text-center hover:bg-teal-950">
+                                    class="bg-teal-700 text-white px-3 py-2 flex items-center justify-center text-sm rounded-md shadow-md break-words text-center hover:bg-teal-950  hover:scale-110 transition-transform duration-300">
                                     {{ $exam->name }}
                                 </a>
                             @endforeach

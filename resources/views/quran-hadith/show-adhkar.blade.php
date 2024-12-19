@@ -6,13 +6,13 @@
                 <ul>
                     @foreach ($adhkar as $dhikr)
                         <li class="text-center text-xl leading-8 bg-gray-100 p-4 rounded-lg my-4 shadow-lg cursor-pointer select-none"
-                            x-data="{ count: @js((int) $dhikr['count']) }" x-on:click="count = count > 0 ? count - 1 : 0">
+                            :class="{ 'bg-green-200 ': count === 0 }" x-data="{ count: @js((int) $dhikr['count']) }"
+                            x-on:click="count = count > 0 ? count - 1 : 0">
                             <span class="block group p-3">
-                                <span class="font-bold text-xl">{{ $dhikr['content'] }}</span>
+                                <span class="font-bold text-xl">{!! $dhikr['content'] !!}</span>
                             </span>
                             <span class="font-bold text-xl"
-                            :class="{ 'text-green-500': count === 0 }"    
-                            x-text="count > 0 ? count : 'تم بحمدالله'">{{ (int) $dhikr['count'] }}
+                                x-text="count > 0 ? count : 'تم بحمدالله'">{{ (int) $dhikr['count'] }}
                             </span>
                         </li>
                     @endforeach

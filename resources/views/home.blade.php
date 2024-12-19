@@ -15,47 +15,39 @@
 
     <x-container>
         @section('content')
-            <main class="flex-grow md:p-5 md:w-2/3 md:m-0 mx-2" x-data="home()">
+            <main class="flex-grow md:p-5 md:w-2/3 md:m-0 mx-2" x-data="{ active: 'quran' }">
                 <div class="text-center mb-8">
                     <h1 class="text-3xl font-extrabold text-gray-800">{{ __('Home') }}</h1>
                 </div>
 
                 <!-- Section Tabs -->
                 <div class="flex justify-around bg-gray-200 md:rounded-md p-2">
-                    <h2 x-on:click="active = 'quran'"
-                        class="text-lg font-semibold px-4 py-2 rounded-lg cursor-pointer select-none transition ease-in-out duration-300"
-                        :class="active === 'quran' ? 'bg-red-800 text-white' :
-                            'bg-teal-800 text-gray-100 hover:bg-red-950 hover:text-white'">
-                        {{ __('The Quran') }}
-                    </h2>
-                    <h2 x-on:click="active = 'hadith'"
-                        class="text-lg font-semibold px-4 py-2 rounded-lg cursor-pointer select-none transition ease-in-out duration-300"
-                        :class="active === 'hadith' ? 'bg-red-800 text-white' :
-                            'bg-teal-800 text-gray-100 hover:bg-red-950 hover:text-white'">
-                        {{ __('The Hadith') }}
-                    </h2>
-                    <h2 x-on:click="active = 'adhkar'"
-                        class="text-lg font-semibold px-4 py-2 rounded-lg cursor-pointer select-none transition ease-in-out duration-300"
-                        :class="active === 'adhkar' ? 'bg-red-800 text-white' :
-                            'bg-teal-800 text-gray-100 hover:bg-red-950 hover:text-white'">
-                        {{ __('The Adhkar') }}
-                    </h2>
+                    @foreach (['quran' => __('The Quran'), 'hadith' => __('The Hadith'), 'adhkar' => __('The Adhkar')] as $section => $label)
+                        <h2 x-on:click="active = '{{ $section }}'"
+                            class="text-lg font-semibold px-4 py-2 rounded-lg cursor-pointer select-none ease-in-out hover:scale-105 transition-transform duration-300"
+                            :class="active === '{{ $section }}'
+                                ?
+                                'bg-red-800 text-white' :
+                                'bg-teal-800 text-gray-100 hover:bg-red-950 hover:text-white'">
+                            {{ $label }}
+                        </h2>
+                    @endforeach
                 </div>
 
                 <!-- Quran Section -->
                 <div x-show="active === 'quran'" class="mt-5">
                     <ul class="flex flex-wrap items-center gap-5">
-                        <template x-for="surah in quran">
+                        @foreach ($quran as $surah)
                             <li>
-                                <a :href="`/quran-hadith/surah/${surah.id}`"
+                                <a href="{{ route('surah', $surah['id']) }}"
                                     class="block group py-3 px-4 border rounded-lg shadow-sm bg-white hover:shadow-md transition">
-                                    <span class="font-bold text-lg group-hover:text-teal-600"
-                                        x-text="surah.name_arabic"></span>
+                                    <span
+                                        class="font-bold text-lg group-hover:text-teal-600">{{ $surah['name_arabic'] }}</span>
                                 </a>
                             </li>
-                        </template>
+                        @endforeach
                         <li>
-                            <a href="/quran-hadith"
+                            <a href="{{ route('quran-hadith.index') }}"
                                 class="block group text-center py-3 px-4 border rounded-lg shadow-sm bg-gray-100 hover:shadow-md transition">
                                 <span class="font-bold text-sm group-hover:text-blue-600">{{ __('More') }}</span>
                             </a>
@@ -64,28 +56,45 @@
                 </div>
 
                 <!-- Hadith Section -->
-                <div x-show="active === 'hadith'" class="mt-5">
-                    <ul class="flex flex-wrap items-center gap-5">
-                        <template x-for="book in hadithBooks">
+                <div x-show="active === 'hadith'" class="mt-4">
+                    <ul class="divide-y divide-teal-400">
+                        @foreach ($books as $book)
                             <li>
-                                <a :href="`/quran-hadith/hadith/${book.bookSlug}`"
-                                    class="block group py-3 px-4 border rounded-lg shadow-sm bg-white hover:shadow-md transition">
-                                    <span class="font-bold text-lg group-hover:text-teal-600" x-text="book.bookName"></span>
+                                <a href="{{ route('hadith.book', $book['collection'][0]['book']) }}"
+                                    class="block group px-4 py-3 bg-gray-50 hover:bg-teal-100 hover:shadow transition transform hover:-translate-y-1">
+                                    <span
+                                        class="font-bold text-lg text-gray-800 group-hover:text-teal-600">{{ __($book['name']) }}</span>
                                 </a>
                             </li>
-                        </template>
-                        <li>
-                            <a href="/quran-hadith"
-                                class="block group text-center py-3 px-4 border rounded-lg shadow-sm bg-gray-100 hover:shadow-md transition">
-                                <span class="font-bold text-sm group-hover:text-blue-600">{{ __('More') }}</span>
-                            </a>
-                        </li>
+                        @endforeach
                     </ul>
+                    <div class="mt-5 text-center">
+                        <a href="{{ route('quran-hadith.index') }}"
+                            class="inline-block bg-teal-800 text-white text-sm font-semibold px-3 py-1 rounded-lg hover:bg-teal-900 transition">
+                            {{ __('More') }}
+                        </a>
+                    </div>
                 </div>
 
                 <!-- Adhkar Section -->
-                <div x-show="active === 'adhkar'" class="mt-5">
-                    <p class="text-gray-600 text-center">{{ __('Coming soon...') }}</p>
+                <div x-show="active === 'adhkar'" class="mt-4">
+                    <ul class="divide-y divide-teal-400">
+                        @foreach ($adhkar as $key => $name)
+                            <li>
+                                <a href="{{ route('adhkar', $key + 1) }}"
+                                    class="block group px-4 py-3 bg-gray-50 hover:bg-teal-100 hover:shadow transition transform hover:-translate-y-1">
+                                    <span
+                                        class="font-bold text-lg text-gray-800 group-hover:text-teal-600">{{ __($name) }}</span>
+                                </a>
+                            </li>
+                        @endforeach
+                    </ul>
+                    <div class="mt-5 text-center">
+                        <a href="{{ route('quran-hadith.index') }}"
+                            class="inline-block bg-teal-800 text-white text-sm font-semibold px-3 py-1 rounded-lg hover:bg-teal-900 transition">
+                            {{ __('More') }}
+                        </a>
+                    </div>
                 </div>
 
                 <!-- Prayer Times Section -->
@@ -110,8 +119,87 @@
                         </tbody>
                     </table>
                 </div>
+
+                <!-- Fatwa Section -->
+                <div class="mt-5 border-t border-teal-500 pt-5">
+                    <h2 class="text-2xl font-semibold mb-3 bg-teal-800 text-gray-100 px-4 py-2 rounded-lg inline-block">
+                        {{ __('Fatawa') }}
+                    </h2>
+                    <div class="space-y-6">
+                        @foreach ($fatawa as $fatwa)
+                            <div class="bg-white shadow-md rounded-lg p-5 hover:shadow-lg hover:scale-105 transition-transform duration-300 cursor-pointer relative group"
+                                onclick="window.location='{{ route('fatawa.show', $fatwa) }}'">
+                                <div class="flex justify-between items-center mb-4">
+                                    <span class="text-sm text-gray-500">{{ $fatwa->created_at->diffForHumans() }}</span>
+                                </div>
+                                <h2 class="text-xl font-semibold text-gray-800 group-hover:text-teal-600">
+                                    {{ str($fatwa->title)->limit(50, '...', true) }}
+                                </h2>
+                                <p class="text-sm font-medium text-gray-500 mt-2">
+                                    {{ str($fatwa->body)->limit(100, '...', true) }}
+                                </p>
+                                <p class="text-gray-700 mt-4">
+                                    {{ __('Category') }}:
+                                    <a href="{{ route('category', $fatwa->category) }}"
+                                        class="text-blue-600 hover:underline z-10 relative"
+                                        onclick="event.stopPropagation();">
+                                        {{ $fatwa->category->name }}
+                                    </a>
+                                </p>
+                            </div>
+                        @endforeach
+                    </div>
+                    <div class="mt-5 text-center">
+                        <a href="{{ route('fatawa.index') }}"
+                            class="inline-block bg-teal-800 text-white text-sm font-semibold px-3 py-1 rounded-lg hover:bg-teal-900 transition">
+                            {{ __('More') }}
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Some of the Ahadith Section -->
+                <div class="mt-5 border-t border-teal-500 pt-5">
+                    <h2 class="text-2xl font-semibold mb-3 bg-teal-800 text-gray-100 px-4 py-2 rounded-lg inline-block">
+                        مقطتفات الأحاديث
+                    </h2>
+                    <div class="space-y-8">
+                        <div class="bg-white shadow-lg rounded-xl p-8 flex flex-col justify-center items-center">
+                            <p class="text-xl font-medium text-gray-800 leading-relaxed text-center">
+                                {إِنَّمَا الأَعْمَالُ بالنِّيَّاتِ وإِنَّمَا لِكُلِّ امْرِئٍ ما نَوَى، فَمَنْ كَانَتْ
+                                هِجْرَتُهُ إِلَى اللهِ وَرَسُولِهِ فَهِجْرَتُهُ إِلى اللهِ وَرَسُولِهِ، وَمَنْ كَانَتْ
+                                هِجْرَتُهُ لِدُنْيَا يُصِيبُهَا أَو امْرَأَةٍ يَنْكِحُهَا فَهِجْرَتُهُ إِلَى مَا هَاجَرَ
+                                إِلَيْهِ}.
+                            </p>
+                        </div>
+                        <div class="bg-white shadow-lg rounded-xl p-8 flex flex-col justify-center items-center">
+                            <p class="text-xl font-medium text-gray-800 leading-relaxed text-center">
+                                {بُنِيَ الإِسْلاَمُ عَلَى خَمْسٍ: شَهَادَةِ أَنْ لاَ إِلَهَ إِلاَّ اللهُ وَأَنَّ مُحَمَّدًا
+                                رَسُولُ اللهِ، وَإِقامِ الصَّلاَةِ، وإِيتَاءِ الزَّكَاةِ، وَحَجِّ البَيْتِ، وَصَوْمِ
+                                رَمَضَانَ}.
+                            </p>
+                        </div>
+                        <div class="bg-white shadow-lg rounded-xl p-8 flex flex-col justify-center items-center">
+                            <p class="text-xl font-medium text-gray-800 leading-relaxed text-center">
+                                {مَنْ أَحْدَثَ فِي أَمْرِنَا هَذَا مَا لَيْسَ مِنْهُ فَهُوَ رَدٌّ}.
+                            </p>
+                        </div>
+                        <div class="bg-white shadow-lg rounded-xl p-8 flex flex-col justify-center items-center">
+                            <p class="text-xl font-medium text-gray-800 leading-relaxed text-center">
+                                {مَا نَهَيْتُكُمْ عَنْهُ فَاجْتَنِبُوهُ، وَمَا أَمَرْتُكُمْ بِهِ فَأْتُوا مِنْهُ مَا
+                                اسْتَطَعْتُمْ، فَإِنَّمَا أَهْلَكَ الَّذِينَ مِنْ قَبْلِكُمْ كَثْرَةُ مَسَائِلِهِمْ
+                                واخْتِلاَفُهُمْ عَلَى أَنْبِيَائِهِمْ}.
+                            </p>
+                        </div>
+                        <div class="bg-white shadow-lg rounded-xl p-8 flex flex-col justify-center items-center">
+                            <p class="text-xl font-medium text-gray-800 leading-relaxed text-center">
+                                {لاَ يُؤْمِنُ أَحَدُكُمْ حَتَّى يُحِبَّ لأَِخِيهِ مَا يُحِبُّ لِنَفْسِهِ}.
+                            </p>
+                        </div>
+                    </div>
+                </div>
             </main>
         @endsection
+
 
         @section('aside')
             <aside class="w-full md:w-1/3 bg-gray-100 p-5 border-y mt-5 md:mt-0 md:border-x border-gray-300">
@@ -124,7 +212,7 @@
                         <div class="flex flex-wrap gap-2">
                             @foreach ($suggestedCategories ?? [] as $category)
                                 <a href="{{ route('category', $category) }}"
-                                    class="bg-teal-700 text-white px-3 py-2 flex items-center justify-center text-sm rounded-md shadow-md break-words text-center hover:bg-teal-950">
+                                    class="bg-teal-700 text-white px-3 py-2 flex items-center justify-center text-sm rounded-md shadow-md break-words text-center hover:bg-teal-950 hover:scale-105 transition-transform duration-300">
                                     {{ $category->name }}
                                 </a>
                             @endforeach
@@ -140,7 +228,7 @@
                         <div class="flex flex-wrap gap-2">
                             @foreach ($suggestedLessons ?? [] as $lesson)
                                 <a href="#"
-                                    class="bg-teal-700 text-white px-3 py-2 flex items-center justify-center text-sm rounded-md shadow-md break-words text-center hover:bg-teal-950">
+                                    class="bg-teal-700 text-white px-3 py-2 flex items-center justify-center text-sm rounded-md shadow-md break-words text-center hover:bg-teal-950 hover:scale-105 transition-transform duration-300">
                                     {{ $lesson->title }}
                                 </a>
                             @endforeach
@@ -156,7 +244,7 @@
                         <div class="flex flex-wrap gap-2">
                             @foreach ($latestLessons ?? [] as $lesson)
                                 <a href="#"
-                                    class="bg-teal-700 text-white px-3 py-2 flex items-center justify-center text-sm rounded-md shadow-md break-words text-center hover:bg-teal-950">
+                                    class="bg-teal-700 text-white px-3 py-2 flex items-center justify-center text-sm rounded-md shadow-md break-words text-center hover:bg-teal-950  hover:scale-105 transition-transform duration-300">
                                     {{ $lesson->title }}
                                 </a>
                             @endforeach
@@ -172,7 +260,7 @@
                         <div class="flex flex-wrap gap-2">
                             @foreach ($famousTeachers ?? [] as $teacher)
                                 <a href="#"
-                                    class="bg-teal-700 text-white px-3 py-2 flex items-center justify-center text-sm rounded-md shadow-md break-words text-center hover:bg-teal-950">
+                                    class="bg-teal-700 text-white px-3 py-2 flex items-center justify-center text-sm rounded-md shadow-md break-words text-center hover:bg-teal-950  hover:scale-105 transition-transform duration-300">
                                     {{ $teacher->name }}
                                 </a>
                             @endforeach
@@ -182,33 +270,4 @@
             </aside>
         @endsection
     </x-container>
-
-    @push('scripts')
-        <script>
-            function home() {
-                return {
-                    active: 'quran',
-                    quran: [],
-                    hadithBooks: [],
-                    init() {
-                        const self = this;
-                        $.ajax({
-                            type: "GET",
-                            url: 'https://api.quran.com/api/v4/chapters',
-                            success: function(response) {
-                                self.quran = response.chapters.slice(0, 20);
-                            },
-                        });
-                        $.ajax({
-                            type: "GET",
-                            url: "https://www.hadithapi.com/api/books?apiKey=$2y$10$i2HDCYItJa7hGO0iAfGTOSG14OapI813sYE9uc09Gvp7Y20BtOG",
-                            success: function(response) {
-                                self.hadithBooks = response.books;
-                            }
-                        });
-                    }
-                };
-            }
-        </script>
-    @endpush
 </x-app-layout>

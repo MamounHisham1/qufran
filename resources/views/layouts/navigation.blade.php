@@ -32,7 +32,7 @@ $links = [
     ],
 ];
 ?>
-<nav x-data="{ open: false }" class="bg-teal-600 top-0 sticky z-50">
+<nav x-data="scrollHide()" class="bg-teal-600 sticky top-0 z-50 transition-all duration-300 ease-in-out opacity-100">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
@@ -40,7 +40,7 @@ $links = [
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('dashboard') }}">
-                        <x-application-logo class="block h-9 w-auto fill-current text-gray-800" />
+                        <x-application-logo class="block h-9 w-auto fill-current text-gray-100" />
                     </a>
                 </div>
 
@@ -178,3 +178,43 @@ $links = [
         </div>
     </div>
 </nav>
+
+<script>
+    function scrollHide() {
+        return {
+            lastScroll: 0,
+            open: false,
+            init() {
+                const nav = document.querySelector('nav');
+                const navbarHeight = nav.offsetHeight;
+
+                window.addEventListener('scroll', () => {
+                    const currentScroll = window.pageYOffset;
+
+                    if (this.open) {
+                        // Prevent scroll effect when the hamburger is open
+                        return;
+                    }
+
+                    if (currentScroll <= navbarHeight) {
+                        nav.style.opacity = '1';
+                        nav.style.transform = 'translateY(0)';
+                        return;
+                    }
+
+                    if (currentScroll > this.lastScroll) {
+                        // Scrolling down
+                        nav.style.opacity = '0';
+                        nav.style.transform = 'translateY(-100%)';
+                    } else {
+                        // Scrolling up
+                        nav.style.opacity = '1';
+                        nav.style.transform = 'translateY(0)';
+                    }
+
+                    this.lastScroll = currentScroll;
+                });
+            },
+        };
+    }
+</script>

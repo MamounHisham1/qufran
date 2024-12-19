@@ -18,10 +18,23 @@ class HomeController extends Controller
     {
         $settings = Setting::firstWhere('page', 'home')?->value;
 
+        $quran = Http::get('https://api.quran.com/api/v4/chapters')->json()['chapters'];
+        $quran = collect($quran)->take(20)->toArray();
+
+
+        $books = Http::get('https://cdn.jsdelivr.net/gh/fawazahmed0/hadith-api@1/editions.json')->json();
+        $customOrder = ["bukhari", "muslim", "abudawud", "tirmidhi", "nasai", "ibnmajah", "malik", "nawawi", "dehlawi", "qudsi"];
+        $books = reorderArray($books, $customOrder);
+        $books = collect($books)->take(4)->toArray();
+
+        $adhkar = Http::get('https://raw.githubusercontent.com/nawafalqari/azkar-api/56df51279ab6eb86dc2f6202c7de26c8948331c1/azkar.json')->json();
+        $adhkar = collect($adhkar)->take(4)->toArray();
+
         $suggestedCategories = Category::whereIn('id', $settings['suggested_categories'] ?? [])->get();
         $suggestedLessons = Post::whereIn('id', $settings['suggested_lessons'] ?? [])->get();
         $latestLessons = Post::whereIn('id', $settings['latest_lessons'] ?? [])->get();
         $famousTeachers = Author::whereIn('id', $settings['famous_teachers'] ?? [])->get();
+        $fatawa = Post::where('type', 'fatwa')->where('body', '!=', null)->inRandomOrder()->take(3)->get();
 
         $data = Http::get('https://api.aladhan.com/v1/timingsByCity/17-12-2024?city=mecca&country')->json()['data'];
 
@@ -42,6 +55,10 @@ class HomeController extends Controller
             'latestLessons' => $latestLessons,
             'famousTeachers' => $famousTeachers,
             'prayers' => $prayers,
+            'fatawa' => $fatawa,
+            'quran' => $quran,
+            'books' => $books,
+            'adhkar' => array_keys($adhkar),
         ]);
     }
 }
