@@ -40,7 +40,7 @@
                         @foreach ($quran as $surah)
                             <li>
                                 <a href="{{ route('surah', $surah['id']) }}"
-                                    class="block group py-3 px-4 border rounded-lg shadow-sm bg-white hover:shadow-md transition">
+                                    class="block group py-3 px-4 border rounded-lg shadow-sm bg-white hover:shadow-md transition transform hover:-translate-y-1">
                                     <span
                                         class="font-bold text-lg group-hover:text-teal-600">{{ $surah['name_arabic'] }}</span>
                                 </a>
