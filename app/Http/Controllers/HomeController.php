@@ -31,7 +31,7 @@ class HomeController extends Controller
             return [
                 $name => [
                     'time' => $time,
-                    'next' => $isNext
+                    'next' => $isNext ?? 'Fajr'
                 ]
             ];
         });
