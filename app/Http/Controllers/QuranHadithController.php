@@ -31,7 +31,8 @@ class QuranHadithController extends Controller
     {
         $ayat = Http::get("https://api.quran.com/api/v4/quran/verses/uthmani?chapter_number={$id}")->json();
         $tafseer = Http::get("https://quranenc.com/api/v1/translation/sura/arabic_moyassar/{$id}")->json()['result'];
-        // dd($tafseer[0]['translation']);
+        $reciters= Http::get('https://mp3quran.net/api/v3/reciters')->json()['reciters'];
+        dd($reciters);
 
         return view('quran-hadith.show-surah', ['id' => $id, 'ayat' => $ayat, 'tafseer' => $tafseer]);
     }
