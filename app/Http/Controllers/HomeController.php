@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Author;
 use App\Models\Category;
+use App\Models\Chapter;
 use App\Models\Post;
 use App\Models\Setting;
 use Http;
@@ -18,8 +19,8 @@ class HomeController extends Controller
     {
         $settings = Setting::firstWhere('page', 'home')?->value;
 
-        $quran = Http::get('https://api.quran.com/api/v4/chapters')->json()['chapters'];
-        $quran = collect($quran)->take(20)->toArray();
+        // $quran = Http::get('https://api.quran.com/api/v4/chapters')->json()['chapters'];
+        $chapters = Chapter::all()->take(20);
 
 
         $books = Http::get('https://cdn.jsdelivr.net/gh/fawazahmed0/hadith-api@1/editions.json')->json();
@@ -56,7 +57,7 @@ class HomeController extends Controller
             'famousTeachers' => $famousTeachers,
             'prayers' => $prayers,
             'fatawa' => $fatawa,
-            'quran' => $quran,
+            'chapters' => $chapters,
             'books' => $books,
             'adhkar' => array_keys($adhkar),
         ]);

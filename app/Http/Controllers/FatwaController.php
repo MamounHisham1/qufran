@@ -32,8 +32,6 @@ class FatwaController extends Controller
 
     public function store(Request $request)
     {
-        // dd($request->is_published ? true : false);
-
         $fatwa = $request->validate([
             'title' => ['required', 'string', 'unique:posts,title'],
         ]);
@@ -53,7 +51,10 @@ class FatwaController extends Controller
 
     public function show(Post $fatwa)
     {
-        // dd($fatwa);
+        if($fatwa->type !== 'fatwa') {
+            abort(404);
+        }
+
         return view('fatawa.show', ['fatwa' => $fatwa]);
     }
 

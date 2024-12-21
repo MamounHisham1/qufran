@@ -24,13 +24,13 @@
                 <!-- Quran Section -->
                 <div x-show="active === 'quran'" class="mt-4">
                     <ul class="flex flex-wrap items-center gap-5">
-                        @foreach ($quran as $surah)
+                        @foreach ($chapters as $chapter)
                             <li>
-                                <a href="{{ route('surah', $surah['id']) }}"
+                                <a href="{{ route('surah', $chapter) }}"
                                     class="block group px-5 py-3 rounded-full bg-gray-200 border border-teal-400 transition transform hover:-translate-y-1 hover:bg-teal-100">
                                     <span class="font-bold text-lg text-gray-700 group-hover:text-teal-600">
-                                        <span>{{ $surah['id'] }}</span> -
-                                        <span>{{ $surah['name_arabic'] }}</span>
+                                        <span>{{ $chapter->number }}</span> -
+                                        <span>{{ $chapter->name }}</span>
                                     </span>
                                 </a>
                             </li>

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Chapter;
+use App\Models\Verse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
@@ -18,23 +20,23 @@ class QuranHadithController extends Controller
 
         $adhkar = Http::get('https://raw.githubusercontent.com/nawafalqari/azkar-api/56df51279ab6eb86dc2f6202c7de26c8948331c1/azkar.json')->json();
 
-        $quran = Http::get('https://api.quran.com/api/v4/chapters')->json()['chapters'];
+        $chapters = Chapter::all();
 
         return view('quran-hadith.index', [
             'books' => $books,
             'adhkar' => array_keys($adhkar),
-            'quran' => $quran,
+            'chapters' => $chapters,
         ]);
     }
 
-    public function showSurah(int $id)
+    public function showSurah(Chapter $chapter)
     {
-        $ayat = Http::get("https://api.quran.com/api/v4/quran/verses/uthmani?chapter_number={$id}")->json();
-        $tafseer = Http::get("https://quranenc.com/api/v1/translation/sura/arabic_moyassar/{$id}")->json()['result'];
+        $verses = Verse::where('chapter_id', $chapter->id)->get();
+        $tafseer = Http::get("https://quranenc.com/api/v1/translation/sura/arabic_moyassar/{$chapter->number}")->json()['result'];
         $reciters= Http::get('https://mp3quran.net/api/v3/reciters')->json()['reciters'];
-        dd($reciters);
+        // dd($verses);
 
-        return view('quran-hadith.show-surah', ['id' => $id, 'ayat' => $ayat, 'tafseer' => $tafseer]);
+        return view('quran-hadith.show-surah', ['chapter' => $chapter, 'verses' => $verses, 'tafseer' => $tafseer]);
     }
 
     public function showBook(string $book)

@@ -33,7 +33,10 @@ class PostController extends Controller
 
     public function show(Post $lesson)
     {
-        // dd($lesson->titlep);
+        if($lesson->type === 'fatwa') {
+            abort(404);
+        }
+
         return view('lessons.show', ['lesson' => $lesson]);
     }
 }

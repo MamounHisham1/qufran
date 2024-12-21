@@ -19,6 +19,10 @@ class AuthorResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+
+    // all names should be in arabic
+    protected static string $name = 'المؤلفون'; 
+
     public static function form(Form $form): Form
     {
         return $form

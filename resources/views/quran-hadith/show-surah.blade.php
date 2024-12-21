@@ -1,25 +1,34 @@
 <x-app-layout>
     <x-container>
         <main class="flex-grow md:p-5" x-data="{ read: true }">
-            <!-- Surah Title -->
-            <h1 class="text-2xl font-bold mb-5"></h1>
-
             <!-- Toggle Read/Practice Button -->
-            <button x-on:click="read = !read" x-text="read ? 'اﻹنتقال لصفحة التسميع' : 'اﻹنتقال لصفحة القراءة'"
-                class="text-blue-600 mb-4">
-            </button>
+            <x-primary-button x-on:click="read = !read" x-text="read ? 'اﻹنتقال لصفحة التسميع' : 'اﻹنتقال لصفحة القراءة'"
+                class="mb-4 text-lg">
+            </x-primary-button>
+
+            <!-- Surah Title -->
+            <div class="text-center mb-8">
+                <h1 class="text-3xl font-extrabold text-gray-800">سورة {{ $chapter->name }}</h1>
+            </div>
+            @if ($chapter->bismillah)
+                <div class="text-center text-xl leading-8 bg-gray-100 p-4 rounded-lg my-4 shadow-lg">
+                    <span class="block group p-3">
+                        <span class="font-bold text-2xl">بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ</span>
+                    </span>
+                </div>
+            @endif
 
             <!-- Reading View -->
             <div class="mt-2" x-show="read">
                 <ul>
-                    @foreach ($ayat['verses'] as $key => $ayah)
+                    @foreach ($verses as $verse)
                         <li class="text-center text-xl leading-8 bg-gray-100 p-4 rounded-lg my-4 shadow-lg">
                             <span class="block group p-3">
-                                <span class="font-bold text-2xl">{{ $ayah['text_uthmani'] }}</span>
-                                <span class="font-bold text-xl">({{ $key + 1 }})</span>
+                                <span class="font-bold text-2xl">{{ $verse->text }}</span>
+                                <span class="font-bold text-xl">({{ $loop->iteration }})</span>
                             </span>
                             <div>
-                                {{ $tafseer[$key]['translation'] }}
+                                {{ $tafseer[$loop->index]['translation'] }}
                             </div>
                         </li>
                     @endforeach
@@ -34,17 +43,17 @@
         <script>
             $(document).ready(function() {
                 const $container = $('#surah-container');
-                const data = @js($ayat)
+                const data = @js($verses)
 
-                // Process each ayah
-                $.each(data.verses, function(index, ayah) {
-                    // Create paragraph for ayah
-                    const $ayahParagraph = $('<p>', {
+                // Process each verse
+                $.each(data, function(index, verse) {
+                    // Create paragraph for verse
+                    const $verseParagraph = $('<p>', {
                         'class': 'text-center font-bold text-xl leading-10 bg-gray-100 p-4 rounded-lg my-4 shadow-lg'
                     });
 
-                    // Split ayah into words
-                    const words = ayah.text_uthmani.split(' ');
+                    // Split verse into words
+                    const words = verse.text.split(' ');
 
                     // Function to reveal/hide words
                     function revealWord($word, event) {
@@ -140,17 +149,17 @@
                             }
                         });
 
-                        $ayahParagraph.append($wordSpan);
+                        $verseParagraph.append($wordSpan);
 
                         // Add space between words
-                        $ayahParagraph.append($('<span>', {
+                        $verseParagraph.append($('<span>', {
                             'html': '&nbsp;'
                         }));
                     });
 
-                    let $ayahNumber = ayah.verse_key.split(':')[1];
-                    $ayahParagraph.append(`<span class="text-xl"> (${$ayahNumber})</span>`);
-                    $container.append($ayahParagraph);
+                    let $verseNumber = index + 1;
+                    $verseParagraph.append(`<span class="text-xl"> (${$verseNumber})</span>`);
+                    $container.append($verseParagraph);
 
                 });
             });

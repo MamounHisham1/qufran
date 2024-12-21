@@ -27,7 +27,11 @@ class ExaminationController extends Controller
 
         $takenExams = Examination::whereIn('id', $takenExams)->get();
 
-        $exams = Examination::where('end_at', '>', $time)->where('start_at', '<', $time)->paginate(3);
+        // only show exams that are currently active and not taken by the user using wherenotin
+        $exams = Examination::whereNotIn('id', $takenExams->pluck('id'))
+            ->where('end_at', '>', $time)
+            ->where('start_at', '<', $time)
+            ->paginate(3);
 
         $settings = Setting::firstWhere('page', 'exams')?->value;
 
@@ -51,6 +55,14 @@ class ExaminationController extends Controller
      */
     public function show(Examination $exam)
     {
+        $questions = DB::table('answer_user')->where('user_id', auth()->user()->id)->pluck('question_id');
+
+        foreach ($questions as $question) {
+            if ($exam->questions->contains('id', $question)) {
+                return redirect()->route('exams.completed', $exam);
+            }
+        }
+
         return view('exams.show', [
             'exam' => $exam,
         ]);
