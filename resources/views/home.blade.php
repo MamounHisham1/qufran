@@ -20,18 +20,37 @@
                     <h1 class="text-3xl font-extrabold text-gray-800">{{ __('Home') }}</h1>
                 </div>
 
+                <!-- Date Section -->
+                <div>
+                    <h2 class="text-2xl font-semibold mb-3 bg-teal-800 text-gray-100 px-4 py-2 rounded-lg inline-block">
+                        {{ __('Date') }}
+                    </h2>
+                    <div class="flex justify-between items-center">
+                        <div class="text-center">
+                            <h3 class="text-xl font-semibold text-gray-800">{{ __('Hijri Date') }}</h3>
+                            <p class="text-3xl font-bold text-teal-800">{{ $hijriDate }}</p>
+                        </div>
+                        <div class="text-center">
+                            <h3 class="text-xl font-semibold text-gray-800">{{ __('Normal Date') }}</h3>
+                            <p class="text-3xl font-bold text-teal-800">{{ now()->isoFormat('LL') }}</p>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Section Tabs -->
-                <div class="flex justify-around bg-gray-200 md:rounded-md p-2">
-                    @foreach (['quran' => __('The Quran'), 'hadith' => __('The Hadith'), 'adhkar' => __('The Adhkar')] as $section => $label)
-                        <h2 x-on:click="active = '{{ $section }}'"
-                            class="text-lg font-semibold px-4 py-2 rounded-lg cursor-pointer select-none ease-in-out hover:scale-105 transition-transform duration-300"
-                            :class="active === '{{ $section }}'
-                                ?
-                                'bg-red-800 text-white' :
-                                'bg-teal-800 text-gray-100 hover:bg-red-950 hover:text-white'">
-                            {{ $label }}
-                        </h2>
-                    @endforeach
+                <div class="mt-5 border-t border-teal-500 pt-5">
+                    <div class="flex justify-around bg-gray-200 md:rounded-md p-2">
+                        @foreach (['quran' => __('The Quran'), 'hadith' => __('The Hadith'), 'adhkar' => __('The Adhkar')] as $section => $label)
+                            <h2 x-on:click="active = '{{ $section }}'"
+                                class="text-lg font-semibold px-4 py-2 rounded-lg cursor-pointer select-none ease-in-out hover:scale-105 transition-transform duration-300"
+                                :class="active === '{{ $section }}'
+                                    ?
+                                    'bg-red-800 text-white' :
+                                    'bg-teal-800 text-gray-100 hover:bg-red-950 hover:text-white'">
+                                {{ $label }}
+                            </h2>
+                        @endforeach
+                    </div>
                 </div>
 
                 <!-- Quran Section -->

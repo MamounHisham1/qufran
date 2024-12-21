@@ -5,6 +5,7 @@
                 {{-- Header --}}
                 <div class="bg-teal-600 text-white p-4">
                     <h2 class="text-xl font-bold">
+                        <span class="text-gray-300">{{ __('The question') }}:</span>
                         {{ $fatwa->title }}
                     </h2>
                     <div class="text-sm mt-1">

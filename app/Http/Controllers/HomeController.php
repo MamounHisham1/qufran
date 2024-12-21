@@ -21,6 +21,7 @@ class HomeController extends Controller
 
         // $quran = Http::get('https://api.quran.com/api/v4/chapters')->json()['chapters'];
         $chapters = Chapter::all()->take(20);
+        $hijriDate  = now()->toHijri()->isoFormat('LL');
 
 
         $books = Http::get('https://cdn.jsdelivr.net/gh/fawazahmed0/hadith-api@1/editions.json')->json();
@@ -60,6 +61,7 @@ class HomeController extends Controller
             'chapters' => $chapters,
             'books' => $books,
             'adhkar' => array_keys($adhkar),
+            'hijriDate' => $hijriDate,
         ]);
     }
 }
