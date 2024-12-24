@@ -7,8 +7,10 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\QuranHadithController;
+use App\Models\Reciter;
 use Illuminate\Support\Facades\Route;
 use App\Models\Chapter;
+use Illuminate\Support\Facades\DB;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -55,7 +57,6 @@ Route::get('/quran-hadith/{book}/{section}/{hadith}', [QuranHadithController::cl
 Route::get('/adhkar/{id}', [QuranHadithController::class, 'showAdhkar'])->name('adhkar');
 
 
-
 // Route::get('/save-chapters', function () {
 //     $chapters = Http::get('https://api.quran.com/api/v4/chapters')->json()['chapters'];
 
@@ -93,3 +94,18 @@ Route::get('/adhkar/{id}', [QuranHadithController::class, 'showAdhkar'])->name('
 
 //     dd('done');
 // });
+
+Route::get('save-reciters', function () {
+    // $reciters = Reciter::all();
+
+    // foreach($reciters as $reciter) {
+    //     $serverUrl = $reciter->server_url;
+    //     foreach(range(1, 114) as $i) {
+    //         $url = $serverUrl . (string) str($i)->padLeft(3, '0') . '.mp3';
+    //         $reciter->chapters()->attach($i, ['url' => $url]);
+    //     }
+    // }
+
+
+    // dd(Reciter::all()->last()->chapters->toArray());
+});

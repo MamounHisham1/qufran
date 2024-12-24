@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Chapter extends Model
@@ -13,5 +14,10 @@ class Chapter extends Model
     public function verses(): HasMany
     {
         return $this->hasMany(Verse::class);
+    }
+
+    public function reciters(): BelongsToMany
+    {
+        return $this->belongsToMany(Reciter::class)->withPivot('url');
     }
 }

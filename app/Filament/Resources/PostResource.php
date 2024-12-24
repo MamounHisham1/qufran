@@ -21,11 +21,16 @@ class PostResource extends Resource
 
     protected static ?int $navigationSort = 30;
 
-    protected static ?string $modelLabel = 'منشور';
+    protected static ?string $modelLabel = 'درس';
 
-    protected static ?string $navigationLabel = 'المنشورات';
+    protected static ?string $navigationLabel = 'الدروس';
 
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
+
+    public static function getEloquentQuery(): \Illuminate\Database\Eloquent\Builder
+    {
+        return parent::getEloquentQuery()->where('type', '!=', PostTypes::Fatwa);
+    }
 
     public static function form(Form $form): Form
     {

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Chapter;
 use App\Models\Verse;
+use App\Models\Reciter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
@@ -33,17 +34,19 @@ class QuranHadithController extends Controller
     {
         $verses = Verse::where('chapter_id', $chapter->id)->get();
         $tafseer = Http::get("https://quranenc.com/api/v1/translation/sura/arabic_moyassar/{$chapter->number}")->json()['result'];
-        $reciters= Http::get('https://mp3quran.net/api/v3/reciters')->json()['reciters'];
-        // dd($verses);
+        // $reciters = Reciter::all();
 
-        return view('quran-hadith.show-surah', ['chapter' => $chapter, 'verses' => $verses, 'tafseer' => $tafseer]);
+        return view('quran-hadith.show-surah', [
+            'chapter' => $chapter,
+            'verses' => $verses,
+            'tafseer' => $tafseer,
+        ]);
     }
 
     public function showBook(string $book)
     {
         $data = Http::get("https://cdn.jsdelivr.net/gh/fawazahmed0/hadith-api@1/editions/ara-{$book}.json")->json();
         $metadata = $data['metadata'];
-        // dd($book == 'muslim' ? array_shift($metadata['section_details']) && array_shift($metadata['sections']) : '');
         if ($book == 'muslim' || $metadata['sections'][0] == '') {
             array_shift($metadata['section_details']);
             array_shift($metadata['sections']);
@@ -56,12 +59,9 @@ class QuranHadithController extends Controller
 
     public function showSection($book, $section)
     {
-        // if ($section == 0) {
-        //     abort(404);
-        // }
         $response = Http::get("https://cdn.jsdelivr.net/gh/fawazahmed0/hadith-api@1/editions/ara-{$book}/sections/{$section}.json");
 
-        if (!$response->ok()) {
+        if (!$response->successful()) {
             return back();
         }
 
@@ -78,6 +78,10 @@ class QuranHadithController extends Controller
 
     public function showAdhkar(int $id)
     {
+        if ($id > 8 || $id < 1) {
+            abort(404);
+        }
+
         $adhkar = Http::get('https://raw.githubusercontent.com/nawafalqari/azkar-api/56df51279ab6eb86dc2f6202c7de26c8948331c1/azkar.json')->json();
 
         $keys = [
@@ -91,7 +95,7 @@ class QuranHadithController extends Controller
             "أدعية الأنبياء"
         ];
 
-        $name = $keys[$id-1];
+        $name = $keys[$id - 1];
 
         if ($name === "أذكار الصباح") {
             $adhkar[$name] = collect($adhkar[$name])->flatMap(function ($item) {

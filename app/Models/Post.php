@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Traits\HasSettings;
 use Carbon\Carbon;
+use App\PostTypes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -17,6 +18,13 @@ class Post extends Model
     protected $rules = [
         'audio' => 'required|file|mimes:mp3,wav,ogg|max:10240',
     ];
+
+    // public function casts(): array
+    // {
+    //     return [
+    //         'type' => PostTypes::class,
+    //     ];
+    // }
 
     public function category(): BelongsTo
     {
@@ -42,7 +50,7 @@ class Post extends Model
             '/youtu\.be\/([^?]+)/',
             '/youtube\.com\/v\/([^?]+)/',
             '/youtube\.com\/.*v=([^&]+)/'
-        ];
+        ]; 
 
         foreach ($patterns as $pattern) {
             if (preg_match($pattern, $this->video, $matches)) {
