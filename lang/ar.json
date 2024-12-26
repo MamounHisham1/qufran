@@ -112,7 +112,7 @@
   "Quran-Hadith": "القرآن والحديث",
   "Home": "الرئيسية",
   "Latest fatawa": "آخر الفتاوى",
-  "Sunan Abu Dawud": "سنن أبو داود",
+  "Sunan Abu Dawud": "سنن أبي داود",
   "Sahih al Bukhari": "صحيح البخاري",
   "Forty Hadith of Shah Waliullah Dehlawi": "الأربعون حديثًا لشاه ولي الله الدهلوي",
   "Sunan Ibn Majah": "سنن ابن ماجه",
@@ -280,5 +280,8 @@
   "The Book of Commentary on the Qur'an": "كتاب التفسير",
   "Hijri Date": "التاريخ الهجري",
   "Date": "التاريخ",
-  "Normal Date": "التاريخ الميلادي"
+  "Normal Date": "التاريخ الميلادي",
+  "Audio url": "رابط الملف الصوتي",
+  "User": "المستخدم",
+  "Author": "المؤلف"
 }

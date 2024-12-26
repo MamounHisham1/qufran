@@ -1,17 +1,4 @@
 <x-app-layout>
-    <div x-data="toastNotification()" x-show="visible" x-transition:enter="transition ease-out duration-300"
-        x-transition:enter-start="opacity-0 translate-y-2" x-transition:enter-end="opacity-100 translate-y-0"
-        x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 translate-y-0"
-        x-transition:leave-end="opacity-0 translate-y-2"
-        class="fixed top-4 right-4 z-50 bg-green-500 text-white p-4 rounded-lg shadow-lg" style="display: none;">
-        <div class="flex items-center justify-between gap-5">
-            <span id="toast-message" class="mr-4"></span>
-            <button @click="close()" class="text-white hover:text-green-100 focus:outline-none">
-                ✕
-            </button>
-        </div>
-    </div>
-
     @section('content')
         <main class="flex-grow md:p-5 md:w-2/3 md:m-0 mx-2 mb-2">
             <div class="text-center mb-8">
@@ -131,28 +118,4 @@
             @endif
         </aside>
     @endsection
-
-    @push('scripts')
-        <script>
-            function toastNotification() {
-                return {
-                    visible: false,
-                    init() {
-                        const message = "{{ session('message') }}";
-                        if (message) {
-                            $('#toast-message').text(message);
-                            this.visible = true;
-
-                            setTimeout(() => {
-                                this.close();
-                            }, 5000);
-                        }
-                    },
-                    close() {
-                        this.visible = false;
-                    }
-                }
-            }
-        </script>
-    @endpush
 </x-app-layout>

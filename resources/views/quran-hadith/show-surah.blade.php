@@ -53,6 +53,7 @@
                 </div>
             </div>
 
+            <!-- Bismillah -->
             @if ($chapter->bismillah)
                 <div class="text-center text-xl leading-8 bg-gray-100 p-4 rounded-lg my-4 shadow-lg">
                     <span class="block group p-3">

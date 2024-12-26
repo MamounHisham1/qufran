@@ -50,20 +50,20 @@ $links = [
                     @endforeach
                 </ul>
             </div>
-            <!-- النشرة البريدية -->
+            <!-- اﻹقترحات -->
             <div>
-                <h3 class="text-xl font-semibold mb-4">النشرة البريدية</h3>
-                <p class="text-sm leading-relaxed mb-4">
-                    اشترك في نشرتنا البريدية لتصلك آخر الأخبار.
-                </p>
-                <form class="flex items-center space-x-2">
-                    <input type="email"
-                        class="w-full px-4 py-2 rounded-r bg-teal-100 text-gray-900 placeholder-white-800 focus:outline-none focus:ring-teal-600"
-                        placeholder="أدخل بريدك الإلكتروني" />
-                    <button type="submit"
-                        class="px-4 py-2 bg-teal-800 hover:bg-teal-700 rounded-l text-white focus:outline-none">
-                        اشتراك
-                    </button>
+                <h3 class="text-xl font-semibold mb-4">اﻹقترحات</h3>
+                <form action="{{ route('suggest') }}" method="POST" class="max-w-sm mx-auto">
+                    @csrf
+                    <label for="title"
+                        class="block mb-2 font-medium mt-5 lg:mt-0">هل لديك اقتراح لفكرة جديدة؟ لا تردد وقم بتقديمها.</label>
+                    <textarea id="title" name="body" rows="4"
+                        class="block p-2.5 w-full text-sm text-black bg-teal-200 rounded-lg border border-gray-500 focus:ring-blue-500 focus:border-blue-500"
+                        placeholder="يرجى اضافة الحديث رقم 1..."></textarea>
+                    @error('body')
+                        <p class="text-red-700 text-sm">{{ __($message) }}</p>
+                    @enderror
+                    <x-primary-button class="mt-2">{{ __('Submit') }}</x-primary-button>
                 </form>
             </div>
         </div>

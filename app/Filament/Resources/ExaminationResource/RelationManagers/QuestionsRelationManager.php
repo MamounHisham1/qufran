@@ -62,6 +62,7 @@ class QuestionsRelationManager extends RelationManager
                     ->label(__('Correct answer'))
                     ->options(fn($record) => $record->answers->pluck('body', 'id')),
             ])
+            ->defaultSort('created_at', 'desc')
             ->filters([
                 //
             ])

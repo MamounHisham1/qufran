@@ -36,13 +36,12 @@ class FatwaController extends Controller
             'title' => ['required', 'string', 'unique:posts,title'],
         ]);
         
-        $number = Post::where('type', 'fatwa')->latest()->limit(1)->get()[0]->fatwa_number;
+        // $number = Post::where('type', 'fatwa')->latest()->limit(1)->get()[0]->fatwa_number;
 
         $fatwa = Post::create([
             ...$fatwa,
             'type' => PostTypes::Fatwa,
             'user_id' => auth()->user()->id,
-            'fatwa_number' => $number + 1 ?? 1,
             'is_published' => $request->is_published ? true : false,
         ]);
 

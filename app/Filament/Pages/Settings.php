@@ -23,7 +23,7 @@ class Settings extends Page
 {
     use InteractsWithForms;
 
-    protected static ?string $navigationIcon = 'heroicon-o-document-text';
+    protected static ?string $navigationIcon = 'heroicon-o-cog';
 
     protected static ?int $navigationSort = 100;
 
@@ -50,6 +50,14 @@ class Settings extends Page
             ->schema([
                 Tabs::make()->schema([
                     Tab::make('الرئيسية')->schema([
+                        Section::make('الصور')->schema([
+                            TextInput::make('Description')
+                                ->label(__('Description')),
+                            Image::make('hero_image')
+                                ->label(__('Hero image'))
+                                ->maxWidth(500)
+                                ->maxHeight(500),
+                        ]),
                         Section::make('المقترحات')->schema([
                             Select::make('suggested_categories')
                                 ->label(__('Suggested categories'))

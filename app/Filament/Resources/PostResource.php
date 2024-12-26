@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\PostResource\Pages;
+use App\Models\Author;
 use App\Models\Category;
 use App\Models\Post;
 use Filament\Resources\Resource;
@@ -37,8 +38,10 @@ class PostResource extends Resource
         return $form
             ->schema([
                 TextInput::make('title')
-                    ->columnSpanFull()
                     ->required(),
+                Select::make('auth_id')
+                    ->label(__('Author'))
+                    ->options(Author::pluck('name', 'id')),
                 Select::make('category_id')
                     ->label('Category')
                     ->options(Category::pluck('name', 'id'))
@@ -52,10 +55,10 @@ class PostResource extends Resource
                     ->visible(fn($get) => $get('type') === PostTypes::Article || $get('type') === PostTypes::Fatwa)
                     ->columnSpanFull()
                     ->required(),
+                TextInput::make('audio_url')
+                    ->visible(fn($get) => $get('type') === PostTypes::Audio),
                 FileUpload::make('audio')
-                    ->visible(fn($get) => $get('type') === PostTypes::Audio)
-                    ->columnSpanFull()
-                    ->required(),
+                    ->visible(fn($get) => $get('type') === PostTypes::Audio),
                 TextInput::make('video')
                     ->label('Video URL')
                     ->visible(fn($get) => $get('type') === PostTypes::Video)

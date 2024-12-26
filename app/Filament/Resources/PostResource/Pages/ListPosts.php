@@ -33,6 +33,11 @@ class ListPosts extends ListRecords
             ->columns([
                 TextColumn::make('category.name')
                     ->label('التصنيف'),
+                TextColumn::make('author.name')
+                    ->label('المؤلف')
+                    ->placeholder(__('Ananymos'))
+                    ->searchable()
+                    ->sortable(),
                 TextColumn::make('title')
                     ->label('العنوان')
                     ->searchable()
@@ -41,7 +46,7 @@ class ListPosts extends ListRecords
                     ->label('النوع')
                     ->searchable()
                     ->sortable()
-                    ->formatStateUsing(fn($state) => ucfirst($state)),
+                    ->formatStateUsing(fn($state) => __($state->value)),
                 ToggleColumn::make('is_published')
                     ->label('حالة النشر'),
                 TextColumn::make('created_at')
@@ -53,6 +58,7 @@ class ListPosts extends ListRecords
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
+            ->defaultSort('created_at', 'desc')
             ->filters([
                 SelectFilter::make('category_id')
                     ->label('Categories')

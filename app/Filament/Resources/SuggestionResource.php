@@ -2,43 +2,37 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\AuthorResource\Pages;
-use App\Filament\Resources\AuthorResource\RelationManagers;
-use App\Models\Author;
+use App\Filament\Resources\SuggestionResource\Pages;
+use App\Filament\Resources\SuggestionResource\RelationManagers;
+use App\Models\Suggestion;
 use Filament\Forms;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
-use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class AuthorResource extends Resource
+class SuggestionResource extends Resource
 {
-    protected static ?string $model = Author::class;
+    protected static ?string $model = Suggestion::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-academic-cap';
+    protected static ?int $navigationSort = 55;
 
-    protected static ?int $navigationSort = 10;
+    protected static ?string $modelLabel = 'اقتراح';
 
-    protected static ?string $modelLabel = 'معلم';
+    protected static ?string $navigationLabel = 'الاقتراحات';
 
-    protected static ?string $navigationLabel = 'المعلمون';
-
-    protected static string $name = 'المعلمون'; 
+    protected static ?string $navigationIcon = 'heroicon-o-light-bulb';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
+                Textarea::make('body')
                     ->required()
-                    ->maxLength(255),
-                Forms\Components\FileUpload::make('image')
-                    ->image(),
-                Forms\Components\Textarea::make('description')
                     ->columnSpanFull(),
             ]);
     }
@@ -47,18 +41,19 @@ class AuthorResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('name')
-                    ->label(__('Name'))
-                    ->searchable(),
-                ImageColumn::make('image')
-                ->label(__('Image')),
+                TextColumn::make(name: 'body')
+                    ->label(__('Body'))
+                    ->searchable()
+                    ->sortable(),
+                TextColumn::make('user.name')
+                    ->label(__('User'))
+                    ->searchable()
+                    ->sortable(),
                 TextColumn::make('created_at')
-                    ->label(__('Created at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')
-                    ->label(__('Updated at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -68,7 +63,6 @@ class AuthorResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
@@ -88,10 +82,9 @@ class AuthorResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListAuthors::route('/'),
-            'create' => Pages\CreateAuthor::route('/create'),
-            'view' => Pages\ViewAuthor::route('/{record}'),
-            'edit' => Pages\EditAuthor::route('/{record}/edit'),
+            'index' => Pages\ListSuggestions::route('/'),
+            // 'create' => Pages\CreateSuggestion::route('/create'),
+            // 'edit' => Pages\EditSuggestion::route('/{record}/edit'),
         ];
     }
 }

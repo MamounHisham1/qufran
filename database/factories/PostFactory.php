@@ -19,7 +19,7 @@ class PostFactory extends Factory
      */
     public function definition(): array
     {
-        $type = fake()->randomElement(['image', 'video', 'audio', 'article', 'fatwa']); // Randomly select type
+        $type = fake()->randomElement(['photo', 'video', 'audio', 'article', 'fatwa']); // Randomly select type
 
         return [
             'author_id' => Author::query()->inRandomOrder()->value('id') ?? null, // Random Author ID or null

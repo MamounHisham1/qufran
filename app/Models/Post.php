@@ -19,12 +19,22 @@ class Post extends Model
         'audio' => 'required|file|mimes:mp3,wav,ogg|max:10240',
     ];
 
-    // public function casts(): array
-    // {
-    //     return [
-    //         'type' => PostTypes::class,
-    //     ];
-    // }
+    public static function booted()
+    {
+        static::creating(function ($post) {
+            if ($post->type === PostTypes::Fatwa) {
+                $post->fatwa_number = Post::where('type', PostTypes::Fatwa)->last()->pluck('fatwa_number') + 1;
+            }
+        });
+    }
+
+    public function casts(): array
+    {
+        return [
+            'type' => PostTypes::class,
+        ];
+    }
+   
 
     public function category(): BelongsTo
     {
@@ -59,5 +69,19 @@ class Post extends Model
         }
 
         return $this->video;
-    }  
+    } 
+    
+    public function getAudio()
+    {
+        preg_match('/\/d\/([a-zA-Z0-9_-]+)/', $this->audio_url, $matches);
+
+        // Check if a valid File ID was found
+        if (isset($matches[1])) {
+            $fileId = $matches[1];
+            // Return the preview URL
+            return "https://drive.google.com/file/d/{$fileId}/preview";
+        }
+
+        return null; // Return null if File ID could not be extracted
+    }
 }

@@ -29,10 +29,14 @@
 
                         @if ($lesson->type == 'audio')
                             <div class="bg-gray-100 rounded-lg p-4 flex justify-center items-center mb-6">
+                                @if ($lesson->audio)
                                 <audio controls class="w-full max-w-xl">
                                     <source src="{{ $lesson->audio }}" type="audio/mpeg">
                                     <p class="text-red-500">{{ __('Your browser does not support the audio element.') }}</p>
                                 </audio>
+                                @else
+                                <iframe src="{{ $lesson->getAudio() }}" width="640" height="80" allow="autoplay"></iframe>
+                                @endif
                             </div>
                         @endif
 

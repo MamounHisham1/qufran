@@ -5,6 +5,7 @@ use App\Http\Controllers\ExaminationController;
 use App\Http\Controllers\FatwaController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\SuggestionController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\QuranHadithController;
 use App\Models\Reciter;
@@ -25,6 +26,8 @@ Route::middleware('auth')->group(function () {
 require __DIR__ . '/auth.php';
 
 Route::get('/', HomeController::class)->name('dashboard');
+
+Route::post('/suggest', SuggestionController::class)->name('suggest');
 
 
 Route::get('/categories/{category:id}', CategoryController::class)->name('category');
