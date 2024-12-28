@@ -23,18 +23,17 @@ class Post extends Model
     {
         static::creating(function ($post) {
             if ($post->type === PostTypes::Fatwa) {
-                $post->fatwa_number = Post::where('type', PostTypes::Fatwa)->last()->pluck('fatwa_number') + 1;
+                $post->fatwa_number = Post::where('type', PostTypes::Fatwa)->latest('created_at')->pluck('fatwa_number')->first() + 1;
             }
         });
     }
 
-    public function casts(): array
-    {
-        return [
-            'type' => PostTypes::class,
-        ];
-    }
-   
+    // public function casts(): array
+    // {
+    //     return [
+    //         'type' => PostTypes::class,
+    //     ];
+    // }
 
     public function category(): BelongsTo
     {

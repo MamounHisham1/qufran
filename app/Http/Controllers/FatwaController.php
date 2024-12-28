@@ -6,6 +6,7 @@ use App\Models\Post;
 use App\Models\Setting;
 use App\Models\Category;
 use App\Models\User;
+use App\Notifications\Fatwa;
 use App\PostTypes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -33,10 +34,8 @@ class FatwaController extends Controller
     public function store(Request $request)
     {
         $fatwa = $request->validate([
-            'title' => ['required', 'string', 'unique:posts,title'],
+            'title' => ['required', 'string'],
         ]);
-        
-        // $number = Post::where('type', 'fatwa')->latest()->limit(1)->get()[0]->fatwa_number;
 
         $fatwa = Post::create([
             ...$fatwa,
@@ -45,12 +44,15 @@ class FatwaController extends Controller
             'is_published' => $request->is_published ? true : false,
         ]);
 
+        $admin = User::find(1);
+        $admin->notify(new Fatwa(auth()->user()->name, $fatwa->title));
+
         return back()->with('message', "تم رفع الفتوى برقم {$fatwa->fatwa_number}");
     }
 
     public function show(Post $fatwa)
     {
-        if($fatwa->type !== 'fatwa') {
+        if ($fatwa->type !== 'fatwa') {
             abort(404);
         }
 
@@ -76,7 +78,7 @@ class FatwaController extends Controller
     public function destroy(Post $post)
     {
         Gate::authorize('fatwa-auth', $post);
-        
+
         $post->delete();
 
         return redirect('/');
