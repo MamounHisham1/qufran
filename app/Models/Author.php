@@ -10,10 +10,10 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Author extends Model
 {
     use HasFactory, HasSettings;
-    
+
     protected $guarded = ['id', 'created_at', 'updated_at'];
 
-    public function lessons(): HasMany
+    public function posts(): HasMany
     {
         return $this->hasMany(Post::class);
     }

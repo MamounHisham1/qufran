@@ -283,5 +283,18 @@
   "Normal Date": "التاريخ الميلادي",
   "Audio url": "رابط الملف الصوتي",
   "User": "المستخدم",
-  "Author": "المؤلف"
+  "Author": "المؤلف",
+  "Our Teachers": "مشايخنا",
+  "Teachers": "المشايخ",
+  "Recent Lessons": "آخر الدروس",
+  "No lessons available.": "لا توجد دروس متاحة",
+  "View Lesson": "عرض الدرس",
+  "Settings": "الاعدادات",
+  "Hero Image": "صورة البروفايل",
+  "Update": "تحديث",
+  "View Profile": "عرض الملف الشخصي",
+  "View Fatwa": "عرض الفتوى",
+  "No fatawa available.": "لا توجد فتاوى متاحة",
+  "text": "نص",
+  "fatwa": "فتوى"
 }

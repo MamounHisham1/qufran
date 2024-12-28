@@ -8,6 +8,7 @@ use App\Models\Examination;
 use App\Models\Post;
 use App\Models\Setting;
 use Filament\Forms\Components\ColorPicker;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Tabs;
@@ -53,10 +54,9 @@ class Settings extends Page
                         Section::make('الصور')->schema([
                             TextInput::make('Description')
                                 ->label(__('Description')),
-                            Image::make('hero_image')
-                                ->label(__('Hero image'))
-                                ->maxWidth(500)
-                                ->maxHeight(500),
+                            FileUpload::make('hero_image')
+                                ->image()
+                                ->label(__('Hero image')),
                         ]),
                         Section::make('المقترحات')->schema([
                             Select::make('suggested_categories')

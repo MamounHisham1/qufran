@@ -12,6 +12,7 @@ use App\Models\Reciter;
 use Illuminate\Support\Facades\Route;
 use App\Models\Chapter;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\AuthorController;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -111,4 +112,9 @@ Route::get('save-reciters', function () {
 
 
     // dd(Reciter::all()->last()->chapters->toArray());
+});
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/authors', [AuthorController::class, 'index'])->name('authors.index');
+    Route::get('/authors/{author}', [AuthorController::class, 'show'])->name('authors.show');
 });

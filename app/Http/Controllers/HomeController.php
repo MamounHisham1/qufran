@@ -18,6 +18,7 @@ class HomeController extends Controller
     public function __invoke(Request $request)
     {
         $settings = Setting::firstWhere('page', 'home')?->value;
+        $heroImage = $settings['hero_image'] ?? null;
 
         // $quran = Http::get('https://api.quran.com/api/v4/chapters')->json()['chapters'];
         $chapters = Chapter::all()->take(20);
@@ -52,6 +53,7 @@ class HomeController extends Controller
         });
         
         return view('home', [
+            'heroImage' => $heroImage,
             'suggestedCategories' => $suggestedCategories,
             'suggestedLessons' => $suggestedLessons,
             'latestLessons' => $latestLessons,

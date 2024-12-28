@@ -30,6 +30,12 @@ $links = [
         'active' => request()->routeIs('exams.index'),
         'when' => fn() => auth()->check(),
     ],
+    [
+        'name' => __('Teachers'),
+        'href' => route('authors.index'),
+        'active' => request()->routeIs('authors.index'),
+        'when' => fn() => true,
+    ],
 ];
 ?>
 <nav x-data="scrollHide()" class="bg-teal-600 sticky top-0 z-50 transition-all duration-300 ease-in-out opacity-100">
