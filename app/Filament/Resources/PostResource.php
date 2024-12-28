@@ -39,7 +39,7 @@ class PostResource extends Resource
             ->schema([
                 TextInput::make('title')
                     ->required(),
-                Select::make('auth_id')
+                Select::make('author_id')
                     ->label(__('Author'))
                     ->options(Author::pluck('name', 'id')),
                 Select::make('category_id')

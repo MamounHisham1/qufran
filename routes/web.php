@@ -114,7 +114,5 @@ Route::get('save-reciters', function () {
     // dd(Reciter::all()->last()->chapters->toArray());
 });
 
-Route::middleware(['auth'])->group(function () {
-    Route::get('/authors', [AuthorController::class, 'index'])->name('authors.index');
-    Route::get('/authors/{author}', [AuthorController::class, 'show'])->name('authors.show');
-});
+Route::get('/authors', [AuthorController::class, 'index'])->name('authors.index');
+Route::get('/authors/{author}', [AuthorController::class, 'show'])->name('authors.show');

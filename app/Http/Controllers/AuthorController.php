@@ -12,9 +12,11 @@ class AuthorController extends Controller
      */
     public function index()
     {
-        $authors = Author::with(['posts' => function ($query) {
-            $query->latest()->take(5);
-        }])->withCount('posts')->paginate(12);
+        $authors = Author::with([
+            'posts' => function ($query) {
+                $query->latest()->take(5);
+            }
+        ])->withCount('posts')->paginate(12);
 
         return view('authors.index', compact('authors'));
     }
@@ -40,9 +42,11 @@ class AuthorController extends Controller
      */
     public function show(Author $author)
     {
-        $author->load(['posts' => function ($query) {
-            $query->where('is_published', true)->where('type', '!=', 'fatwa')->latest();
-        }]);
+        $author->load([
+            'posts' => function ($query) {
+                $query->where('is_published', true)->where('type', '!=', 'fatwa')->latest();
+            }
+        ]);
 
         return view('authors.show', compact('author'));
     }
