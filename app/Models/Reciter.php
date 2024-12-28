@@ -9,7 +9,7 @@ class Reciter extends Model
 {
     protected $guarded = ['id', 'created_at', 'updated_at'];
     
-    public $connection = 'sqlite';
+    public $connection = 'data';
 
     public function chapters(): BelongsToMany
     {

@@ -4,14 +4,13 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
     public function up(): void
     {
-        Schema::connection('sqlite')->create('verses', function (Blueprint $table) {
+        Schema::connection('data')->create('verses', function (Blueprint $table) {
             $table->id();
             $table->foreignId('chapter_id')->constrained()->cascadeOnDelete();
             $table->integer('number');
