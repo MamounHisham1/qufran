@@ -15,6 +15,8 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
 use Filament\Actions;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Table;
 
 class PostResource extends Resource
 {
@@ -89,5 +91,20 @@ class PostResource extends Resource
             'edit' => Pages\EditPost::route('/{record}/edit'),
             'view' => Pages\ViewPost::route('/{record}'),
         ];
+    }
+
+    public static function table(Table $table): Table
+    {
+        return $table
+            ->columns([
+                // ... your existing columns ...
+                
+                TextColumn::make('author.name')
+                    ->label(__('Author'))
+                    ->sortable()
+                    ->searchable(),
+                    
+                // ... your other columns ...
+            ]);
     }
 }
