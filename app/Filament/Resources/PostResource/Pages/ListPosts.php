@@ -45,8 +45,7 @@ class ListPosts extends ListRecords
                 TextColumn::make('type')
                     ->label('النوع')
                     ->searchable()
-                    ->sortable()
-                    ->formatStateUsing(fn($state) => __($state->value)),
+                    ->sortable(),
                 ToggleColumn::make('is_published')
                     ->label('حالة النشر'),
                 TextColumn::make('created_at')
