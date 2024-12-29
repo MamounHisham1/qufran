@@ -92,19 +92,4 @@ class PostResource extends Resource
             'view' => Pages\ViewPost::route('/{record}'),
         ];
     }
-
-    public static function table(Table $table): Table
-    {
-        return $table
-            ->columns([
-                // ... your existing columns ...
-                
-                TextColumn::make('author.name')
-                    ->label(__('Author'))
-                    ->sortable()
-                    ->searchable(),
-                    
-                // ... your other columns ...
-            ]);
-    }
 }
