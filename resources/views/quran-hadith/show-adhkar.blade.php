@@ -1,7 +1,8 @@
 <x-app-layout>
     <x-container>
         <main class="flex-grow md:p-5">
-            <h1 class="text-2xl font-bold mb-5">{{ $name }}</h1>
+            <h1 class="text-2xl font-bold mb-5 text-center">{{ $name }}</h1>
+            <p class="text-sm font-semibold mb-5 text-center text-teal-700">اضغط على الذكر لكي يعمل العداد</p>
             <div class="mt-2">
                 <ul>
                     @foreach ($adhkar as $dhikr)

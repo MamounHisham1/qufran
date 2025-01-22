@@ -25,16 +25,22 @@ $links = [
         'when' => fn() => true,
     ],
     [
-        'name' => __('Exams'),
-        'href' => route('exams.index'),
-        'active' => request()->routeIs('exams.index'),
-        'when' => fn() => auth()->check(),
-    ],
-    [
         'name' => __('Teachers'),
         'href' => route('authors.index'),
         'active' => request()->routeIs('authors.index'),
         'when' => fn() => true,
+    ],
+    [
+        'name' => __('Blogs'),
+        'href' => route('blogs.index'),
+        'active' => request()->routeIs('blogs.index'),
+        'when' => fn() => true,
+    ],
+    [
+        'name' => __('Exams'),
+        'href' => route('exams.index'),
+        'active' => request()->routeIs('exams.index'),
+        'when' => fn() => auth()->check(),
     ],
 ];
 ?>
