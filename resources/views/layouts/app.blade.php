@@ -58,7 +58,7 @@
             </header>
         @endisset
 
-        <div x-data="adhkarReminder()">
+        <div x-data="adhkarReminder()"  >
             <!-- Toggle Button -->
             <button
                 class="fixed left-0 z-50 rounded-r-full mt-2 py-8 lg:px-4 px-2 bg-teal-700 hover:bg-teal-800 text-white shadow-lg transform hover:translate-x-1 transition-all duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-opacity-50"

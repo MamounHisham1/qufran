@@ -297,5 +297,10 @@
   "No fatawa available.": "لا توجد فتاوى متاحة",
   "text": "نص",
   "fatwa": "فتوى",
-  "Blogs": "المجلة"
+  "Blogs": "المجلة",
+  "Published on": "تاريخ النشر",
+  "Blog No.": "رقم المجلة",
+  "Article info": "معلومات المقالة",
+  "By": "بواسطة",
+  "Published": "تاريخ النشر"
 }

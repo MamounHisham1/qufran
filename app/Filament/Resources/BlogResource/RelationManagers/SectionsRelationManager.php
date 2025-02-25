@@ -17,7 +17,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class SectionsRelationManager extends RelationManager
 {
-    protected static string $relationship = 'Sections';
+    protected static string $relationship = 'sections';
 
     protected static ?string $label = 'مقال';
 
@@ -77,9 +77,9 @@ class SectionsRelationManager extends RelationManager
     public static function getPages(): array
     {
         return [
-            // 'index' => Pages\ListSections::route('/'),
-            // 'create' => Pages\CreateSection::route('/create'),
-            // 'edit' => Pages\EditSection::route('/{record}/edit'),
+            'index' => Pages\ListSections::route('/'),
+            'create' => Pages\CreateSection::route('/create'),
+            'edit' => Pages\EditSection::route('/{record}/edit'),
         ];
     }
 }
