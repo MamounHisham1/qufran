@@ -3,19 +3,19 @@
         @section('content')
             <main class="flex-grow md:p-5 md:w-2/3 md:m-0 mx-2" x-data="home()">
                 <div class="text-center mb-8">
-                    <h1 class="text-3xl font-extrabold text-gray-800">{{ __('Exams') }}</h1>
+                    <h1 class="text-3xl font-extrabold text-gray-800">{{ __('general.Exams') }}</h1>
                 </div>
 
                 <div class="space-y-6">
                     @foreach ($exams as $exam)
                         <div class="bg-white shadow-md rounded-lg p-5 hover:shadow-lg hover:p-8 transition cursor-pointer relative group"
-                            onclick="window.location='{{ route('exams.show', $exam->id) }}'">
+                            x-click="window.location='{{ route('exams.show', $exam->id) }}'">
                             <div class="flex justify-between items-center mb-3">
                                 <p class="text-sm text-gray-500 group-hover:text-teal-600">
-                                    {{ __('Start date') }}: {{ $exam->start_at }}
+                                    {{ __('general.Start date') }}: {{ $exam->start_at }}
                                 </p>
                                 <p class="text-sm text-gray-500 group-hover:text-teal-600">
-                                    {{ __('End date') }}: {{ $exam->end_at }}
+                                    {{ __('general.End date') }}: {{ $exam->end_at }}
                                 </p>
                             </div>
 
@@ -24,7 +24,7 @@
                             </h2>
 
                             <p class="text-sm text-gray-500 mt-2 group-hover:text-teal-600">
-                                {{ __('Questions count') }}: {{ $exam->questions->count() }}
+                                {{ __('general.Questions count') }}: {{ $exam->questions->count() }}
                             </p>
                         </div>
                     @endforeach
@@ -38,11 +38,11 @@
 
         @section('aside')
             <aside class="w-full md:w-1/3 bg-gray-100 p-5 border-y mt-5 md:mt-0 md:border-x border-gray-300">
-                <h2 class="text-lg mb-3 font-bold">{{ __('Suggested') }} :</h2>
+                <h2 class="text-lg mb-3 font-bold">{{ __('general.Suggested') }} :</h2>
                 @if (!$takenExams->isEmpty())
                     <section class="mb-8">
                         <h2 class="mb-4 text-xl font-semibold text-center md:text-right">
-                            {{ __('Taken exams') }}
+                            {{ __('general.Taken exams') }}
                         </h2>
                         <div class="flex flex-wrap gap-2">
                             @foreach ($takenExams ?? [] as $exam)
@@ -58,7 +58,7 @@
                 @if (!$categories->isEmpty())
                     <section class="mb-8">
                         <h2 class="mb-4 text-xl font-semibold text-center md:text-right">
-                            {{ __('Categories') }}
+                            {{ __('general.Categories') }}
                         </h2>
                         <div class="flex flex-wrap gap-2">
                             @foreach ($categories ?? [] as $category)
@@ -74,7 +74,7 @@
                 @if (!$mostTaken->isEmpty())
                     <section class="mb-8">
                         <h2 class="mb-4 text-xl font-semibold text-center md:text-right">
-                            {{ __('Most taken') }}
+                            {{ __('general.Most taken') }}
                         </h2>
                         <div class="flex flex-wrap gap-2">
                             @foreach ($mostTaken ?? [] as $exam)
@@ -90,7 +90,7 @@
                 @if (!$recommended->isEmpty())
                     <section class="mb-8">
                         <h2 class="mb-4 text-xl font-semibold text-center md:text-right">
-                            {{ __('Recommended') }}
+                            {{ __('general.Recommended') }}
                         </h2>
                         <div class="flex flex-wrap gap-2">
                             @foreach ($recommended ?? [] as $exam)
@@ -106,7 +106,7 @@
                 @if (!$lessons->isEmpty())
                     <section class="mb-8">
                         <h2 class="mb-4 text-xl font-semibold text-center md:text-right">
-                            {{ __('Lessons') }}
+                            {{ __('general.Lessons') }}
                         </h2>
                         <div class="flex flex-wrap gap-2">
                             @foreach ($lessons ?? [] as $lesson)

@@ -6,12 +6,12 @@
                     <div class="bg-gray-100 p-6 text-center">
                         <h1 class="text-3xl font-bold text-gray-800 mb-2">{{ $lesson->title }}</h1>
                         <p class="text-xl">
-                            <a href="#" class="font-semibold block text-2xl hover:text-blue-600"> {{--  // TODO: Create the category pages. --}}
-                                {{ __('Category') }}:
+                            <a href="{{ route('category', $lesson->category) }}" class="font-semibold block text-2xl hover:text-blue-600">
+                                {{ __('general.Category') }}:
                                 <span>{{ $lesson->category->name }}</span>
                             </a>
-                            {{ __('Lesson type') }}:
-                            <span class="font-semibold text-gray-500">{{ __($lesson->type) }}</span>
+                            {{ __('general.Lesson type') }}:
+                            <span class="font-semibold text-gray-500">{{ __("general.{$lesson->type}") }}</span>
                         </p>
                     </div>
 
@@ -32,7 +32,7 @@
                                 @if ($lesson->audio)
                                 <audio controls class="w-full max-w-xl">
                                     <source src="{{ $lesson->audio }}" type="audio/mpeg">
-                                    <p class="text-red-500">{{ __('Your browser does not support the audio element.') }}</p>
+                                    <p class="text-red-500">{{ __('general.Your browser does not support the audio element.') }}</p>
                                 </audio>
                                 @else
                                 <iframe src="{{ $lesson->getAudio() }}" width="640" height="80" allow="autoplay"></iframe>
@@ -55,7 +55,7 @@
 
                         @if ($lesson->description !== null)
                             <div class="bg-gray-50 p-4 rounded-lg border-l-4 border-blue-500">
-                                <h2 class="text-xl font-semibold text-gray-800 mb-2">{{ __('Description') }}</h2>
+                                <h2 class="text-xl font-semibold text-gray-800 mb-2">{{ __('general.Description') }}</h2>
                                 <p class="text-gray-700 text-lg">{!! $lesson->description !!}</p>
                             </div>
                         @endif
@@ -69,7 +69,7 @@
                 <aside class="w-full md:w-1/3 bg-gray-100 p-5 border-y mt-5 md:mt-0 md:border-x border-gray-300">
                     <section class="mb-8">
                         <h2 class="mb-4 text-xl font-semibold text-center md:text-right">
-                            {{ __('Exams') }}
+                            {{ __('general.Exams') }}
                         </h2>
                         <div class="flex flex-wrap gap-2">
                             @foreach ($lesson->exams as $exam)

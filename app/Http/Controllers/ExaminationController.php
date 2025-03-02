@@ -11,6 +11,7 @@ use App\Models\Question;
 use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 
 class ExaminationController extends Controller
 {
@@ -55,6 +56,10 @@ class ExaminationController extends Controller
      */
     public function show(Examination $exam)
     {
+        if(Gate::denies('exam-activity', $exam)) {
+            abort(404);
+        }
+        
         $questions = DB::table('answer_user')->where('user_id', auth()->user()->id)->pluck('question_id');
 
         foreach ($questions as $question) {

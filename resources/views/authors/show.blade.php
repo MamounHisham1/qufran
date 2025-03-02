@@ -38,7 +38,7 @@
 
                         <div class="mt-16">
                             <h2 class="text-2xl font-bold text-gray-900 mb-8 border-b pb-2 border-teal-200 space-y-4">
-                                <span class="block mb-4">{{ __('Lessons') }}</span>
+                                <span class="block mb-4">{{ __('general.Lessons') }}</span>
                             </h2>
                             
                             @if($author->posts->where('type', '!=', 'fatwa')->isNotEmpty())
@@ -70,7 +70,7 @@
                                                     </span>
                                                     <a href="{{ route('lessons.show', $post) }}" 
                                                        class="inline-flex items-center text-teal-600 hover:text-teal-800 font-medium transition-colors duration-300">
-                                                        {{ __('View Lesson') }}
+                                                        {{ __('general.View Lesson') }}
                                                         <svg class="w-4 h-4 mr-2 transform group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                                                         </svg>
@@ -85,14 +85,14 @@
                                     <span class="text-5xl mb-4 block text-gray-300">
                                         <i class="fas fa-book-open"></i>
                                     </span>
-                                    <p class="text-gray-600 text-lg">{{ __('No lessons available.') }}</p>
+                                    <p class="text-gray-600 text-lg">{{ __('general.No lessons available.') }}</p>
                                 </div>
                             @endif
                         </div>
 
                         <div class="mt-16">
                             <h2 class="text-2xl font-bold text-gray-900 mb-8 border-b pb-2 border-teal-200 space-y-4">
-                                <span class="block mb-4">{{ __('Fatawa') }}</span>
+                                <span class="block mb-4">{{ __('general.Fatawa') }}</span>
                             </h2>
                             
                             @if($author->posts->where('type', 'fatwa')->isNotEmpty())
@@ -119,7 +119,7 @@
                                                     </span>
                                                     <a href="{{ route('fatawa.show', $fatwa) }}" 
                                                        class="inline-flex items-center text-red-600 hover:text-red-800 font-medium transition-colors duration-300">
-                                                        {{ __('View Fatwa') }}
+                                                        {{ __('general.View Fatwa') }}
                                                         <svg class="w-4 h-4 mr-2 transform group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                                                         </svg>
@@ -134,7 +134,7 @@
                                     <span class="text-5xl mb-4 block text-gray-300">
                                         <i class="fas fa-scroll"></i>
                                     </span>
-                                    <p class="text-gray-600 text-lg">{{ __('No fatawa available.') }}</p>
+                                    <p class="text-gray-600 text-lg">{{ __('general.No fatawa available.') }}</p>
                                 </div>
                             @endif
                         </div>

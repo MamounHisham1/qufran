@@ -5,11 +5,11 @@
                 {{-- Header --}}
                 <div class="bg-teal-600 text-white p-4">
                     <h2 class="text-xl font-bold">
-                        <span class="text-gray-300">{{ __('The question') }}:</span>
+                        <span class="text-gray-300">{{ __('general.The question') }}:</span>
                         {{ $fatwa->title }}
                     </h2>
                     <div class="text-sm mt-1">
-                        رقم الفتوى: {{ $fatwa->fatwa_number }}
+                        رقم الفتوى: {{ $fatwa->fatwa_number ?? 'لا يوجد رقم لهذه الفتوى' }}
                     </div>
                 </div>
 

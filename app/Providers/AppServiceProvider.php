@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Examination;
 use App\Models\Post;
 use App\Models\User;
 use Filament\Forms\Components\Field;
@@ -32,6 +33,10 @@ class AppServiceProvider extends ServiceProvider
 
         Gate::define('fatwa-auth', function (User $user, Post $post) {
             return $user->id === $post->user_id;
+        });
+
+        Gate::define('exam-activity', function(User $user, Examination $exam) {
+            return $exam->end_at > now() && $exam->start_at < now();
         });
 
         $this->app->singleton(Generator::class, function () {

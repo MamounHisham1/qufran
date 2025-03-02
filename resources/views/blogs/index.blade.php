@@ -2,7 +2,7 @@
     <div class="container mx-auto px-4 py-8">
         <!-- Header Section -->
         <div class="text-center mb-12">
-            <h1 class="text-3xl font-bold text-gray-800 mb-4">{{ __('Latest Blogs') }}</h1>
+            <h1 class="text-3xl font-bold text-gray-800 mb-4">{{ __('general.Latest Blogs') }}</h1>
             <div class="w-24 h-1 bg-teal-600 mx-auto"></div>
         </div>
 
@@ -55,7 +55,7 @@
                     <div class="mt-auto flex justify-between items-center">
                         <a href="{{ route('blogs.show', $blog) }}"
                             class="text-teal-600 hover:text-teal-800 font-medium inline-flex items-center gap-2">
-                            {{ __('Read More') }}
+                            {{ __('general.Read More') }}
                             <svg class="w-4 h-4 rtl:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M9 5l7 7-7 7" />
@@ -66,7 +66,7 @@
             </div>
             @empty
             <div class="col-span-full text-center py-12">
-                <div class="text-gray-500 text-lg">{{ __('No blogs found') }}</div>
+                <div class="text-gray-500 text-lg">{{ __('general.No blogs found') }}</div>
             </div>
             @endforelse
         </div>

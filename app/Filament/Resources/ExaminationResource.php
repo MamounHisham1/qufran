@@ -14,6 +14,7 @@ use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 
@@ -40,7 +41,18 @@ class ExaminationResource extends Resource
                 Select::make('category_id')
                     ->label('Category')
                     ->searchable()
-                    ->options(Category::pluck('name', 'id')),
+                    ->options(Category::pluck('name', 'id'))
+                    ->createOptionForm([
+                        TextInput::make('name')
+                            ->label(__('Name'))
+                            ->required()
+                            ->maxLength(255),
+                        TextInput::make('parent_category_id')
+                            ->label(__('Parent category'))
+                            ->numeric(),
+                        Toggle::make('is_published')
+                            ->label(__('Is published')),
+                    ])->createOptionUsing(fn($data) => Category::create($data)),
                 Select::make('post_id')
                     ->label('Lesson')
                     ->searchable()

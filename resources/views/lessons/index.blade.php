@@ -6,7 +6,7 @@
                 <main class="flex-grow p-5 bg-gray-50">
                     <!-- Page Header -->
                     <div class="text-center mb-8">
-                        <h1 class="text-3xl font-extrabold text-gray-800">{{ __('Lessons') }}</h1>
+                        <h1 class="text-3xl font-extrabold text-gray-800">{{ __('general.Lessons') }}</h1>
                     </div>
 
                     <!-- Lessons List -->
@@ -17,17 +17,17 @@
                                 <div class="flex justify-between items-center mb-4">
                                     <span class="text-sm text-gray-500">
                                         {{ $lesson->created_at->diffForHumans() }} بواسطة
-                                        <span class="font-medium">{{ $lesson->author?->name ?? __('Anonymous') }}</span>
+                                        <span class="font-medium">{{ $lesson->author?->name ?? __('general.Anonymous') }}</span>
                                     </span>
                                     <span
-                                        class="text-xs px-3 py-1 rounded-full bg-teal-100 text-teal-600 text-nowrap">{{ __($lesson->type) }}</span>
+                                        class="text-xs px-3 py-1 rounded-full bg-teal-100 text-teal-600 text-nowrap">{{ __("general.{$lesson->type}") }}</span>
                                 </div>
 
                                 <h2 class="text-xl font-semibold text-gray-800 group-hover:text-teal-600">
                                     {{ $lesson->title }}</h2>
 
                                 <p class="text-gray-700 mt-2">
-                                    {{ __('Category') }}:
+                                    {{ __('general.Category') }}:
                                     <a href="{{ route('category', $lesson->category) }}"
                                         class="text-blue-600 hover:underline z-10 relative"
                                         onclick="event.stopPropagation();">
@@ -47,11 +47,11 @@
 
             @section('aside')
                 <aside class="w-full md:w-1/3 bg-gray-100 p-5 border-y mt-5 md:mt-0 md:border-x border-gray-300">
-                    <h2 class="text-lg mb-3 font-bold">{{ __('Suggested') }} :</h2>
+                    <h2 class="text-lg mb-3 font-bold">{{ __('general.Suggested') }} :</h2>
                     @if (!$latest->isEmpty())
                         <section class="mb-8">
                             <h2 class="mb-4 text-xl font-semibold text-center md:text-right">
-                                {{ __('Latest') }}
+                                {{ __('general.Latest') }}
                             </h2>
                             <div class="flex flex-wrap gap-2">
                                 @foreach ($latest as $lesson)
@@ -67,7 +67,7 @@
                     @if (!$suggested->isEmpty())
                         <section class="mb-8">
                             <h2 class="mb-4 text-xl font-semibold text-center md:text-right">
-                                {{ __('Suggested lessons') }}
+                                {{ __('general.Suggested lessons') }}
                             </h2>
                             <div class="flex flex-wrap gap-2">
                                 @foreach ($suggested as $lesson)
@@ -83,7 +83,7 @@
                     @if (!$mostLiked->isEmpty())
                         <section class="mb-8">
                             <h2 class="mb-4 text-xl font-semibold text-center md:text-right">
-                                {{ __('Most liked') }}
+                                {{ __('general.Most liked') }}
                             </h2>
                             <div class="flex flex-wrap gap-2">
                                 @foreach ($mostLiked as $lesson)
@@ -99,7 +99,7 @@
                     @if (!$mostWatched->isEmpty())
                         <section class="mb-8">
                             <h2 class="mb-4 text-xl font-semibold text-center md:text-right">
-                                {{ __('Most watched') }}
+                                {{ __('general.Most watched') }}
                             </h2>
                             <div class="flex flex-wrap gap-2">
                                 @foreach ($mostWatched as $lesson)
@@ -115,7 +115,7 @@
                     @if (!$suggestedCategories->isEmpty())
                         <section>
                             <h2 class="mb-4 text-xl font-semibold text-center md:text-right">
-                                {{ __('Suggested categories') }}
+                                {{ __('general.Suggested categories') }}
                             </h2>
                             <div class="flex flex-wrap gap-2">
                                 @foreach ($suggestedCategories as $category)

@@ -1,43 +1,43 @@
 <?php
 $links = [
     [
-        'name' => __('Dashboard'),
+        'name' => __('general.Dashboard'),
         'href' => route('dashboard'),
         'active' => request()->routeIs('dashboard'),
         'when' => fn() => true,
     ],
     [
-        'name' => __('Lessons'),
+        'name' => __('general.Lessons'),
         'href' => route('lessons.index'),
         'active' => request()->routeIs('lessons.index'),
         'when' => fn() => true,
     ],
     [
-        'name' => __('Fatawa'),
+        'name' => __('general.Fatawa'),
         'href' => route('fatawa.index'),
         'active' => request()->routeIs('fatawa.index'),
         'when' => fn() => true,
     ],
     [
-        'name' => __('Quran-Hadith'),
+        'name' => __('general.Quran-Hadith'),
         'href' => route('quran-hadith.index'),
         'active' => request()->routeIs('quran-hadith.index'),
         'when' => fn() => true,
     ],
     [
-        'name' => __('Teachers'),
+        'name' => __('general.Teachers'),
         'href' => route('authors.index'),
         'active' => request()->routeIs('authors.index'),
         'when' => fn() => true,
     ],
     [
-        'name' => __('Blogs'),
+        'name' => __('general.Blogs'),
         'href' => route('blogs.index'),
         'active' => request()->routeIs('blogs.index'),
         'when' => fn() => true,
     ],
     [
-        'name' => __('Exams'),
+        'name' => __('general.Exams'),
         'href' => route('exams.index'),
         'active' => request()->routeIs('exams.index'),
         'when' => fn() => auth()->check(),
@@ -90,7 +90,7 @@ $links = [
 
                         <x-slot name="content">
                             <x-dropdown-link :href="route('profile.edit')">
-                                {{ __('Profile') }}
+                                {{ __('general.Profile') }}
                             </x-dropdown-link>
 
                             <!-- Authentication -->
@@ -100,7 +100,7 @@ $links = [
                                 <x-dropdown-link :href="route('logout')"
                                     onclick="event.preventDefault();
                                             this.closest('form').submit();">
-                                    {{ __('Log Out') }}
+                                    {{ __('general.Log Out') }}
                                 </x-dropdown-link>
                             </form>
                         </x-slot>
@@ -110,12 +110,12 @@ $links = [
                     <div class="flex gap-2">
                         <a href="{{ route('login') }}"
                             class="rounded-md px-3 py-1 border border-teal-500 text-white ring-1 ring-transparent transition bg-teal-700 hover:bg-teal-600 hover:border-teal-700 focus:outline-none focus-visible:ring-[#FF2D20]">
-                            {{ __('Log in') }}
+                            {{ __('general.Log in') }}
                         </a>
 
                         <a href="{{ route('register') }}"
                             class="rounded-md px-3 py-1 border border-teal-500 text-white ring-1 ring-transparent transition bg-teal-700 hover:bg-teal-600 hover:border-teal-700 focus:outline-none focus-visible:ring-[#FF2D20]">
-                            {{ __('Register') }}
+                            {{ __('general.Register') }}
                         </a>
                     </div>
                 @endguest
@@ -159,7 +159,7 @@ $links = [
             <div class="mt-3 space-y-1">
                 @auth
                     <x-responsive-nav-link :href="route('profile.edit')">
-                        {{ __('Profile') }}
+                        {{ __('general.Profile') }}
                     </x-responsive-nav-link>
 
                     <!-- Authentication -->
@@ -169,7 +169,7 @@ $links = [
                         <x-responsive-nav-link :href="route('logout')"
                             onclick="event.preventDefault();
                                         this.closest('form').submit();">
-                            {{ __('Log Out') }}
+                            {{ __('general.Log Out') }}
                         </x-responsive-nav-link>
                     </form>
                 @endauth
@@ -177,12 +177,12 @@ $links = [
                     <div class="flex flex-col">
                         <a href="{{ route('login') }}"
                             class="rounded-md px-3 py-2 text-white ring-1 ring-transparent transition hover:text-white/70 focus:outline-none focus-visible:ring-[#FF2D20]">
-                            {{ __('Log in') }}
+                            {{ __('general.Log in') }}
                         </a>
 
                         <a href="{{ route('register') }}"
                             class="rounded-md px-3 py-2 text-white ring-1 ring-transparent transition hover:text-white/70 focus:outline-none focus-visible:ring-[#FF2D20]">
-                            {{ __('Register') }}
+                            {{ __('general.Register') }}
                         </a>
                     </div>
                 @endguest

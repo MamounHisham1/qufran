@@ -17,21 +17,21 @@
         @section('content')
             <main class="flex-grow md:p-5 md:w-2/3 md:m-0 mx-2" x-data="{ active: 'quran' }">
                 <div class="text-center mb-8">
-                    <h1 class="text-3xl font-extrabold text-gray-800">{{ __('Home') }}</h1>
+                    <h1 class="text-3xl font-extrabold text-gray-800">{{ __('general.Home') }}</h1>
                 </div>
 
                 <!-- Date Section -->
                 <div>
                     <h2 class="text-2xl font-semibold mb-3 bg-teal-800 text-gray-100 px-4 py-2 rounded-lg inline-block">
-                        {{ __('Date') }}
+                        {{ __('general.Date') }}
                     </h2>
                     <div class="flex justify-between items-center">
                         <div class="text-center">
-                            <h3 class="text-xl font-semibold text-gray-800">{{ __('Hijri Date') }}</h3>
+                            <h3 class="text-xl font-semibold text-gray-800">{{ __('general.Hijri Date') }}</h3>
                             <p class="text-3xl font-bold text-teal-800">{{ $hijriDate }}</p>
                         </div>
                         <div class="text-center">
-                            <h3 class="text-xl font-semibold text-gray-800">{{ __('Normal Date') }}</h3>
+                            <h3 class="text-xl font-semibold text-gray-800">{{ __('general.Normal Date') }}</h3>
                             <p class="text-3xl font-bold text-teal-800">{{ now()->isoFormat('LL') }}</p>
                         </div>
                     </div>
@@ -40,7 +40,7 @@
                 <!-- Section Tabs -->
                 <div class="mt-5 border-t border-teal-500 pt-5">
                     <div class="flex justify-around bg-gray-200 md:rounded-md p-2">
-                        @foreach (['quran' => __('The Quran'), 'hadith' => __('The Hadith'), 'adhkar' => __('The Adhkar')] as $section => $label)
+                        @foreach (['quran' => __('general.The Quran'), 'hadith' => __('general.The Hadith'), 'adhkar' => __('general.The Adhkar')] as $section => $label)
                             <h2 x-on:click="active = '{{ $section }}'"
                                 class="text-lg font-semibold px-4 py-2 rounded-lg cursor-pointer select-none ease-in-out hover:scale-105 transition-transform duration-300"
                                 :class="active === '{{ $section }}'
@@ -68,7 +68,7 @@
                         <li>
                             <a href="{{ route('quran-hadith.index') }}"
                                 class="block group text-center py-3 px-4 border rounded-lg shadow-sm bg-gray-100 hover:shadow-md transition">
-                                <span class="font-bold text-sm group-hover:text-blue-600">{{ __('More') }}</span>
+                                <span class="font-bold text-sm group-hover:text-blue-600">{{ __('general.More') }}</span>
                             </a>
                         </li>
                     </ul>
@@ -82,7 +82,7 @@
                                 <a href="{{ route('hadith.book', $book['collection'][0]['book']) }}"
                                     class="block group px-4 py-3 bg-gray-50 hover:bg-teal-100 hover:shadow transition transform hover:-translate-y-1">
                                     <span
-                                        class="font-bold text-lg text-gray-800 group-hover:text-teal-600">{{ __($book['name']) }}</span>
+                                        class="font-bold text-lg text-gray-800 group-hover:text-teal-600">{{ __('general.' . $book['name']) }}</span>
                                 </a>
                             </li>
                         @endforeach
@@ -90,7 +90,7 @@
                     <div class="mt-5 text-center">
                         <a href="{{ route('quran-hadith.index') }}"
                             class="inline-block bg-teal-800 text-white text-sm font-semibold px-3 py-1 rounded-lg hover:bg-teal-900 transition">
-                            {{ __('More') }}
+                            {{ __('general.More') }}
                         </a>
                     </div>
                 </div>
@@ -103,7 +103,7 @@
                                 <a href="{{ route('adhkar', $key + 1) }}"
                                     class="block group px-4 py-3 bg-gray-50 hover:bg-teal-100 hover:shadow transition transform hover:-translate-y-1">
                                     <span
-                                        class="font-bold text-lg text-gray-800 group-hover:text-teal-600">{{ __($name) }}</span>
+                                        class="font-bold text-lg text-gray-800 group-hover:text-teal-600">{{ $name }}</span>
                                 </a>
                             </li>
                         @endforeach
@@ -111,7 +111,7 @@
                     <div class="mt-5 text-center">
                         <a href="{{ route('quran-hadith.index') }}"
                             class="inline-block bg-teal-800 text-white text-sm font-semibold px-3 py-1 rounded-lg hover:bg-teal-900 transition">
-                            {{ __('More') }}
+                            {{ __('general.More') }}
                         </a>
                     </div>
                 </div>
@@ -119,20 +119,20 @@
                 <!-- Prayer Times Section -->
                 <div class="mt-5 border-t border-teal-500 pt-5">
                     <h2 class="text-2xl font-semibold mb-3 bg-teal-800 text-gray-100 px-4 py-2 rounded-lg inline-block">
-                        {{ __('Prayer Times') }}
+                        {{ __('general.Prayer Times') }}
                     </h2>
                     <table class="table-auto w-full text-center bg-white rounded-lg shadow-lg overflow-hidden">
                         <thead class="bg-gray-200 text-gray-700">
                             <tr>
-                                <th class="py-2 px-4">{{ __('Prayer') }}</th>
-                                <th class="py-2 px-4">{{ __('Time') }}</th>
+                                <th class="py-2 px-4">{{ __('general.Prayer') }}</th>
+                                <th class="py-2 px-4">{{ __('general.Time') }}</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($prayers as $name => ['time' => $time, 'next' => $isNext])
                                 <tr class="{{ $isNext ? 'bg-teal-200' : 'bg-gray-50' }}">
-                                    <td class="py-2 px-4">{{ __($name) }}</td>
-                                    <td class="py-2 px-4">{{ __($time) }}</td>
+                                    <td class="py-2 px-4">{{ __("general.{$name}") }}</td>
+                                    <td class="py-2 px-4">{{ __("general.{$time}") }}</td>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -142,7 +142,7 @@
                 <!-- Fatwa Section -->
                 <div class="mt-5 border-t border-teal-500 pt-5">
                     <h2 class="text-2xl font-semibold mb-3 bg-teal-800 text-gray-100 px-4 py-2 rounded-lg inline-block">
-                        {{ __('Fatawa') }}
+                        {{ __('general.Fatawa') }}
                     </h2>
                     <div class="space-y-6">
                         @foreach ($fatawa as $fatwa)
@@ -158,7 +158,7 @@
                                     {{ str($fatwa->body)->limit(100, '...', true) }}
                                 </p>
                                 <p class="text-gray-700 mt-4">
-                                    {{ __('Category') }}:
+                                    {{ __('general.Category') }}:
                                     <a href="{{ route('category', $fatwa->category) }}"
                                         class="text-blue-600 hover:underline z-10 relative"
                                         onclick="event.stopPropagation();">
@@ -171,7 +171,7 @@
                     <div class="mt-5 text-center">
                         <a href="{{ route('fatawa.index') }}"
                             class="inline-block bg-teal-800 text-white text-sm font-semibold px-3 py-1 rounded-lg hover:bg-teal-900 transition">
-                            {{ __('More') }}
+                            {{ __('general.More') }}
                         </a>
                     </div>
                 </div>
@@ -222,11 +222,11 @@
 
         @section('aside')
             <aside class="w-full md:w-1/3 bg-gray-100 p-5 border-y mt-5 md:mt-0 md:border-x border-gray-300">
-                <h2 class="text-lg mb-3 font-bold">{{ __('Suggested') }} :</h2>
+                <h2 class="text-lg mb-3 font-bold">{{ __('general.Suggested') }} :</h2>
                 @if (!$suggestedCategories->isEmpty())
                     <section class="mb-8">
                         <h2 class="mb-4 text-xl font-semibold text-center md:text-right">
-                            {{ __('Suggested categories') }}
+                            {{ __('general.Suggested categories') }}
                         </h2>
                         <div class="flex flex-wrap gap-2">
                             @foreach ($suggestedCategories ?? [] as $category)
@@ -242,7 +242,7 @@
                 @if (!$suggestedLessons->isEmpty())
                     <section class="mb-8">
                         <h2 class="mb-4 text-xl font-semibold text-center md:text-right">
-                            {{ __('Suggested lessons') }}
+                            {{ __('general.Suggested lessons') }}
                         </h2>
                         <div class="flex flex-wrap gap-2">
                             @foreach ($suggestedLessons ?? [] as $lesson)
@@ -258,7 +258,7 @@
                 @if (!$latestLessons->isEmpty())
                     <section class="mb-8">
                         <h2 class="mb-4 text-xl font-semibold text-center md:text-right">
-                            {{ __('Latest lessons') }}
+                            {{ __('general.Latest lessons') }}
                         </h2>
                         <div class="flex flex-wrap gap-2">
                             @foreach ($latestLessons ?? [] as $lesson)
@@ -274,7 +274,7 @@
                 @if (!$famousTeachers->isEmpty())
                     <section>
                         <h2 class="mb-4 text-xl font-semibold text-center md:text-right">
-                            {{ __('Famous teachers') }}
+                            {{ __('general.Famous teachers') }}
                         </h2>
                         <div class="flex flex-wrap gap-2">
                             @foreach ($famousTeachers ?? [] as $teacher)

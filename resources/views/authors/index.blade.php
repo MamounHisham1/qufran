@@ -2,7 +2,7 @@
     <x-container>
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <h1 class="text-3xl font-bold text-gray-900 mb-8 text-center">{{ __('Our Teachers') }}</h1>
+                <h1 class="text-3xl font-bold text-gray-900 mb-8 text-center">{{ __('general.Our Teachers') }}</h1>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     @foreach($authors as $author)
@@ -28,13 +28,13 @@
                                     @endif
 
                                     <div class="flex items-center justify-between text-sm text-gray-500">
-                                        <span>{{ $author->posts_count }} {{ __('Lessons') }}</span>
-                                        <span>{{ __('View Profile') }} →</span>
+                                        <span>{{ $author->posts_count }} {{ __('general.Lessons') }}</span>
+                                        <span>{{ __('general.View Profile') }} →</span>
                                     </div>
 
                                     @if($author->posts->isNotEmpty())
                                         <div class="mt-4 pt-4 border-t border-gray-200">
-                                            <h3 class="text-sm font-medium text-gray-900 mb-2">{{ __('Recent Lessons') }}:</h3>
+                                            <h3 class="text-sm font-medium text-gray-900 mb-2">{{ __('general.Recent Lessons') }}:</h3>
                                             <ul class="space-y-1">
                                                 @foreach($author->posts as $post)
                                                     <li class="text-sm text-gray-600 truncate">
