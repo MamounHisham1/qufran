@@ -1,19 +1,19 @@
 @php
 $links = [
     [
-        'name' => __('Dashboard'),
+        'name' => __('general.Dashboard'),
         'href' => route('dashboard'),
     ],
     [
-        'name' => __('Lessons'),
+        'name' => __('general.Lessons'),
         'href' => route('lessons.index'),
     ],
     [
-        'name' => __('Fatawa'),
+        'name' => __('general.Fatawa'),
         'href' => route('fatawa.index'),
     ],
     [
-        'name' => __('Quran-Hadith'),
+        'name' => __('general.Quran-Hadith'),
         'href' => route('quran-hadith.index'),
     ],
 ];
@@ -23,9 +23,10 @@ $links = [
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
             <!-- معلومات الشركة -->
             <div>
-                <h3 class="text-xl font-semibold mb-4">معلومات عنا</h3>
+                <h3 class="text-xl font-semibold mb-4">{{ __('general.About us') }}</h3>
                 <p class="text-sm leading-relaxed">
-                    نقدم منتجات عالية الجودة مع التركيز على الابتكار والاستدامة. انضم إلينا لصنع الفارق.
+                   {{-- Generate an about parg for this website fetching the website idea--}}
+                   {{ __('general.This website is a platform for learning and teaching the Quran and Hadith. It is a place for Muslims to learn and share their knowledge about the Quran and Hadith.') }}
                 </p>
                 <div class="mt-4 flex space-x-4 gap-3 justify-end">
                     <a href="#" class="hover:text-teal-300">
@@ -43,7 +44,7 @@ $links = [
             </div>
             <!-- الروابط السريعة -->
             <div>
-                <h3 class="text-xl font-semibold mb-4">روابط سريعة</h3>
+                <h3 class="text-xl font-semibold mb-4">{{ __('general.Quick links') }}</h3>
                 <ul class="space-y-2">
                     @foreach ($links as $link)
                         <li><a href="{{ $link['href'] }}" class="hover:text-teal-300">{{ $link['name'] }}</a></li>
@@ -52,23 +53,22 @@ $links = [
             </div>
             <!-- اﻹقترحات -->
             <div>
-                <h3 class="text-xl font-semibold mb-4">اﻹقترحات</h3>
+                <h3 class="text-xl font-semibold mb-4">{{ __('general.Suggestions') }}</h3>
                 <form action="{{ route('suggest') }}" method="POST" class="max-w-sm mx-auto">
                     @csrf
                     <label for="title"
-                        class="block mb-2 font-medium mt-5 lg:mt-0">هل لديك اقتراح لفكرة جديدة؟ لا تردد وقم بتقديمها.</label>
+                        class="block mb-2 font-medium mt-5 lg:mt-0">{{ __('general.Do you have a suggestion for a new idea? Do not hesitate to submit it.') }}</label>
                     <textarea id="title" name="body" rows="4"
-                        class="block p-2.5 w-full text-sm text-black bg-teal-200 rounded-lg border border-gray-500 focus:ring-blue-500 focus:border-blue-500"
-                        placeholder="يرجى اضافة الحديث رقم 1..."></textarea>
+                        class="block p-2.5 w-full text-sm text-white bg-teal-700 rounded-lg border border-gray-500 focus:ring-blue-500 focus:border-blue-500"></textarea>
                     @error('body')
                         <p class="text-red-700 text-sm">{{ __($message) }}</p>
                     @enderror
-                    <x-primary-button class="mt-2">{{ __('Submit') }}</x-primary-button>
+                    <x-primary-button class="mt-2">{{ __('general.Submit') }}</x-primary-button>
                 </form>
             </div>
         </div>
         <div class="mt-8 text-center border-t border-teal-500 pt-4">
-            <p class="text-sm">&copy; 2024 شركتك. جميع الحقوق محفوظة.</p>
+            <p class="text-sm">&copy; {{ date('Y') }} {{ __('general.All rights reserved.') }}</p>
         </div>
     </div>
 </footer>

@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Profile') }}
+            {{ __('general.Profile') }}
         </h2>
     </x-slot>
     <!-- resources/views/components/toggle-table.blade.php -->
@@ -15,11 +15,11 @@
             <table class="w-full border-collapse rounded-lg overflow-hidden shadow-sm bg-white">
                 <thead>
                     <tr class="bg-teal-400 text-white">
-                        <th class="p-4 text-right">{{ __('Number') }}</th>
-                        <th class="p-4 text-right">{{ __('Is published') }}</th>
-                        <th class="p-4 text-right">{{ __('The question') }}</th>
-                        <th class="p-4 text-right">{{ __('The answer') }}</th>
-                        <th class="p-4 text-right">{{ __('The link') }}</th>
+                        <th class="p-4 text-right">{{ __('general.Number') }}</th>
+                        <th class="p-4 text-right">{{ __('general.Is published') }}</th>
+                        <th class="p-4 text-right">{{ __('general.The question') }}</th>
+                        <th class="p-4 text-right">{{ __('general.The answer') }}</th>
+                        <th class="p-4 text-right">{{ __('general.The link') }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -29,11 +29,11 @@
                             <td class="p-4">
                                 @if ($fatwa->is_published)
                                     <span class="text-teal-800">
-                                        {{ __('Public') }}
+                                        {{ __('general.Public') }}
                                     </span>
                                 @else
                                     <span class="text-red-800">
-                                        {{ __('Private') }}
+                                        {{ __('general.Private') }}
                                     </span>
                                 @endif
                             </td>
@@ -43,18 +43,18 @@
                                     {{ str($fatwa->body)->limit(50, '...', true) }}
                                 @else
                                     <span class="text-red-800">
-                                        <i class="fas fa-times"></i> {{ __('No answer yet') }}
+                                        <i class="fas fa-times"></i> {{ __('general.No answer yet') }}
                                     </span>
                                 @endif
                             </td>
                             <td>
                                 @if ($fatwa->body)
                                     <a href="{{ route('fatawa.show', $fatwa) }}" class="text-teal-800">
-                                        {{ __('Click here') }}
+                                        {{ __('general.Click here') }}
                                     </a>
                                 @else
                                     <span class="text-red-800">
-                                        {{ __('No link yet') }}
+                                        {{ __('general.No link yet') }}
                                     </span>
                                 @endif
                             </td>

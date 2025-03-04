@@ -22,4 +22,9 @@ class Category extends Model
     {
         return $this->hasMany(Examination::class);
     }
+
+    public function blogs(): HasMany
+    {
+        return $this->hasMany(Blog::class);
+    }
 }

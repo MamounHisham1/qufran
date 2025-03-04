@@ -14,6 +14,8 @@ class CategoryController extends Controller
     {
         $lessons = $category->posts->where('type', '!=', 'fatwa');
         $fatawa = $category->posts->where('type', 'fatwa');
+        $blogs = $category->blogs;
+        $exams = $category->exams()->where('start_at', '<=', now())->where('end_at', '>=', now())->get();
 
         $categories = Category::where('id', '!=', $category->id)->get();
         return view('categories', [
@@ -21,6 +23,8 @@ class CategoryController extends Controller
             'categories' => $categories,
             'lessons' => $lessons,
             'fatawa' => $fatawa,
+            'blogs' => $blogs,
+            'exams' => $exams,
         ]);
     }
 }

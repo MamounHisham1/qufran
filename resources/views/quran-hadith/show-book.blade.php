@@ -6,17 +6,27 @@
                 @foreach ($metadata['sections'] as $key => $section)
                     <li>
                         @php
-                            $number = $book == 'ibnmajah' ? $key : $key + 1
+                            $number = $book == 'ibnmajah' ? $key : $key + 1;
+                            
+                            // تحديد ملف الترجمة المناسب بناءً على نوع الكتاب
+                            $translationFile = 'bukhari';
+                            if ($book == 'muslim') {
+                                $translationFile = 'muslim';
+                            } elseif ($book == 'abudawud') {
+                                $translationFile = 'abudawud';
+                            }
+                            // تنظيف النص من أي مسافات زائدة قد تؤثر على المفتاح
+                            $cleanSection = trim($section);
                         @endphp
                         <a href="{{ route('hadith.section', ['book' => $book, 'section' => $number]) }}"
-                            class="block group p-4 hover:p-6 hover:my-2 border-b text-center rounded-full bg-gray-200 border-teal-400 transition ease-linear mb-1">
+                            class="block group p-4 hover:bg-teal-50 border-b text-center rounded-lg bg-gray-100 hover:shadow-lg border-teal-400 transition-all duration-300 ease-in-out mb-3 transform hover:-translate-y-1">
                             <span class="font-bold text-xl group-hover:text-teal-600">({{ $key + 1 }}) -
-                                {{ __("bukhari.{$section}", ) }}</span>
+                                {{ __("$translationFile.$cleanSection") }}</span>
                             <p class="text-sm text-gray-500 mt-2 ms-2">
-                                <span>{{ __('general.From') }}</span>
-                                <span>{{ $metadata['section_details'][$key]['hadithnumber_first'] }}</span>
-                                <span>{{ __('general.To') }}</span>
-                                <span>{{ $metadata['section_details'][$key]['hadithnumber_last'] }}</span>
+                                <span class="inline-block bg-gray-200 px-2 py-1 rounded mr-1">{{ __('general.From') }}</span>
+                                <span class="font-semibold">{{ $metadata['section_details'][$key]['hadithnumber_first'] }}</span>
+                                <span class="inline-block bg-gray-200 px-2 py-1 rounded mx-1">{{ __('general.To') }}</span>
+                                <span class="font-semibold">{{ $metadata['section_details'][$key]['hadithnumber_last'] }}</span>
                             </p>
                         </a>
                     </li>

@@ -3,10 +3,11 @@
         @section('content')
             <main class="flex-grow md:p-5 md:w-2/3 md:m-0 mx-2" x-data="home()">
                 <h1 class="text-3xl font-bold p-2 mb-5 rounded-lg bg-teal-800 text-gray-100 text-center">
-                    {{ $category->name }}</h1>
-
+                    {{ $category->name }}
+                </h1>
                 <div>
-                    <h2 class="text-2xl font-bold mb-5">{{ __('Lessons') }} ({{ $lessons->count() }}):</h2>
+                    <h2 class="text-2xl font-semibold mb-3 bg-teal-800 text-gray-100 px-4 py-2 rounded-lg inline-block">
+                        {{ __('general.Lessons') }} ({{ $lessons->count() }}):</h2>
                     <ul class="divide-y divide-teal-400">
                         @foreach ($lessons as $lesson)
                             <li>
@@ -17,14 +18,17 @@
                                     </span>
                                     <span class="font-bold text-xl group-hover:text-teal-600">{{ $lesson->title }}</span>
                                     <span class="text-lg block mb-1 text-gray-800">
-                                        {{ __('Lesson type') }} {{ __($lesson->type) }}
+                                        {{ __('general.Lesson type') }} {{ __('general.' . $lesson->type) }}
                                     </span>
                                 </a>
                             </li>
                         @endforeach
                     </ul>
 
-                    <h2 class="text-2xl font-bold mb-5 border-t border-teal-600">{{ __('Fatawa') }}
+                    <hr class="h-[5px] bg-teal-500 border-0 my-5">
+
+                    <h2 class="text-2xl font-semibold mb-3 bg-teal-800 text-gray-100 px-4 py-2 rounded-lg inline-block">
+                        {{ __('general.Fatawa') }}
                         ({{ $fatawa->count() }}):</h2>
                     <ul class="divide-y divide-teal-400">
                         @foreach ($fatawa as $fatwa)
@@ -43,6 +47,51 @@
                             </li>
                         @endforeach
                     </ul>
+
+                    <hr class="h-[5px] bg-teal-500 border-0 my-5">
+
+                    <h2 class="text-2xl font-semibold mb-3 bg-teal-800 text-gray-100 px-4 py-2 rounded-lg inline-block">
+                        {{ __('general.Blogs') }} ({{ $blogs->count() }}):</h2>
+                    <ul class="divide-y divide-teal-400">
+                        @foreach ($blogs as $blog)
+                            <li>
+                                <a href="{{ route('blogs.show', $blog) }}" class="block group px-2 py-4">
+                                    <span class="text-sm block mb-1 text-gray-800">
+                                        {{ $blog->created_at->diffForHumans() }} بواسطة
+                                        {{ $blog->author?->name ?? __('Ananymos') }}
+                                    </span>
+                                    <span class="font-bold text-lg group-hover:text-teal-600">{{ $blog->title }}</span>
+                                    <div class="flex gap-2 items-center mt-1">
+                                        <span class="text-sm block pt-1 text-gray-800">
+                                            {{ str($blog->body)->limit(100, '...', true) }}
+                                        </span>
+                                    </div>
+                                </a>
+                            </li>
+                        @endforeach
+                    </ul>
+
+                    <hr class="h-[5px] bg-teal-500 border-0 my-5">
+
+                    <h2 class="text-2xl font-semibold mb-3 bg-teal-800 text-gray-100 px-4 py-2 rounded-lg inline-block">
+                        {{ __('general.Exams') }} ({{ $exams->count() }}):</h2>
+                    <ul class="divide-y divide-teal-400">
+                        @foreach ($exams as $exam)
+                            <li>
+                                <a href="{{ route('exams.show', $exam) }}" class="block group px-2 py-4">
+                                    <span class="text-sm block mb-1 text-gray-800">
+                                        {{ $exam->created_at->diffForHumans() }}
+                                    </span>
+                                    <span class="font-bold text-lg group-hover:text-teal-600">{{ $exam->name }}</span>
+                                    <div class="flex gap-2 items-center mt-1">
+                                        <span class="text-sm block pt-1 text-gray-800">
+                                            {{ __('general.Questions') }}: {{ $exam->questions_count }}
+                                        </span>
+                                    </div>
+                                </a>
+                            </li>
+                        @endforeach
+                    </ul>
                 </div>
             </main>
         @endsection
@@ -52,7 +101,7 @@
                 @if (!$categories->isEmpty())
                     <section class="mb-8">
                         <h2 class="mb-4 text-xl font-semibold text-center md:text-right">
-                            {{ __('Categories') }}:
+                            {{ __('general.Categories') }}:
                         </h2>
                         <div class="flex flex-wrap gap-2">
                             @foreach ($categories ?? [] as $category)
