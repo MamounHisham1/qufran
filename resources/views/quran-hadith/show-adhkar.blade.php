@@ -14,7 +14,7 @@
             </div>
 
             <div class="mt-6">
-                <ul class="space-y-6">
+                <ul class="space-y-10">
                     @foreach ($adhkar as $index => $dhikr)
                         <li class="dhikr-card" x-data="{
                             dhikrId: '{{ $name }}_dhikr_{{ $index }}',
@@ -87,10 +87,10 @@
                             }
                         }"
                             :class="{ 'bg-green-100 border-green-400': completed, 'bg-white border-gray-200': !completed }"
-                            class="text-center relative overflow-hidden rounded-xl border-2 shadow-md transition-all duration-300 ease-in-out">
+                            class="text-center relative overflow-hidden rounded-xl border-2 shadow-lg transition-all duration-300 ease-in-out p-1">
 
                             <div @click="decrementCount()"
-                                class="p-5 cursor-pointer select-none transition-all duration-300 hover:bg-teal-50">
+                                class="p-5 cursor-pointer select-none transition-all duration-300 hover:bg-teal-50 rounded-lg">
                                 <div class="mb-3 text-xl leading-8 font-arabic">{!! $dhikr['content'] !!}</div>
 
                                 <div class="flex justify-center items-center mt-3">
@@ -176,11 +176,12 @@
 
         .dhikr-card {
             transition: transform 0.3s, box-shadow 0.3s, background-color 0.5s;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
         }
 
         .dhikr-card:hover {
             transform: translateY(-3px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
         }
 
         .completed-animation {
