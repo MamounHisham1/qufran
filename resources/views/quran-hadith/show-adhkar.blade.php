@@ -94,9 +94,8 @@
                                 <div class="mb-3 text-xl leading-8 font-arabic">{!! $dhikr['content'] !!}</div>
 
                                 <div class="flex justify-center items-center mt-3">
-                                    <div class="bg-teal-600 text-white rounded-full h-14 w-14 flex items-center justify-center text-xl font-bold shadow-md transition-all"
-                                        :class="{ 'scale-110 bg-green-600': count === 0 }">
-                                        <span x-text="count > 0 ? count : '✓'"></span>
+                                    <div class="counter-circle" :class="{ 'scale-110 bg-green-600': count === 0 }">
+                                        <span x-text="count > 0 ? count : '✓'" class="counter-text"></span>
                                     </div>
                                 </div>
 
@@ -132,6 +131,47 @@
             font-weight: 700;
             text-align: center;
             direction: rtl;
+        }
+
+        /* تحسين عرض دائرة العداد */
+        .counter-circle {
+            background-color: #0d9488;
+            color: white;
+            border-radius: 50%;
+            height: 3.5rem;
+            width: 3.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transition: all 0.3s ease;
+        }
+
+        .counter-text {
+            font-size: 1.25rem;
+            line-height: 1;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        /* تحسينات للهواتف المحمولة */
+        @media (max-width: 640px) {
+            .counter-circle {
+                height: 4rem;
+                width: 4rem;
+            }
+
+            .counter-text {
+                font-size: 1.5rem;
+            }
+        }
+
+        /* تحسينات للهواتف الصغيرة */
+        @media (max-width: 375px) {
+            .counter-circle {
+                height: 3.75rem;
+                width: 3.75rem;
+            }
         }
 
         .dhikr-card {
