@@ -132,7 +132,7 @@
                             @foreach ($prayers as $name => ['time' => $time, 'next' => $isNext])
                                 <tr class="{{ $isNext ? 'bg-teal-200' : 'bg-gray-50' }}">
                                     <td class="py-2 px-4">{{ __("general.{$name}") }}</td>
-                                    <td class="py-2 px-4">{{ __("general.{$time}") }}</td>
+                                    <td class="py-2 px-4">{{ $time }}</td>
                                 </tr>
                             @endforeach
                         </tbody>

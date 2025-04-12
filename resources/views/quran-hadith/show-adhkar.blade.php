@@ -16,76 +16,7 @@
             <div class="mt-6">
                 <ul class="space-y-10">
                     @foreach ($adhkar as $index => $dhikr)
-                        <li class="dhikr-card" x-data="{
-                            dhikrId: '{{ $name }}_dhikr_{{ $index }}',
-                            count: @js((int) $dhikr['count']),
-                            originalCount: @js((int) $dhikr['count']),
-                            completed: false,
-                        
-                            init() {
-                                // استرجاع البيانات المحفوظة من التخزين المحلي
-                                const savedData = this.getSavedData();
-                                if (savedData) {
-                                    this.count = savedData.count;
-                                    this.completed = savedData.count === 0;
-                                }
-                            },
-                        
-                            // حفظ البيانات في التخزين المحلي مع وقت انتهاء الصلاحية
-                            saveToLocalStorage() {
-                                const now = new Date();
-                                const data = {
-                                    count: this.count,
-                                    timestamp: now.getTime(),
-                                    expiresAt: now.getTime() + (4 * 60 * 60 * 1000) // 4 ساعات بالميلي ثانية
-                                };
-                                localStorage.setItem(this.dhikrId, JSON.stringify(data));
-                            },
-                        
-                            // استرجاع البيانات المحفوظة مع التحقق من انتهاء الصلاحية
-                            getSavedData() {
-                                const savedItem = localStorage.getItem(this.dhikrId);
-                                if (!savedItem) return null;
-                        
-                                try {
-                                    const data = JSON.parse(savedItem);
-                                    const now = new Date().getTime();
-                        
-                                    // التحقق من انتهاء الصلاحية
-                                    if (data.expiresAt && data.expiresAt < now) {
-                                        localStorage.removeItem(this.dhikrId);
-                                        return null;
-                                    }
-                        
-                                    return data;
-                                } catch (e) {
-                                    return null;
-                                }
-                            },
-                        
-                            decrementCount() {
-                                if (this.count > 0) {
-                                    this.count -= 1;
-                                    this.saveToLocalStorage();
-                        
-                                    if (this.count === 0) {
-                                        this.completed = true;
-                                        this.$el.classList.add('completed-animation');
-                                        setTimeout(() => {
-                                            this.$el.classList.remove('completed-animation');
-                                        }, 1000);
-                                    }
-                                }
-                            },
-                        
-                            resetCount() {
-                                if (this.count === 0) {
-                                    this.count = this.originalCount;
-                                    this.completed = false;
-                                    this.saveToLocalStorage();
-                                }
-                            }
-                        }"
+                        <li class="dhikr-card" x-data="dhikrCard()"
                             :class="{ 'bg-green-100 border-green-400': completed, 'bg-white border-gray-200': !completed }"
                             class="text-center relative overflow-hidden rounded-xl border-2 shadow-lg transition-all duration-300 ease-in-out p-1">
 
@@ -209,4 +140,79 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Cairo:wght@400;500;600;700&family=Noto+Naskh+Arabic:wght@400;500;600;700&family=Tajawal:wght@400;500;700&display=swap"
         rel="stylesheet">
+
+    <script>
+        function dhikrCard() {
+            return {
+                dhikrId: '{{ $name }}_dhikr_{{ $index }}',
+                count: @js((int) $dhikr['count']),
+                originalCount: @js((int) $dhikr['count']),
+                completed: false,
+
+                init() {
+                    // استرجاع البيانات المحفوظة من التخزين المحلي
+                    const savedData = this.getSavedData();
+                    if (savedData) {
+                        this.count = savedData.count;
+                        this.completed = savedData.count === 0;
+                    }
+                },
+
+                // حفظ البيانات في التخزين المحلي مع وقت انتهاء الصلاحية
+                saveToLocalStorage() {
+                    const now = new Date();
+                    const data = {
+                        count: this.count,
+                        timestamp: now.getTime(),
+                        expiresAt: now.getTime() + (4 * 60 * 60 * 1000) // 4 ساعات بالميلي ثانية
+                    };
+                    localStorage.setItem(this.dhikrId, JSON.stringify(data));
+                },
+
+                // استرجاع البيانات المحفوظة مع التحقق من انتهاء الصلاحية
+                getSavedData() {
+                    const savedItem = localStorage.getItem(this.dhikrId);
+                    if (!savedItem) return null;
+
+                    try {
+                        const data = JSON.parse(savedItem);
+                        const now = new Date().getTime();
+
+                        // التحقق من انتهاء الصلاحية
+                        if (data.expiresAt && data.expiresAt < now) {
+                            localStorage.removeItem(this.dhikrId);
+                            return null;
+                        }
+
+                        return data;
+                    } catch (e) {
+                        return null;
+                    }
+                },
+
+                decrementCount() {
+                    if (this.count > 0) {
+                        this.count -= 1;
+                        this.saveToLocalStorage();
+
+                        if (this.count === 0) {
+                            this.completed = true;
+                            this.$el.classList.add('completed-animation');
+                            setTimeout(() => {
+                                this.$el.classList.remove('completed-animation');
+                            }, 1000);
+                        }
+                    }
+                },
+
+                resetCount() {
+                    if (this.count === 0) {
+                        this.count = this.originalCount;
+                        this.completed = false;
+                        this.saveToLocalStorage();
+                    }
+                }
+            }
+        }
+    </script>
 </x-app-layout>
