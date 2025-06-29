@@ -134,7 +134,10 @@
                     <div x-show="searchResults.length > 0 && !error" class="mb-6">
                         <div class="flex justify-between items-center mb-4">
                             <h2 class="text-2xl font-bold text-gray-800">نتائج البحث</h2>
-                            <span class="text-gray-600" x-text="`عدد النتائج: ${metadata.length || searchResults.length}`"></span>
+                            <div class="text-gray-600">
+                                <span x-text="`الصفحة ${currentPage} - عرض ${searchResults.length} نتيجة`"></span>
+                                <span x-show="metadata.numberOfNonSpecialist" x-text="`من إجمالي ${metadata.numberOfNonSpecialist} حديث`"></span>
+                            </div>
                         </div>
                     </div>
 
@@ -171,12 +174,12 @@
                                 <div class="mt-4">
                                     <span class="inline-block px-3 py-1 rounded-full text-sm font-medium"
                                           :class="getGradeColor(hadith.grade)">
-                                        <span x-text="hadith.grade"></span>
+                                        <span x-text="hadith.grade || hadith.explainGrade || 'غير محدد'"></span>
                                     </span>
                                 </div>
 
                                 <!-- Additional Info -->
-                                <div x-show="hadith.explainGrade" class="mt-3 text-sm text-gray-600">
+                                <div x-show="hadith.explainGrade && hadith.explainGrade !== hadith.grade" class="mt-3 text-sm text-gray-600">
                                     <span class="font-semibold">توضيح الدرجة:</span>
                                     <span x-text="hadith.explainGrade"></span>
                                 </div>
@@ -185,23 +188,41 @@
                     </div>
 
                     <!-- Pagination -->
-                    <div x-show="searchResults.length > 0 && metadata.length > 10" class="mt-8 flex justify-center">
-                        <div class="flex space-x-2">
+                    <div x-show="searchResults.length > 0 && shouldShowPagination()" class="mt-8">
+                        <div class="flex justify-center items-center space-x-reverse space-x-4">
+                            <!-- Previous Button -->
                             <button 
                                 @click="loadPage(currentPage - 1)"
-                                :disabled="currentPage <= 1"
-                                class="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                                :disabled="currentPage <= 1 || loading"
+                                class="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                             >
                                 السابق
                             </button>
-                            <span class="px-4 py-2 text-sm text-gray-700" x-text="`الصفحة ${currentPage}`"></span>
+                            
+                            <!-- Page Info -->
+                            <div class="flex items-center space-x-reverse space-x-2">
+                                <span class="text-sm text-gray-700">الصفحة</span>
+                                <span class="px-3 py-1 bg-teal-100 text-teal-800 rounded-md font-medium" x-text="currentPage"></span>
+                                <span x-show="getTotalPages() > 0" class="text-sm text-gray-700" x-text="`من ${getTotalPages()}`"></span>
+                            </div>
+                            
+                            <!-- Next Button -->
                             <button 
                                 @click="loadPage(currentPage + 1)"
-                                :disabled="searchResults.length < 10"
-                                class="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                                :disabled="!hasNextPage() || loading"
+                                class="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                             >
                                 التالي
                             </button>
+                        </div>
+                        
+                        <!-- Results Summary -->
+                        <div class="text-center mt-4 text-sm text-gray-600">
+                            <span x-show="metadata.numberOfNonSpecialist">
+                                عرض <span x-text="((currentPage - 1) * (metadata.length || 30)) + 1"></span> - 
+                                <span x-text="Math.min(currentPage * (metadata.length || 30), metadata.numberOfNonSpecialist)"></span>
+                                من إجمالي <span x-text="metadata.numberOfNonSpecialist"></span> حديث
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -362,6 +383,48 @@
                     } else {
                         return 'bg-gray-100 text-gray-800';
                     }
+                },
+
+                shouldShowPagination() {
+                    // Show pagination if we have results and either:
+                    // 1. Current page results equal the page size (likely more pages)
+                    // 2. Total count indicates more results
+                    // 3. Current page > 1
+                    const pageSize = this.metadata.length || 30;
+                    const totalResults = this.metadata.numberOfNonSpecialist || 0;
+                    
+                    return this.searchResults.length > 0 && (
+                        this.currentPage > 1 || 
+                        this.searchResults.length >= pageSize ||
+                        totalResults > pageSize
+                    );
+                },
+
+                hasNextPage() {
+                    // Check if there's a next page based on:
+                    // 1. Current results equal page size (likely more pages)
+                    // 2. Total count indicates more results
+                    const pageSize = this.metadata.length || 30;
+                    const totalResults = this.metadata.numberOfNonSpecialist || 0;
+                    const currentResultsShown = (this.currentPage - 1) * pageSize + this.searchResults.length;
+                    
+                    return this.searchResults.length >= pageSize || currentResultsShown < totalResults;
+                },
+
+                getTotalPages() {
+                    const pageSize = this.metadata.length || 30;
+                    const totalResults = this.metadata.numberOfNonSpecialist || 0;
+                    
+                    if (totalResults > 0) {
+                        return Math.ceil(totalResults / pageSize);
+                    }
+                    
+                    // If we don't have total count, estimate based on current page
+                    if (this.searchResults.length >= pageSize) {
+                        return this.currentPage + 1; // At least one more page
+                    }
+                    
+                    return this.currentPage;
                 }
             }
         }
