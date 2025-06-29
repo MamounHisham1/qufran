@@ -45,6 +45,11 @@ class QuranHadithController extends Controller
 
     public function showBook(string $book)
     {
+        // Special case: redirect Nawawi directly to first hadith
+        if ($book === 'nawawi') {
+            return redirect()->route('hadith.section', ['book' => 'nawawi', 'section' => 1]);
+        }
+
         $data = Http::get("https://cdn.jsdelivr.net/gh/fawazahmed0/hadith-api@1/editions/ara-{$book}.json")->json();
         $metadata = $data['metadata'];
         if ($book == 'muslim' || $metadata['sections'][0] == '') {
