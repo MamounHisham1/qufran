@@ -76,6 +76,20 @@
 
                 <!-- Hadith Section -->
                 <div x-show="active === 'hadith'" class="mt-4">
+                    <!-- Hadith Search Link -->
+                    <div class="mb-4 p-4 bg-gradient-to-r from-teal-500 to-teal-600 rounded-lg">
+                        <a href="{{ route('hadith-search.index') }}"
+                            class="block text-center text-white hover:text-yellow-200 transition-colors">
+                            <div class="flex items-center justify-center gap-2">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                </svg>
+                                <span class="font-bold text-lg">البحث في الأحاديث</span>
+                            </div>
+                            <p class="text-sm mt-1 text-teal-100">ابحث في موسوعة الأحاديث النبوية الشريفة</p>
+                        </a>
+                    </div>
+
                     <ul class="divide-y divide-teal-400">
                         @foreach ($books as $book)
                             <li>

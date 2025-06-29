@@ -25,6 +25,12 @@ $links = [
         'when' => fn() => true,
     ],
     [
+        'name' => 'البحث في الأحاديث',
+        'href' => route('hadith-search.index'),
+        'active' => request()->routeIs('hadith-search.*'),
+        'when' => fn() => true,
+    ],
+    [
         'name' => __('general.Teachers'),
         'href' => route('authors.index'),
         'active' => request()->routeIs('authors.index'),

@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 use App\Models\Chapter;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\AuthorController;
+use App\Http\Controllers\HadithSearchController;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -120,3 +121,6 @@ Route::get('/authors/{author}', [AuthorController::class, 'show'])->name('author
 
 Route::get('/blogs', [BlogController::class, 'index'])->name('blogs.index');
 Route::get('/blogs/{blog}', [BlogController::class, 'show'])->name('blogs.show');
+
+Route::get('/hadith-search', [HadithSearchController::class, 'index'])->name('hadith-search.index');
+Route::post('/hadith-search', [HadithSearchController::class, 'search'])->name('hadith-search.search');
