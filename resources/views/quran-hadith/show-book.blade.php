@@ -9,12 +9,20 @@
                             $number = $book == 'ibnmajah' ? $key : $key + 1;
                             
                             // تحديد ملف الترجمة المناسب بناءً على نوع الكتاب
-                            $translationFile = 'bukhari';
-                            if ($book == 'muslim') {
-                                $translationFile = 'muslim';
-                            } elseif ($book == 'abudawud') {
-                                $translationFile = 'abudawud';
-                            }
+                            $translationFile = match($book) {
+                                'bukhari' => 'bukhari',
+                                'muslim' => 'muslim',
+                                'abudawud' => 'abudawud',
+                                'tirmidhi' => 'tirmidhi',
+                                'nasai' => 'nasai',
+                                'ibnmajah' => 'ibnmajah',
+                                'malik' => 'malik',
+                                'nawawi' => 'nawawi',
+                                'qudsi' => 'qudsi',
+                                'dehlawi' => 'dehlawi',
+                                default => 'bukhari'
+                            };
+                            
                             // تنظيف النص من أي مسافات زائدة قد تؤثر على المفتاح
                             $cleanSection = trim($section);
                         @endphp
