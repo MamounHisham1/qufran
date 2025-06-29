@@ -572,21 +572,16 @@
                         });
 
                         const result = await response.json();
-                        console.log('API Response:', result);
 
                         if (result.success) {
                             this.searchResults = result.data.data || [];
                             this.metadata = result.data.metadata || {};
                             this.note = result.note || null;
-                            
-                            console.log('Search results:', this.searchResults);
-                            console.log('Metadata:', this.metadata);
                         } else {
                             this.error = result.message || 'حدث خطأ أثناء البحث';
                             this.searchResults = [];
                         }
                     } catch (error) {
-                        console.error('Search error:', error);
                         this.error = 'حدث خطأ في الاتصال. يرجى المحاولة مرة أخرى.';
                         this.searchResults = [];
                     } finally {
@@ -713,10 +708,28 @@
                 },
 
                 getFilterLabel(filterType, value) {
-                    const item = this.filterBooks().find(b => b.value === value) ||
-                                 this.filterScholars().find(s => s.value === value) ||
-                                 this.filterDegrees().find(d => d.value === value);
-                    return item ? item.key : value;
+                    let item;
+                    let dataSource;
+                    
+                    // Use raw data directly to avoid any potential issues with filter functions
+                    switch(filterType) {
+                        case 'books':
+                            dataSource = @json($books);
+                            item = dataSource.find(b => b.value === value);
+                            break;
+                        case 'scholars':
+                            dataSource = @json($scholars);
+                            item = dataSource.find(s => s.value === value);
+                            break;
+                        case 'degrees':
+                            dataSource = @json($degrees);
+                            item = dataSource.find(d => d.value === value);
+                            break;
+                        default:
+                            return value;
+                    }
+                    const result = item ? item.key : value;
+                    return result;
                 },
 
                 hasActiveFilters() {
