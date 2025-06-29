@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Cache;
 
 class HadithSearchController extends Controller
 {
-    private $apiUrl = 'http://localhost:5000';
+    private $apiUrl = 'https://localhost:5000';
 
     public function index()
     {
