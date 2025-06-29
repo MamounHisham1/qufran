@@ -88,20 +88,25 @@
                             <!-- Books Filter -->
                             <div class="space-y-3">
                                 <label class="block text-sm font-medium text-gray-700">الكتب</label>
-                                <div class="relative">
+                                <div class="relative" x-data="{ showBooks: false }">
                                     <!-- Search Input -->
                                     <input 
                                         type="text" 
                                         x-model="filterSearch.books"
-                                        placeholder="ابحث في الكتب..."
-                                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-teal-500 focus:border-teal-500 text-sm"
+                                        @click="showBooks = true; filterSearch.books = ''"
+                                        @keyup="showBooks = true"
+                                        placeholder="ابحث أو اختر كتاب..."
+                                        class="block w-full px-4 py-3 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-colors duration-200"
+                                        dir="rtl"
                                     >
-                                    <!-- Dropdown -->
-                                    <div x-show="filterSearch.books.length > 0 || showDropdown.books" 
-                                         @click.away="showDropdown.books = false"
-                                         class="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
+                                    
+                                    <!-- Dropdown List -->
+                                    <ul x-show="showBooks" 
+                                        @click.away="showBooks = false"
+                                        class="absolute z-50 mt-2 w-full bg-white rounded-lg shadow-xl border border-gray-200 max-h-60 overflow-y-auto">
+                                        
                                         <!-- Select All/None Controls -->
-                                        <div class="sticky top-0 bg-gray-50 border-b border-gray-200 px-3 py-2 flex justify-between items-center text-xs">
+                                        <li class="sticky top-0 bg-gray-50 border-b border-gray-200 px-4 py-2 flex justify-between items-center text-xs">
                                             <span class="text-gray-600" x-text="`${filters.books.length} من ${filterBooks().length} محدد`"></span>
                                             <div class="flex space-x-reverse space-x-2">
                                                 <button type="button" @click="selectAllFilters('books')" 
@@ -114,32 +119,26 @@
                                                     إلغاء الكل
                                                 </button>
                                             </div>
-                                        </div>
+                                        </li>
+                                        
                                         <!-- Filter Items -->
                                         <template x-for="book in filterBooks()" :key="book.value">
-                                            <div @click="toggleFilter('books', book)" 
-                                                 @keydown="handleKeydown($event, 'books', book)"
-                                                 tabindex="0"
-                                                 class="px-3 py-2 hover:bg-gray-50 cursor-pointer flex items-center justify-between focus:bg-blue-50 focus:outline-none"
-                                                 :class="{'bg-teal-50': filters.books.includes(book.value)}">
-                                                <span x-text="book.key" class="text-sm"></span>
+                                            <li @click="toggleFilter('books', book)" 
+                                                class="px-4 py-3 hover:bg-teal-50 cursor-pointer transition-colors duration-200 flex items-center justify-between"
+                                                :class="{'bg-teal-100': filters.books.includes(book.value)}">
+                                                <span x-text="book.key" class="text-sm text-gray-800" dir="rtl"></span>
                                                 <svg x-show="filters.books.includes(book.value)" class="w-4 h-4 text-teal-600" fill="currentColor" viewBox="0 0 20 20">
                                                     <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
                                                 </svg>
-                                            </div>
+                                            </li>
                                         </template>
-                                        <div x-show="filterBooks().length === 0" class="px-3 py-2 text-gray-500 text-sm">
+                                        
+                                        <li x-show="filterBooks().length === 0" class="px-4 py-3 text-gray-500 text-center text-sm">
                                             لا توجد نتائج
-                                        </div>
-                                    </div>
-                                    <!-- Toggle Dropdown Button -->
-                                    <button type="button" @click="showDropdown.books = !showDropdown.books"
-                                            class="absolute left-2 top-2 text-gray-400 hover:text-gray-600">
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                                        </svg>
-                                    </button>
+                                        </li>
+                                    </ul>
                                 </div>
+                                
                                 <!-- Selected Items -->
                                 <div x-show="filters.books.length > 0" class="flex flex-wrap gap-2 mt-2">
                                     <template x-for="bookId in filters.books" :key="bookId">
@@ -158,20 +157,25 @@
                             <!-- Scholars Filter -->
                             <div class="space-y-3">
                                 <label class="block text-sm font-medium text-gray-700">المحدثين</label>
-                                <div class="relative">
+                                <div class="relative" x-data="{ showScholars: false }">
                                     <!-- Search Input -->
                                     <input 
                                         type="text" 
                                         x-model="filterSearch.scholars"
-                                        placeholder="ابحث في المحدثين..."
-                                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-teal-500 focus:border-teal-500 text-sm"
+                                        @click="showScholars = true; filterSearch.scholars = ''"
+                                        @keyup="showScholars = true"
+                                        placeholder="ابحث أو اختر محدث..."
+                                        class="block w-full px-4 py-3 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-colors duration-200"
+                                        dir="rtl"
                                     >
-                                    <!-- Dropdown -->
-                                    <div x-show="filterSearch.scholars.length > 0 || showDropdown.scholars" 
-                                         @click.away="showDropdown.scholars = false"
-                                         class="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
+                                    
+                                    <!-- Dropdown List -->
+                                    <ul x-show="showScholars" 
+                                        @click.away="showScholars = false"
+                                        class="absolute z-50 mt-2 w-full bg-white rounded-lg shadow-xl border border-gray-200 max-h-60 overflow-y-auto">
+                                        
                                         <!-- Select All/None Controls -->
-                                        <div class="sticky top-0 bg-gray-50 border-b border-gray-200 px-3 py-2 flex justify-between items-center text-xs">
+                                        <li class="sticky top-0 bg-gray-50 border-b border-gray-200 px-4 py-2 flex justify-between items-center text-xs">
                                             <span class="text-gray-600" x-text="`${filters.scholars.length} من ${filterScholars().length} محدد`"></span>
                                             <div class="flex space-x-reverse space-x-2">
                                                 <button type="button" @click="selectAllFilters('scholars')" 
@@ -184,32 +188,26 @@
                                                     إلغاء الكل
                                                 </button>
                                             </div>
-                                        </div>
+                                        </li>
+                                        
                                         <!-- Filter Items -->
                                         <template x-for="scholar in filterScholars()" :key="scholar.value">
-                                            <div @click="toggleFilter('scholars', scholar)" 
-                                                 @keydown="handleKeydown($event, 'scholars', scholar)"
-                                                 tabindex="0"
-                                                 class="px-3 py-2 hover:bg-gray-50 cursor-pointer flex items-center justify-between focus:bg-blue-50 focus:outline-none"
-                                                 :class="{'bg-teal-50': filters.scholars.includes(scholar.value)}">
-                                                <span x-text="scholar.key" class="text-sm"></span>
-                                                <svg x-show="filters.scholars.includes(scholar.value)" class="w-4 h-4 text-teal-600" fill="currentColor" viewBox="0 0 20 20">
+                                            <li @click="toggleFilter('scholars', scholar)" 
+                                                class="px-4 py-3 hover:bg-blue-50 cursor-pointer transition-colors duration-200 flex items-center justify-between"
+                                                :class="{'bg-blue-100': filters.scholars.includes(scholar.value)}">
+                                                <span x-text="scholar.key" class="text-sm text-gray-800" dir="rtl"></span>
+                                                <svg x-show="filters.scholars.includes(scholar.value)" class="w-4 h-4 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
                                                     <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
                                                 </svg>
-                                            </div>
+                                            </li>
                                         </template>
-                                        <div x-show="filterScholars().length === 0" class="px-3 py-2 text-gray-500 text-sm">
+                                        
+                                        <li x-show="filterScholars().length === 0" class="px-4 py-3 text-gray-500 text-center text-sm">
                                             لا توجد نتائج
-                                        </div>
-                                    </div>
-                                    <!-- Toggle Dropdown Button -->
-                                    <button type="button" @click="showDropdown.scholars = !showDropdown.scholars"
-                                            class="absolute left-2 top-2 text-gray-400 hover:text-gray-600">
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                                        </svg>
-                                    </button>
+                                        </li>
+                                    </ul>
                                 </div>
+                                
                                 <!-- Selected Items -->
                                 <div x-show="filters.scholars.length > 0" class="flex flex-wrap gap-2 mt-2">
                                     <template x-for="scholarId in filters.scholars" :key="scholarId">
@@ -228,21 +226,26 @@
                             <!-- Degrees Filter -->
                             <div class="space-y-3">
                                 <label class="block text-sm font-medium text-gray-700">درجة الحديث</label>
-                                <div class="relative">
+                                <div class="relative" x-data="{ showDegrees: false }">
                                     <!-- Search Input -->
                                     <input 
                                         type="text" 
                                         x-model="filterSearch.degrees"
-                                        placeholder="ابحث في درجات الأحاديث..."
-                                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-teal-500 focus:border-teal-500 text-sm"
+                                        @click="showDegrees = true; filterSearch.degrees = ''"
+                                        @keyup="showDegrees = true"
+                                        placeholder="ابحث أو اختر درجة..."
+                                        class="block w-full px-4 py-3 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-colors duration-200"
+                                        dir="rtl"
                                     >
-                                    <!-- Dropdown -->
-                                    <div x-show="filterSearch.degrees.length > 0 || showDropdown.degrees" 
-                                         @click.away="showDropdown.degrees = false"
-                                         class="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
+                                    
+                                    <!-- Dropdown List -->
+                                    <ul x-show="showDegrees" 
+                                        @click.away="showDegrees = false"
+                                        class="absolute z-50 mt-2 w-full bg-white rounded-lg shadow-xl border border-gray-200 max-h-60 overflow-y-auto">
+                                        
                                         <!-- Select All/None Controls -->
-                                        <div class="sticky top-0 bg-gray-50 border-b border-gray-200 px-3 py-2 flex justify-between items-center text-xs">
-                                            <span class="text-gray-600" x-text="`${filters.degrees.length} من ${filteredDegrees.length} محدد`"></span>
+                                        <li class="sticky top-0 bg-gray-50 border-b border-gray-200 px-4 py-2 flex justify-between items-center text-xs">
+                                            <span class="text-gray-600" x-text="`${filters.degrees.length} من ${filterDegrees().length} محدد`"></span>
                                             <div class="flex space-x-reverse space-x-2">
                                                 <button type="button" @click="selectAllFilters('degrees')" 
                                                         class="text-blue-600 hover:text-blue-800 font-medium">
@@ -254,32 +257,26 @@
                                                     إلغاء الكل
                                                 </button>
                                             </div>
-                                        </div>
+                                        </li>
+                                        
                                         <!-- Filter Items -->
-                                        <template x-for="degree in filteredDegrees" :key="degree.value">
-                                            <div @click="toggleFilter('degrees', degree)" 
-                                                 @keydown="handleKeydown($event, 'degrees', degree)"
-                                                 tabindex="0"
-                                                 class="px-3 py-2 hover:bg-gray-50 cursor-pointer flex items-center justify-between focus:bg-blue-50 focus:outline-none"
-                                                 :class="{'bg-teal-50': filters.degrees.includes(degree.value)}">
-                                                <span x-text="degree.key" class="text-sm"></span>
-                                                <svg x-show="filters.degrees.includes(degree.value)" class="w-4 h-4 text-teal-600" fill="currentColor" viewBox="0 0 20 20">
+                                        <template x-for="degree in filterDegrees()" :key="degree.value">
+                                            <li @click="toggleFilter('degrees', degree)" 
+                                                class="px-4 py-3 hover:bg-green-50 cursor-pointer transition-colors duration-200 flex items-center justify-between"
+                                                :class="{'bg-green-100': filters.degrees.includes(degree.value)}">
+                                                <span x-text="degree.key" class="text-sm text-gray-800" dir="rtl"></span>
+                                                <svg x-show="filters.degrees.includes(degree.value)" class="w-4 h-4 text-green-600" fill="currentColor" viewBox="0 0 20 20">
                                                     <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
                                                 </svg>
-                                            </div>
+                                            </li>
                                         </template>
-                                        <div x-show="filteredDegrees.length === 0" class="px-3 py-2 text-gray-500 text-sm">
+                                        
+                                        <li x-show="filterDegrees().length === 0" class="px-4 py-3 text-gray-500 text-center text-sm">
                                             لا توجد نتائج
-                                        </div>
-                                    </div>
-                                    <!-- Toggle Dropdown Button -->
-                                    <button type="button" @click="showDropdown.degrees = !showDropdown.degrees"
-                                            class="absolute left-2 top-2 text-gray-400 hover:text-gray-600">
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                                        </svg>
-                                    </button>
+                                        </li>
+                                    </ul>
                                 </div>
+                                
                                 <!-- Selected Items -->
                                 <div x-show="filters.degrees.length > 0" class="flex flex-wrap gap-2 mt-2">
                                     <template x-for="degreeId in filters.degrees" :key="degreeId">
@@ -298,20 +295,25 @@
                             <!-- Narrators Filter -->
                             <div class="space-y-3">
                                 <label class="block text-sm font-medium text-gray-700">الرواة</label>
-                                <div class="relative">
+                                <div class="relative" x-data="{ showNarrators: false }">
                                     <!-- Search Input -->
                                     <input 
                                         type="text" 
                                         x-model="filterSearch.narrators"
-                                        placeholder="ابحث في الرواة..."
-                                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-teal-500 focus:border-teal-500 text-sm"
+                                        @click="showNarrators = true; filterSearch.narrators = ''"
+                                        @keyup="showNarrators = true"
+                                        placeholder="ابحث أو اختر راوي..."
+                                        class="block w-full px-4 py-3 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-colors duration-200"
+                                        dir="rtl"
                                     >
-                                    <!-- Dropdown -->
-                                    <div x-show="filterSearch.narrators.length > 0 || showDropdown.narrators" 
-                                         @click.away="showDropdown.narrators = false"
-                                         class="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
+                                    
+                                    <!-- Dropdown List -->
+                                    <ul x-show="showNarrators" 
+                                        @click.away="showNarrators = false"
+                                        class="absolute z-50 mt-2 w-full bg-white rounded-lg shadow-xl border border-gray-200 max-h-60 overflow-y-auto">
+                                        
                                         <!-- Select All/None Controls -->
-                                        <div class="sticky top-0 bg-gray-50 border-b border-gray-200 px-3 py-2 flex justify-between items-center text-xs">
+                                        <li class="sticky top-0 bg-gray-50 border-b border-gray-200 px-4 py-2 flex justify-between items-center text-xs">
                                             <span class="text-gray-600" x-text="`${filters.narrators.length} من ${filterNarrators().length} محدد`"></span>
                                             <div class="flex space-x-reverse space-x-2">
                                                 <button type="button" @click="selectAllFilters('narrators')" 
@@ -324,32 +326,26 @@
                                                     إلغاء الكل
                                                 </button>
                                             </div>
-                                        </div>
+                                        </li>
+                                        
                                         <!-- Filter Items -->
                                         <template x-for="narrator in filterNarrators()" :key="narrator.value">
-                                            <div @click="toggleFilter('narrators', narrator)" 
-                                                 @keydown="handleKeydown($event, 'narrators', narrator)"
-                                                 tabindex="0"
-                                                 class="px-3 py-2 hover:bg-gray-50 cursor-pointer flex items-center justify-between focus:bg-blue-50 focus:outline-none"
-                                                 :class="{'bg-teal-50': filters.narrators.includes(narrator.value)}">
-                                                <span x-text="narrator.key" class="text-sm"></span>
-                                                <svg x-show="filters.narrators.includes(narrator.value)" class="w-4 h-4 text-teal-600" fill="currentColor" viewBox="0 0 20 20">
+                                            <li @click="toggleFilter('narrators', narrator)" 
+                                                class="px-4 py-3 hover:bg-purple-50 cursor-pointer transition-colors duration-200 flex items-center justify-between"
+                                                :class="{'bg-purple-100': filters.narrators.includes(narrator.value)}">
+                                                <span x-text="narrator.key" class="text-sm text-gray-800" dir="rtl"></span>
+                                                <svg x-show="filters.narrators.includes(narrator.value)" class="w-4 h-4 text-purple-600" fill="currentColor" viewBox="0 0 20 20">
                                                     <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
                                                 </svg>
-                                            </div>
+                                            </li>
                                         </template>
-                                        <div x-show="filterNarrators().length === 0" class="px-3 py-2 text-gray-500 text-sm">
+                                        
+                                        <li x-show="filterNarrators().length === 0" class="px-4 py-3 text-gray-500 text-center text-sm">
                                             لا توجد نتائج
-                                        </div>
-                                    </div>
-                                    <!-- Toggle Dropdown Button -->
-                                    <button type="button" @click="showDropdown.narrators = !showDropdown.narrators"
-                                            class="absolute left-2 top-2 text-gray-400 hover:text-gray-600">
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                                        </svg>
-                                    </button>
+                                        </li>
+                                    </ul>
                                 </div>
+                                
                                 <!-- Selected Items -->
                                 <div x-show="filters.narrators.length > 0" class="flex flex-wrap gap-2 mt-2">
                                     <template x-for="narratorId in filters.narrators" :key="narratorId">
@@ -588,12 +584,6 @@
                     scholars: '',
                     degrees: '',
                     narrators: ''
-                },
-                showDropdown: {
-                    books: false,
-                    scholars: false,
-                    degrees: false,
-                    narrators: false
                 },
                 filteredBooks: [],
                 filteredScholars: [],
@@ -866,12 +856,6 @@
                         scholars: '',
                         degrees: '',
                         narrators: ''
-                    };
-                    this.showDropdown = {
-                        books: false,
-                        scholars: false,
-                        degrees: false,
-                        narrators: false
                     };
                 },
 
