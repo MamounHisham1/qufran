@@ -40,57 +40,390 @@
                     </div>
 
                     <!-- Advanced Filters -->
-                    <div x-show="showAdvanced" x-transition class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
-                        <!-- Books Filter -->
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">الكتب</label>
-                            <select x-model="filters.books" multiple class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-teal-500 focus:border-teal-500" size="4">
-                                @foreach($books as $book)
-                                    <option value="{{ $book['value'] }}">{{ $book['key'] }}</option>
-                                @endforeach
-                            </select>
+                    <div x-show="showAdvanced" x-transition class="space-y-6 mb-6">
+                        <!-- Filter Controls -->
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-lg font-semibold text-gray-800">الفلاتر المتقدمة</h3>
+                            <div class="flex items-center space-x-reverse space-x-2">
+                                <!-- Export/Import Filters -->
+                                <div class="flex items-center space-x-reverse space-x-1">
+                                    <button 
+                                        type="button"
+                                        @click="exportFilters()"
+                                        class="text-blue-600 hover:text-blue-800 text-xs font-medium px-2 py-1 border border-blue-300 rounded"
+                                        title="تصدير الفلاتر"
+                                    >
+                                        <svg class="w-3 h-3 inline ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                        </svg>
+                                        تصدير
+                                    </button>
+                                    <button 
+                                        type="button"
+                                        @click="importFilters()"
+                                        class="text-green-600 hover:text-green-800 text-xs font-medium px-2 py-1 border border-green-300 rounded"
+                                        title="استيراد الفلاتر"
+                                    >
+                                        <svg class="w-3 h-3 inline ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"></path>
+                                        </svg>
+                                        استيراد
+                                    </button>
+                                </div>
+                                <!-- Clear All Button -->
+                                <button 
+                                    type="button"
+                                    @click="clearAllFilters()"
+                                    class="text-red-600 hover:text-red-800 text-sm font-medium flex items-center px-3 py-1 border border-red-300 rounded"
+                                >
+                                    <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1-1H8a1 1 0 00-1 1v3M4 7h16"></path>
+                                    </svg>
+                                    مسح الكل
+                                </button>
+                            </div>
                         </div>
 
-                        <!-- Scholars Filter -->
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">المحدثين</label>
-                            <select x-model="filters.scholars" multiple class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-teal-500 focus:border-teal-500" size="4">
-                                @foreach($scholars as $scholar)
-                                    <option value="{{ $scholar['value'] }}">{{ $scholar['key'] }}</option>
-                                @endforeach
-                            </select>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- Books Filter -->
+                            <div class="space-y-3">
+                                <label class="block text-sm font-medium text-gray-700">الكتب</label>
+                                <div class="relative">
+                                    <!-- Search Input -->
+                                    <input 
+                                        type="text" 
+                                        x-model="filterSearch.books"
+                                        placeholder="ابحث في الكتب..."
+                                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-teal-500 focus:border-teal-500 text-sm"
+                                    >
+                                    <!-- Dropdown -->
+                                    <div x-show="filterSearch.books.length > 0 || showDropdown.books" 
+                                         @click.away="showDropdown.books = false"
+                                         class="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
+                                        <!-- Select All/None Controls -->
+                                        <div class="sticky top-0 bg-gray-50 border-b border-gray-200 px-3 py-2 flex justify-between items-center text-xs">
+                                            <span class="text-gray-600" x-text="`${filters.books.length} من ${filterBooks().length} محدد`"></span>
+                                            <div class="flex space-x-reverse space-x-2">
+                                                <button type="button" @click="selectAllFilters('books')" 
+                                                        class="text-blue-600 hover:text-blue-800 font-medium">
+                                                    تحديد الكل
+                                                </button>
+                                                <span class="text-gray-400">|</span>
+                                                <button type="button" @click="clearFilterType('books')" 
+                                                        class="text-red-600 hover:text-red-800 font-medium">
+                                                    إلغاء الكل
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <!-- Filter Items -->
+                                        <template x-for="book in filterBooks()" :key="book.value">
+                                            <div @click="toggleFilter('books', book)" 
+                                                 @keydown="handleKeydown($event, 'books', book)"
+                                                 tabindex="0"
+                                                 class="px-3 py-2 hover:bg-gray-50 cursor-pointer flex items-center justify-between focus:bg-blue-50 focus:outline-none"
+                                                 :class="{'bg-teal-50': filters.books.includes(book.value)}">
+                                                <span x-text="book.key" class="text-sm"></span>
+                                                <svg x-show="filters.books.includes(book.value)" class="w-4 h-4 text-teal-600" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                                </svg>
+                                            </div>
+                                        </template>
+                                        <div x-show="filterBooks().length === 0" class="px-3 py-2 text-gray-500 text-sm">
+                                            لا توجد نتائج
+                                        </div>
+                                    </div>
+                                    <!-- Toggle Dropdown Button -->
+                                    <button type="button" @click="showDropdown.books = !showDropdown.books"
+                                            class="absolute left-2 top-2 text-gray-400 hover:text-gray-600">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                                <!-- Selected Items -->
+                                <div x-show="filters.books.length > 0" class="flex flex-wrap gap-2 mt-2">
+                                    <template x-for="bookId in filters.books" :key="bookId">
+                                        <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-teal-100 text-teal-800">
+                                            <span x-text="getFilterLabel('books', bookId)"></span>
+                                            <button type="button" @click="removeFilter('books', bookId)" class="mr-1 text-teal-600 hover:text-teal-800">
+                                                <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                                                </svg>
+                                            </button>
+                                        </span>
+                                    </template>
+                                </div>
+                            </div>
+
+                            <!-- Scholars Filter -->
+                            <div class="space-y-3">
+                                <label class="block text-sm font-medium text-gray-700">المحدثين</label>
+                                <div class="relative">
+                                    <!-- Search Input -->
+                                    <input 
+                                        type="text" 
+                                        x-model="filterSearch.scholars"
+                                        placeholder="ابحث في المحدثين..."
+                                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-teal-500 focus:border-teal-500 text-sm"
+                                    >
+                                    <!-- Dropdown -->
+                                    <div x-show="filterSearch.scholars.length > 0 || showDropdown.scholars" 
+                                         @click.away="showDropdown.scholars = false"
+                                         class="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
+                                        <!-- Select All/None Controls -->
+                                        <div class="sticky top-0 bg-gray-50 border-b border-gray-200 px-3 py-2 flex justify-between items-center text-xs">
+                                            <span class="text-gray-600" x-text="`${filters.scholars.length} من ${filterScholars().length} محدد`"></span>
+                                            <div class="flex space-x-reverse space-x-2">
+                                                <button type="button" @click="selectAllFilters('scholars')" 
+                                                        class="text-blue-600 hover:text-blue-800 font-medium">
+                                                    تحديد الكل
+                                                </button>
+                                                <span class="text-gray-400">|</span>
+                                                <button type="button" @click="clearFilterType('scholars')" 
+                                                        class="text-red-600 hover:text-red-800 font-medium">
+                                                    إلغاء الكل
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <!-- Filter Items -->
+                                        <template x-for="scholar in filterScholars()" :key="scholar.value">
+                                            <div @click="toggleFilter('scholars', scholar)" 
+                                                 @keydown="handleKeydown($event, 'scholars', scholar)"
+                                                 tabindex="0"
+                                                 class="px-3 py-2 hover:bg-gray-50 cursor-pointer flex items-center justify-between focus:bg-blue-50 focus:outline-none"
+                                                 :class="{'bg-teal-50': filters.scholars.includes(scholar.value)}">
+                                                <span x-text="scholar.key" class="text-sm"></span>
+                                                <svg x-show="filters.scholars.includes(scholar.value)" class="w-4 h-4 text-teal-600" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                                </svg>
+                                            </div>
+                                        </template>
+                                        <div x-show="filterScholars().length === 0" class="px-3 py-2 text-gray-500 text-sm">
+                                            لا توجد نتائج
+                                        </div>
+                                    </div>
+                                    <!-- Toggle Dropdown Button -->
+                                    <button type="button" @click="showDropdown.scholars = !showDropdown.scholars"
+                                            class="absolute left-2 top-2 text-gray-400 hover:text-gray-600">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                                <!-- Selected Items -->
+                                <div x-show="filters.scholars.length > 0" class="flex flex-wrap gap-2 mt-2">
+                                    <template x-for="scholarId in filters.scholars" :key="scholarId">
+                                        <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                            <span x-text="getFilterLabel('scholars', scholarId)"></span>
+                                            <button type="button" @click="removeFilter('scholars', scholarId)" class="mr-1 text-blue-600 hover:text-blue-800">
+                                                <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                                                </svg>
+                                            </button>
+                                        </span>
+                                    </template>
+                                </div>
+                            </div>
+
+                            <!-- Degrees Filter -->
+                            <div class="space-y-3">
+                                <label class="block text-sm font-medium text-gray-700">درجة الحديث</label>
+                                <div class="relative">
+                                    <!-- Search Input -->
+                                    <input 
+                                        type="text" 
+                                        x-model="filterSearch.degrees"
+                                        placeholder="ابحث في درجات الأحاديث..."
+                                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-teal-500 focus:border-teal-500 text-sm"
+                                    >
+                                    <!-- Dropdown -->
+                                    <div x-show="filterSearch.degrees.length > 0 || showDropdown.degrees" 
+                                         @click.away="showDropdown.degrees = false"
+                                         class="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
+                                        <!-- Select All/None Controls -->
+                                        <div class="sticky top-0 bg-gray-50 border-b border-gray-200 px-3 py-2 flex justify-between items-center text-xs">
+                                            <span class="text-gray-600" x-text="`${filters.degrees.length} من ${filteredDegrees.length} محدد`"></span>
+                                            <div class="flex space-x-reverse space-x-2">
+                                                <button type="button" @click="selectAllFilters('degrees')" 
+                                                        class="text-blue-600 hover:text-blue-800 font-medium">
+                                                    تحديد الكل
+                                                </button>
+                                                <span class="text-gray-400">|</span>
+                                                <button type="button" @click="clearFilterType('degrees')" 
+                                                        class="text-red-600 hover:text-red-800 font-medium">
+                                                    إلغاء الكل
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <!-- Filter Items -->
+                                        <template x-for="degree in filteredDegrees" :key="degree.value">
+                                            <div @click="toggleFilter('degrees', degree)" 
+                                                 @keydown="handleKeydown($event, 'degrees', degree)"
+                                                 tabindex="0"
+                                                 class="px-3 py-2 hover:bg-gray-50 cursor-pointer flex items-center justify-between focus:bg-blue-50 focus:outline-none"
+                                                 :class="{'bg-teal-50': filters.degrees.includes(degree.value)}">
+                                                <span x-text="degree.key" class="text-sm"></span>
+                                                <svg x-show="filters.degrees.includes(degree.value)" class="w-4 h-4 text-teal-600" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                                </svg>
+                                            </div>
+                                        </template>
+                                        <div x-show="filteredDegrees.length === 0" class="px-3 py-2 text-gray-500 text-sm">
+                                            لا توجد نتائج
+                                        </div>
+                                    </div>
+                                    <!-- Toggle Dropdown Button -->
+                                    <button type="button" @click="showDropdown.degrees = !showDropdown.degrees"
+                                            class="absolute left-2 top-2 text-gray-400 hover:text-gray-600">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                                <!-- Selected Items -->
+                                <div x-show="filters.degrees.length > 0" class="flex flex-wrap gap-2 mt-2">
+                                    <template x-for="degreeId in filters.degrees" :key="degreeId">
+                                        <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                            <span x-text="getFilterLabel('degrees', degreeId)"></span>
+                                            <button type="button" @click="removeFilter('degrees', degreeId)" class="mr-1 text-green-600 hover:text-green-800">
+                                                <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                                                </svg>
+                                            </button>
+                                        </span>
+                                    </template>
+                                </div>
+                            </div>
+
+                            <!-- Narrators Filter -->
+                            <div class="space-y-3">
+                                <label class="block text-sm font-medium text-gray-700">الرواة</label>
+                                <div class="relative">
+                                    <!-- Search Input -->
+                                    <input 
+                                        type="text" 
+                                        x-model="filterSearch.narrators"
+                                        placeholder="ابحث في الرواة..."
+                                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-teal-500 focus:border-teal-500 text-sm"
+                                    >
+                                    <!-- Dropdown -->
+                                    <div x-show="filterSearch.narrators.length > 0 || showDropdown.narrators" 
+                                         @click.away="showDropdown.narrators = false"
+                                         class="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
+                                        <!-- Select All/None Controls -->
+                                        <div class="sticky top-0 bg-gray-50 border-b border-gray-200 px-3 py-2 flex justify-between items-center text-xs">
+                                            <span class="text-gray-600" x-text="`${filters.narrators.length} من ${filterNarrators().length} محدد`"></span>
+                                            <div class="flex space-x-reverse space-x-2">
+                                                <button type="button" @click="selectAllFilters('narrators')" 
+                                                        class="text-blue-600 hover:text-blue-800 font-medium">
+                                                    تحديد الكل
+                                                </button>
+                                                <span class="text-gray-400">|</span>
+                                                <button type="button" @click="clearFilterType('narrators')" 
+                                                        class="text-red-600 hover:text-red-800 font-medium">
+                                                    إلغاء الكل
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <!-- Filter Items -->
+                                        <template x-for="narrator in filterNarrators()" :key="narrator.value">
+                                            <div @click="toggleFilter('narrators', narrator)" 
+                                                 @keydown="handleKeydown($event, 'narrators', narrator)"
+                                                 tabindex="0"
+                                                 class="px-3 py-2 hover:bg-gray-50 cursor-pointer flex items-center justify-between focus:bg-blue-50 focus:outline-none"
+                                                 :class="{'bg-teal-50': filters.narrators.includes(narrator.value)}">
+                                                <span x-text="narrator.key" class="text-sm"></span>
+                                                <svg x-show="filters.narrators.includes(narrator.value)" class="w-4 h-4 text-teal-600" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                                </svg>
+                                            </div>
+                                        </template>
+                                        <div x-show="filterNarrators().length === 0" class="px-3 py-2 text-gray-500 text-sm">
+                                            لا توجد نتائج
+                                        </div>
+                                    </div>
+                                    <!-- Toggle Dropdown Button -->
+                                    <button type="button" @click="showDropdown.narrators = !showDropdown.narrators"
+                                            class="absolute left-2 top-2 text-gray-400 hover:text-gray-600">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                                <!-- Selected Items -->
+                                <div x-show="filters.narrators.length > 0" class="flex flex-wrap gap-2 mt-2">
+                                    <template x-for="narratorId in filters.narrators" :key="narratorId">
+                                        <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
+                                            <span x-text="getFilterLabel('narrators', narratorId)"></span>
+                                            <button type="button" @click="removeFilter('narrators', narratorId)" class="mr-1 text-purple-600 hover:text-purple-800">
+                                                <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                                                </svg>
+                                            </button>
+                                        </span>
+                                    </template>
+                                </div>
+                            </div>
+
+                            <!-- Search Zone -->
+                            <div class="space-y-3">
+                                <label class="block text-sm font-medium text-gray-700">نطاق البحث</label>
+                                <select x-model="filters.searchZone" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-teal-500 focus:border-teal-500 text-sm">
+                                    <option value="">جميع النطاقات</option>
+                                    @foreach($searchZones as $zone)
+                                        <option value="{{ $zone['value'] }}">{{ $zone['key'] }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <!-- Search Method -->
+                            <div class="space-y-3">
+                                <label class="block text-sm font-medium text-gray-700">طريقة البحث</label>
+                                <select x-model="filters.searchMethod" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-teal-500 focus:border-teal-500 text-sm">
+                                    <option value="">الطريقة الافتراضية</option>
+                                    @foreach($searchMethods as $method)
+                                        <option value="{{ $method['value'] }}">{{ $method['key'] }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
 
-                        <!-- Degrees Filter -->
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">درجة الحديث</label>
-                            <select x-model="filters.degrees" multiple class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-teal-500 focus:border-teal-500" size="4">
-                                @foreach($degrees as $degree)
-                                    <option value="{{ $degree['value'] }}">{{ $degree['key'] }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-
-                        <!-- Search Zone -->
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">نطاق البحث</label>
-                            <select x-model="filters.searchZone" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-teal-500 focus:border-teal-500">
-                                <option value="">جميع النطاقات</option>
-                                @foreach($searchZones as $zone)
-                                    <option value="{{ $zone['value'] }}">{{ $zone['key'] }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-
-                        <!-- Search Method -->
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">طريقة البحث</label>
-                            <select x-model="filters.searchMethod" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-teal-500 focus:border-teal-500">
-                                <option value="">الطريقة الافتراضية</option>
-                                @foreach($searchMethods as $method)
-                                    <option value="{{ $method['value'] }}">{{ $method['key'] }}</option>
-                                @endforeach
-                            </select>
+                        <!-- Active Filters Summary -->
+                        <div x-show="hasActiveFilters()" class="mt-6 p-4 bg-gray-50 rounded-lg">
+                            <div class="flex items-center justify-between mb-3">
+                                <h4 class="text-sm font-medium text-gray-700">الفلاتر المفعلة</h4>
+                                <span class="text-xs text-gray-500" x-text="`${getActiveFiltersCount()} فلتر مفعل`"></span>
+                            </div>
+                            <div class="flex flex-wrap gap-2">
+                                <!-- Books -->
+                                <template x-for="bookId in filters.books" :key="'summary-book-' + bookId">
+                                    <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-teal-100 text-teal-800">
+                                        كتاب: <span x-text="getFilterLabel('books', bookId)" class="mr-1"></span>
+                                        <button type="button" @click="removeFilter('books', bookId)" class="mr-1 text-teal-600 hover:text-teal-800">×</button>
+                                    </span>
+                                </template>
+                                <!-- Scholars -->
+                                <template x-for="scholarId in filters.scholars" :key="'summary-scholar-' + scholarId">
+                                    <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                        محدث: <span x-text="getFilterLabel('scholars', scholarId)" class="mr-1"></span>
+                                        <button type="button" @click="removeFilter('scholars', scholarId)" class="mr-1 text-blue-600 hover:text-blue-800">×</button>
+                                    </span>
+                                </template>
+                                <!-- Degrees -->
+                                <template x-for="degreeId in filters.degrees" :key="'summary-degree-' + degreeId">
+                                    <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                        درجة: <span x-text="getFilterLabel('degrees', degreeId)" class="mr-1"></span>
+                                        <button type="button" @click="removeFilter('degrees', degreeId)" class="mr-1 text-green-600 hover:text-green-800">×</button>
+                                    </span>
+                                </template>
+                                <!-- Narrators -->
+                                <template x-for="narratorId in filters.narrators" :key="'summary-narrator-' + narratorId">
+                                    <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
+                                        راوي: <span x-text="getFilterLabel('narrators', narratorId)" class="mr-1"></span>
+                                        <button type="button" @click="removeFilter('narrators', narratorId)" class="mr-1 text-purple-600 hover:text-purple-800">×</button>
+                                    </span>
+                                </template>
+                            </div>
                         </div>
                     </div>
 
@@ -249,6 +582,70 @@
                     narrators: [],
                     searchZone: '',
                     searchMethod: ''
+                },
+                filterSearch: {
+                    books: '',
+                    scholars: '',
+                    degrees: '',
+                    narrators: ''
+                },
+                showDropdown: {
+                    books: false,
+                    scholars: false,
+                    degrees: false,
+                    narrators: false
+                },
+                filteredBooks: [],
+                filteredScholars: [],
+                filteredDegrees: [],
+                filteredNarrators: [],
+
+                init() {
+                    // Initialize filter data only once
+                    this.filteredBooks = @json($books);
+                    this.filteredScholars = @json($scholars);
+                    this.filteredDegrees = @json($degrees);
+                    this.filteredNarrators = @json($narrators);
+                },
+
+                filterBooks() {
+                    const searchTerm = this.filterSearch.books.toLowerCase();
+                    if (!searchTerm) {
+                        return @json($books);
+                    }
+                    return @json($books).filter(book => 
+                        book.key.toLowerCase().includes(searchTerm)
+                    );
+                },
+
+                filterScholars() {
+                    const searchTerm = this.filterSearch.scholars.toLowerCase();
+                    if (!searchTerm) {
+                        return @json($scholars);
+                    }
+                    return @json($scholars).filter(scholar => 
+                        scholar.key.toLowerCase().includes(searchTerm)
+                    );
+                },
+
+                filterDegrees() {
+                    const searchTerm = this.filterSearch.degrees.toLowerCase();
+                    if (!searchTerm) {
+                        return @json($degrees);
+                    }
+                    return @json($degrees).filter(degree => 
+                        degree.key.toLowerCase().includes(searchTerm)
+                    );
+                },
+
+                filterNarrators() {
+                    const searchTerm = this.filterSearch.narrators.toLowerCase();
+                    if (!searchTerm) {
+                        return @json($narrators);
+                    }
+                    return @json($narrators).filter(narrator => 
+                        narrator.key.toLowerCase().includes(searchTerm)
+                    );
                 },
 
                 async performSearch() {
@@ -425,6 +822,137 @@
                     }
                     
                     return this.currentPage;
+                },
+
+                toggleFilter(filterType, item) {
+                    if (this.filters[filterType].includes(item.value)) {
+                        this.filters[filterType] = this.filters[filterType].filter(i => i !== item.value);
+                    } else {
+                        this.filters[filterType].push(item.value);
+                    }
+                },
+
+                removeFilter(filterType, value) {
+                    this.filters[filterType] = this.filters[filterType].filter(v => v !== value);
+                },
+
+                getFilterLabel(filterType, value) {
+                    const item = this.filterBooks().find(b => b.value === value) ||
+                                 this.filterScholars().find(s => s.value === value) ||
+                                 this.filterDegrees().find(d => d.value === value) ||
+                                 this.filterNarrators().find(n => n.value === value);
+                    return item ? item.key : value;
+                },
+
+                hasActiveFilters() {
+                    return Object.values(this.filters).some(filter => filter.length > 0);
+                },
+
+                getActiveFiltersCount() {
+                    return Object.values(this.filters).reduce((count, filter) => count + filter.length, 0);
+                },
+
+                clearAllFilters() {
+                    this.filters = {
+                        books: [],
+                        scholars: [],
+                        degrees: [],
+                        narrators: [],
+                        searchZone: '',
+                        searchMethod: ''
+                    };
+                    this.filterSearch = {
+                        books: '',
+                        scholars: '',
+                        degrees: '',
+                        narrators: ''
+                    };
+                    this.showDropdown = {
+                        books: false,
+                        scholars: false,
+                        degrees: false,
+                        narrators: false
+                    };
+                },
+
+                selectAllFilters(filterType) {
+                    const allItems = this.getFilterData(filterType);
+                    this.filters[filterType] = allItems.map(item => item.value);
+                },
+
+                clearFilterType(filterType) {
+                    this.filters[filterType] = [];
+                },
+
+                getFilterData(filterType) {
+                    switch(filterType) {
+                        case 'books': return this.filterBooks();
+                        case 'scholars': return this.filterScholars();
+                        case 'degrees': return this.filterDegrees();
+                        case 'narrators': return this.filterNarrators();
+                        default: return [];
+                    }
+                },
+
+                handleKeydown(event, filterType, item) {
+                    if (event.key === 'Enter' || event.key === ' ') {
+                        event.preventDefault();
+                        this.toggleFilter(filterType, item);
+                    }
+                },
+
+                getFilterTypeLabel(filterType) {
+                    const labels = {
+                        books: 'الكتب',
+                        scholars: 'المحدثين',
+                        degrees: 'درجات الأحاديث',
+                        narrators: 'الرواة'
+                    };
+                    return labels[filterType] || filterType;
+                },
+
+                exportFilters() {
+                    const activeFilters = {};
+                    Object.keys(this.filters).forEach(key => {
+                        if (this.filters[key].length > 0 || this.filters[key] !== '') {
+                            activeFilters[key] = this.filters[key];
+                        }
+                    });
+                    
+                    const filterString = JSON.stringify(activeFilters);
+                    if (navigator.clipboard) {
+                        navigator.clipboard.writeText(filterString).then(() => {
+                            alert('تم نسخ الفلاتر إلى الحافظة');
+                        }).catch(() => {
+                            prompt('انسخ الفلاتر من هنا:', filterString);
+                        });
+                    } else {
+                        prompt('انسخ الفلاتر من هنا:', filterString);
+                    }
+                },
+
+                importFilters() {
+                    const filterString = prompt('الصق الفلاتر المحفوظة:');
+                    if (filterString) {
+                        try {
+                            const importedFilters = JSON.parse(filterString);
+                            this.filters = { ...this.filters, ...importedFilters };
+                        } catch (error) {
+                            alert('خطأ في تنسيق الفلاتر');
+                        }
+                    }
+                },
+
+                isFilterSelected(filterType, value) {
+                    return this.filters[filterType].includes(value);
+                },
+
+                getSelectedCount(filterType) {
+                    return this.filters[filterType].length;
+                },
+
+                getTotalFilterCount(filterType) {
+                    return this.getFilterData(filterType).length;
                 }
             }
         }

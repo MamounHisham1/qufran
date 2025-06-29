@@ -122,7 +122,7 @@ class HadithSearchController extends Controller
                     
                     return response()->json([
                         'success' => false,
-                        'message' => 'تم تجاوز حد الطلبات المسموح (100 طلب لكل 24 ساعة). يرجى المحاولة مرة أخرى بعد 24 ساعة.'
+                        'message' => 'تم تجاوز حد الطلبات المسموح (500 طلب لكل 24 ساعة). يرجى المحاولة مرة أخرى بعد 24 ساعة.'
                     ]);
                 } else {
                     Log::error('API request failed with status: ' . $response->status());
