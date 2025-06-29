@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Cache;
 
 class HadithSearchController extends Controller
 {
-    private $apiUrl = 'https://localhost:5000';
+    private $apiUrl = 'http://localhost:5000'\;
 
     public function index()
     {
@@ -148,144 +148,102 @@ class HadithSearchController extends Controller
     private function getBooks()
     {
         return Cache::remember('hadith_books', 3600, function () {
-            try {
-                $response = Http::timeout(10)->get("{$this->apiUrl}/v1/data/book");
-                if ($response->successful()) {
-                    $data = $response->json();
-                    if (isset($data['data']) && is_array($data['data'])) {
-                        return array_map(function($item) {
-                            return [
-                                'key' => $item['value'],
-                                'value' => $item['key']
-                            ];
-                        }, $data['data']);
-                    }
-                }
-                return [];
-            } catch (\Exception $e) {
-                Log::error('Error fetching books: ' . $e->getMessage());
-                return [];
+            $response = Http::timeout(10)->get("{$this->apiUrl}/v1/data/book");
+            $data = $response->json();
+            if (isset($data['data']) && is_array($data['data'])) {
+                return array_map(function($item) {
+                    return [
+                        'key' => $item['value'],
+                        'value' => $item['key']
+                    ];
+                }, $data['data']);
             }
+            return [];
         });
     }
 
     private function getScholars()
     {
         return Cache::remember('hadith_scholars', 3600, function () {
-            try {
-                $response = Http::timeout(10)->get("{$this->apiUrl}/v1/data/mohdith");
-                if ($response->successful()) {
-                    $data = $response->json();
-                    if (isset($data['data']) && is_array($data['data'])) {
-                        return array_map(function($item) {
-                            return [
-                                'key' => $item['value'],
-                                'value' => $item['key']
-                            ];
-                        }, $data['data']);
-                    }
-                }
-                return [];
-            } catch (\Exception $e) {
-                Log::error('Error fetching scholars: ' . $e->getMessage());
-                return [];
+            $response = Http::timeout(10)->get("{$this->apiUrl}/v1/data/mohdith");
+            $data = $response->json();
+            if (isset($data['data']) && is_array($data['data'])) {
+                return array_map(function($item) {
+                    return [
+                        'key' => $item['value'],
+                        'value' => $item['key']
+                    ];
+                }, $data['data']);
             }
+            return [];
         });
     }
 
     private function getDegrees()
     {
         return Cache::remember('hadith_degrees', 3600, function () {
-            try {
-                $response = Http::timeout(10)->get("{$this->apiUrl}/v1/data/degree");
-                if ($response->successful()) {
-                    $data = $response->json();
-                    if (isset($data['data']) && is_array($data['data'])) {
-                        return array_map(function($item) {
-                            return [
-                                'key' => $item['value'],
-                                'value' => $item['key']
-                            ];
-                        }, $data['data']);
-                    }
-                }
-                return [];
-            } catch (\Exception $e) {
-                Log::error('Error fetching degrees: ' . $e->getMessage());
-                return [];
+            $response = Http::timeout(10)->get("{$this->apiUrl}/v1/data/degree");
+            $data = $response->json();
+            if (isset($data['data']) && is_array($data['data'])) {
+                return array_map(function($item) {
+                    return [
+                        'key' => $item['value'],
+                        'value' => $item['key']
+                    ];
+                }, $data['data']);
             }
+            return [];
         });
     }
 
     private function getNarrators()
     {
         return Cache::remember('hadith_narrators', 3600, function () {
-            try {
-                $response = Http::timeout(10)->get("{$this->apiUrl}/v1/data/rawi");
-                if ($response->successful()) {
-                    $data = $response->json();
-                    if (isset($data['data']) && is_array($data['data'])) {
-                        return array_map(function($item) {
-                            return [
-                                'key' => $item['value'],
-                                'value' => $item['key']
-                            ];
-                        }, $data['data']);
-                    }
-                }
-                return [];
-            } catch (\Exception $e) {
-                Log::error('Error fetching narrators: ' . $e->getMessage());
-                return [];
+            $response = Http::timeout(10)->get("{$this->apiUrl}/v1/data/rawi");
+            $data = $response->json();
+            if (isset($data['data']) && is_array($data['data'])) {
+                return array_map(function($item) {
+                    return [
+                        'key' => $item['value'],
+                        'value' => $item['key']
+                    ];
+                }, $data['data']);
             }
+            return [];
         });
     }
 
     private function getSearchZones()
     {
         return Cache::remember('hadith_search_zones', 3600, function () {
-            try {
-                $response = Http::timeout(10)->get("{$this->apiUrl}/v1/data/zoneSearch");
-                if ($response->successful()) {
-                    $data = $response->json();
-                    if (isset($data['data']) && is_array($data['data'])) {
-                        return array_map(function($item) {
-                            return [
-                                'key' => $item['value'],
-                                'value' => $item['key']
-                            ];
-                        }, $data['data']);
-                    }
-                }
-                return [];
-            } catch (\Exception $e) {
-                Log::error('Error fetching search zones: ' . $e->getMessage());
-                return [];
+            $response = Http::timeout(10)->get("{$this->apiUrl}/v1/data/zoneSearch");
+            $data = $response->json();
+            if (isset($data['data']) && is_array($data['data'])) {
+                return array_map(function($item) {
+                    return [
+                        'key' => $item['value'],
+                        'value' => $item['key']
+                    ];
+                }, $data['data']);
             }
+            return [];
         });
     }
 
     private function getSearchMethods()
     {
         return Cache::remember('hadith_search_methods', 3600, function () {
-            try {
-                $response = Http::timeout(10)->get("{$this->apiUrl}/v1/data/methodSearch");
-                if ($response->successful()) {
-                    $data = $response->json();
-                    if (isset($data['data']) && is_array($data['data'])) {
-                        return array_map(function($item) {
-                            return [
-                                'key' => $item['value'],
-                                'value' => $item['key']
-                            ];
-                        }, $data['data']);
-                    }
-                }
-                return [];
-            } catch (\Exception $e) {
-                Log::error('Error fetching search methods: ' . $e->getMessage());
-                return [];
+            $response = Http::timeout(10)->get("{$this->apiUrl}/v1/data/methodSearch");
+            $data = $response->json();
+            if (isset($data['data']) && is_array($data['data'])) {
+                return array_map(function($item) {
+                    return [
+                        'key' => $item['value'],
+                        'value' => $item['key']
+                    ];
+                }, $data['data']);
             }
+            return [];
         });
     }
 }
