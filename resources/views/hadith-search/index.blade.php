@@ -223,7 +223,7 @@
                                 </div>
                             </div>
 
-                            <!-- Degrees Filter -->
+                            <!-- Hadith Grade Filter -->
                             <div class="space-y-3">
                                 <label class="block text-sm font-medium text-gray-700">درجة الحديث</label>
                                 <div class="relative" x-data="{ showDegrees: false }">
@@ -292,90 +292,10 @@
                                 </div>
                             </div>
 
-                            <!-- Narrators Filter -->
-                            <div class="space-y-3">
-                                <label class="block text-sm font-medium text-gray-700">الرواة</label>
-                                <div class="relative" x-data="{ showNarrators: false }">
-                                    <!-- Search Input -->
-                                    <input 
-                                        type="text" 
-                                        x-model="filterSearch.narrators"
-                                        @click="showNarrators = true; filterSearch.narrators = ''"
-                                        @keyup="showNarrators = true"
-                                        placeholder="ابحث أو اختر راوي..."
-                                        class="block w-full px-4 py-3 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-colors duration-200"
-                                        dir="rtl"
-                                    >
-                                    
-                                    <!-- Dropdown List -->
-                                    <ul x-show="showNarrators" 
-                                        @click.away="showNarrators = false"
-                                        class="absolute z-50 mt-2 w-full bg-white rounded-lg shadow-xl border border-gray-200 max-h-60 overflow-y-auto">
-                                        
-                                        <!-- Select All/None Controls -->
-                                        <li class="sticky top-0 bg-gray-50 border-b border-gray-200 px-4 py-2 flex justify-between items-center text-xs">
-                                            <span class="text-gray-600" x-text="`${filters.narrators.length} من ${filterNarrators().length} محدد`"></span>
-                                            <div class="flex space-x-reverse space-x-2">
-                                                <button type="button" @click="selectAllFilters('narrators')" 
-                                                        class="text-blue-600 hover:text-blue-800 font-medium">
-                                                    تحديد الكل
-                                                </button>
-                                                <span class="text-gray-400">|</span>
-                                                <button type="button" @click="clearFilterType('narrators')" 
-                                                        class="text-red-600 hover:text-red-800 font-medium">
-                                                    إلغاء الكل
-                                                </button>
-                                            </div>
-                                        </li>
-                                        
-                                        <!-- Filter Items -->
-                                        <template x-for="narrator in filterNarrators()" :key="narrator.value">
-                                            <li @click="toggleFilter('narrators', narrator)" 
-                                                class="px-4 py-3 hover:bg-purple-50 cursor-pointer transition-colors duration-200 flex items-center justify-between"
-                                                :class="{'bg-purple-100': filters.narrators.includes(narrator.value)}">
-                                                <span x-text="narrator.key" class="text-sm text-gray-800" dir="rtl"></span>
-                                                <svg x-show="filters.narrators.includes(narrator.value)" class="w-4 h-4 text-purple-600" fill="currentColor" viewBox="0 0 20 20">
-                                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
-                                                </svg>
-                                            </li>
-                                        </template>
-                                        
-                                        <li x-show="filterNarrators().length === 0" class="px-4 py-3 text-gray-500 text-center text-sm">
-                                            لا توجد نتائج
-                                        </li>
-                                    </ul>
-                                </div>
-                                
-                                <!-- Selected Items -->
-                                <div x-show="filters.narrators.length > 0" class="flex flex-wrap gap-2 mt-2">
-                                    <template x-for="narratorId in filters.narrators" :key="narratorId">
-                                        <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
-                                            <span x-text="getFilterLabel('narrators', narratorId)"></span>
-                                            <button type="button" @click="removeFilter('narrators', narratorId)" class="mr-1 text-purple-600 hover:text-purple-800">
-                                                <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                                                    <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
-                                                </svg>
-                                            </button>
-                                        </span>
-                                    </template>
-                                </div>
-                            </div>
-
-                            <!-- Search Zone -->
-                            <div class="space-y-3">
-                                <label class="block text-sm font-medium text-gray-700">نطاق البحث</label>
-                                <select x-model="filters.searchZone" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-teal-500 focus:border-teal-500 text-sm">
-                                    <option value="">جميع النطاقات</option>
-                                    @foreach($searchZones as $zone)
-                                        <option value="{{ $zone['value'] }}">{{ $zone['key'] }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-
                             <!-- Search Method -->
                             <div class="space-y-3">
                                 <label class="block text-sm font-medium text-gray-700">طريقة البحث</label>
-                                <select x-model="filters.searchMethod" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-teal-500 focus:border-teal-500 text-sm">
+                                <select x-model="filters.searchMethod" class="block w-full px-4 py-3 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-colors duration-200">
                                     <option value="">الطريقة الافتراضية</option>
                                     @foreach($searchMethods as $method)
                                         <option value="{{ $method['value'] }}">{{ $method['key'] }}</option>
@@ -410,13 +330,6 @@
                                     <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
                                         درجة: <span x-text="getFilterLabel('degrees', degreeId)" class="mr-1"></span>
                                         <button type="button" @click="removeFilter('degrees', degreeId)" class="mr-1 text-green-600 hover:text-green-800">×</button>
-                                    </span>
-                                </template>
-                                <!-- Narrators -->
-                                <template x-for="narratorId in filters.narrators" :key="'summary-narrator-' + narratorId">
-                                    <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
-                                        راوي: <span x-text="getFilterLabel('narrators', narratorId)" class="mr-1"></span>
-                                        <button type="button" @click="removeFilter('narrators', narratorId)" class="mr-1 text-purple-600 hover:text-purple-800">×</button>
                                     </span>
                                 </template>
                             </div>
@@ -575,27 +488,22 @@
                     books: [],
                     scholars: [],
                     degrees: [],
-                    narrators: [],
-                    searchZone: '',
                     searchMethod: ''
                 },
                 filterSearch: {
                     books: '',
                     scholars: '',
                     degrees: '',
-                    narrators: ''
                 },
                 filteredBooks: [],
                 filteredScholars: [],
                 filteredDegrees: [],
-                filteredNarrators: [],
 
                 init() {
                     // Initialize filter data only once
                     this.filteredBooks = @json($books);
                     this.filteredScholars = @json($scholars);
                     this.filteredDegrees = @json($degrees);
-                    this.filteredNarrators = @json($narrators);
                 },
 
                 filterBooks() {
@@ -628,16 +536,6 @@
                     );
                 },
 
-                filterNarrators() {
-                    const searchTerm = this.filterSearch.narrators.toLowerCase();
-                    if (!searchTerm) {
-                        return @json($narrators);
-                    }
-                    return @json($narrators).filter(narrator => 
-                        narrator.key.toLowerCase().includes(searchTerm)
-                    );
-                },
-
                 async performSearch() {
                     if (!this.searchQuery.trim()) return;
 
@@ -660,12 +558,6 @@
                         }
                         if (this.filters.degrees.length > 0) {
                             this.filters.degrees.forEach(degree => formData.append('degrees[]', degree));
-                        }
-                        if (this.filters.narrators.length > 0) {
-                            this.filters.narrators.forEach(narrator => formData.append('narrators[]', narrator));
-                        }
-                        if (this.filters.searchZone) {
-                            formData.append('search_zone', this.filters.searchZone);
                         }
                         if (this.filters.searchMethod) {
                             formData.append('search_method', this.filters.searchMethod);
@@ -722,12 +614,6 @@
                         }
                         if (this.filters.degrees.length > 0) {
                             this.filters.degrees.forEach(degree => formData.append('degrees[]', degree));
-                        }
-                        if (this.filters.narrators.length > 0) {
-                            this.filters.narrators.forEach(narrator => formData.append('narrators[]', narrator));
-                        }
-                        if (this.filters.searchZone) {
-                            formData.append('search_zone', this.filters.searchZone);
                         }
                         if (this.filters.searchMethod) {
                             formData.append('search_method', this.filters.searchMethod);
@@ -829,8 +715,7 @@
                 getFilterLabel(filterType, value) {
                     const item = this.filterBooks().find(b => b.value === value) ||
                                  this.filterScholars().find(s => s.value === value) ||
-                                 this.filterDegrees().find(d => d.value === value) ||
-                                 this.filterNarrators().find(n => n.value === value);
+                                 this.filterDegrees().find(d => d.value === value);
                     return item ? item.key : value;
                 },
 
@@ -847,15 +732,12 @@
                         books: [],
                         scholars: [],
                         degrees: [],
-                        narrators: [],
-                        searchZone: '',
                         searchMethod: ''
                     };
                     this.filterSearch = {
                         books: '',
                         scholars: '',
-                        degrees: '',
-                        narrators: ''
+                        degrees: ''
                     };
                 },
 
@@ -873,7 +755,6 @@
                         case 'books': return this.filterBooks();
                         case 'scholars': return this.filterScholars();
                         case 'degrees': return this.filterDegrees();
-                        case 'narrators': return this.filterNarrators();
                         default: return [];
                     }
                 },
@@ -889,8 +770,7 @@
                     const labels = {
                         books: 'الكتب',
                         scholars: 'المحدثين',
-                        degrees: 'درجات الأحاديث',
-                        narrators: 'الرواة'
+                        degrees: 'درجات الأحاديث'
                     };
                     return labels[filterType] || filterType;
                 },
