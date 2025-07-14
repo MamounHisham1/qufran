@@ -80,13 +80,6 @@
                             @endforeach
                         </p>
                     </div>
-
-                    <!-- Mushaf Footer -->
-                    <div class="text-center mt-8 pt-4 border-t border-amber-200">
-                        <p class="text-amber-700 font-semibold text-lg mushaf-text">
-                            صَدَقَ ٱللَّهُ ٱلۡعَظِيمُ
-                        </p>
-                    </div>
                 </div>
 
                 <!-- Translation Section (Separate from Mushaf) -->

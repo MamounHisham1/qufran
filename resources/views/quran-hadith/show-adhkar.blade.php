@@ -16,7 +16,7 @@
             <div class="mt-6">
                 <ul class="space-y-10">
                     @foreach ($adhkar as $index => $dhikr)
-                        <li class="dhikr-card" x-data="dhikrCard()"
+                        <li class="dhikr-card" x-data="dhikrCard({{ $index }}, {{ (int) $dhikr['count'] }})"
                             :class="{ 'bg-green-100 border-green-400': completed, 'bg-white border-gray-200': !completed }"
                             class="text-center relative overflow-hidden rounded-xl border-2 shadow-lg transition-all duration-300 ease-in-out p-1">
 
@@ -142,11 +142,11 @@
         rel="stylesheet">
 
     <script>
-        function dhikrCard() {
+        function dhikrCard(index, count) {
             return {
-                dhikrId: '{{ $name }}_dhikr_{{ $index }}',
-                count: @js((int) $dhikr['count']),
-                originalCount: @js((int) $dhikr['count']),
+                dhikrId: '{{ $name }}_dhikr_' + index,
+                count: count,
+                originalCount: count,
                 completed: false,
 
                 init() {
