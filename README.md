@@ -26,24 +26,34 @@ To make Islamic knowledge accessible to Muslims worldwide through modern technol
 ## ✨ Features
 
 ### 📚 Islamic Content
-- **Holy Quran**: Complete Quran with Arabic text and tafseer
+- **Holy Quran**: Complete Quran with Arabic text, tafseer, and audio recitations
 - **Hadith Collections**: Authentic hadith from major collections (Bukhari, Muslim, Abu Dawud, etc.)
 - **Daily Adhkar**: Morning and evening remembrance with interactive counters
-- **Islamic Lessons**: Educational content by renowned scholars
+- **Islamic Lessons**: Multi-format educational content (articles, videos, audio) by renowned scholars
 - **Fatawa**: Islamic rulings and answers to religious questions
+- **Blog**: Multi-section blog posts and articles
+- **Scholar Profiles**: Detailed information about Islamic scholars and authors
 
 ### 🎓 Educational Tools
-- **Interactive Examinations**: Test your Islamic knowledge
-- **Audio Support**: Listen to Quran recitations
-- **Search Functionality**: Advanced search through hadith collections
-- **Category Organization**: Content organized by topics and categories
+- **Interactive Examinations**: Test your Islamic knowledge with time-restricted quizzes and exams
+- **Audio Support**: Listen to Quran recitations and audio lessons
+- **Video Lessons**: Watch educational videos from renowned scholars
+- **Advanced Hadith Search**: Sophisticated search through hadith collections with multiple filters (books, scholars, degrees, narrators, search zones, and methods)
+- **Category Organization**: Content organized by topics and categories with hierarchical structure
+- **Multiple Content Types**: Support for articles, videos, audio, images, and fatawa
+- **Progress Tracking**: Monitor your learning journey and completed activities
 
 ### 👨‍💼 Admin Features
 - **Content Management**: Full CRUD operations for all content types
 - **User Management**: User roles and permissions
-- **Blog System**: Multi-section blog posts and articles
 - **Suggestions System**: Community suggestions and feedback
+- **Examination Management**: Create and manage interactive quizzes with questions and answers
 - **Analytics Dashboard**: Track user engagement and content performance
+- **Flexible Post Types**: Manage different content types (articles, videos, audio, images, fatawa)
+- **Category Management**: Organize content with a hierarchical category system
+- **Blog Management**: Create and manage multi-section blog posts
+- **Scholar Management**: Manage author profiles and their content
+- **Settings Management**: Configure application settings for different pages
 
 ### 🌟 User Experience
 - **Responsive Design**: Optimized for desktop, tablet, and mobile
@@ -51,6 +61,8 @@ To make Islamic knowledge accessible to Muslims worldwide through modern technol
 - **Prayer Times**: Local prayer time integration
 - **Daily Reminders**: Automated adhkar reminders
 - **Progress Tracking**: Track your learning progress and completed adhkar
+- **Exam Completion Tracking**: Track completed examinations and view results
+- **Interactive Adhkar Counters**: Interactive counters for daily remembrance
 
 ## 🛠️ Technology Stack
 
@@ -126,16 +138,25 @@ Visit `http://localhost:8000` to access the application.
 
 ### For Users
 1. **Browse Content**: Explore Quran, Hadith, and Islamic lessons
-2. **Daily Adhkar**: Access morning and evening remembrance with counters
+2. **Daily Adhkar**: Access morning and evening remembrance with interactive counters
 3. **Take Exams**: Test your Islamic knowledge with interactive quizzes
-4. **Search**: Find specific hadith or topics using the search feature
+4. **Search**: Find specific hadith or topics using the advanced search feature with multiple filters
 5. **Track Progress**: Monitor your learning journey and completed activities
+6. **Read Blogs**: Read articles and posts on various Islamic topics
+7. **Listen to Audio**: Access Quran recitations and audio lessons
+8. **Watch Videos**: View educational video content from scholars
+9. **View Scholar Profiles**: Learn about different Islamic scholars and their contributions
+10. **Submit Suggestions**: Provide feedback and suggestions to improve the platform
 
 ### For Administrators
 1. **Access Admin Panel**: Visit `/admin` and login with admin credentials
-2. **Manage Content**: Add, edit, or remove Islamic content
+2. **Manage Content**: Add, edit, or remove Islamic content (articles, videos, audio, images, fatawa)
 3. **User Management**: Manage user accounts and permissions
-4. **Analytics**: View platform usage statistics and user engagement
+4. **Examination Management**: Create and manage interactive quizzes with questions and answers
+5. **Category Management**: Organize content with hierarchical categories
+6. **Analytics**: View platform usage statistics and user engagement
+7. **Suggestions Management**: Review and respond to community feedback
+8. **Settings Management**: Configure application settings for different pages
 
 ## 🗂️ Project Structure
 
@@ -143,42 +164,55 @@ Visit `http://localhost:8000` to access the application.
 qufran/
 ├── app/
 │   ├── Filament/          # Admin panel resources
+│   │   └── Resources/     # CRUD resources for admin panel
 │   ├── Http/Controllers/  # Application controllers
-│   ├── Models/           # Eloquent models
-│   └── ...
+│   ├── Models/            # Eloquent models
+│   └── ...                # Other application components
 ├── database/
-│   ├── migrations/       # Database migrations
-│   ├── seeders/         # Database seeders
-│   └── factories/       # Model factories
+│   ├── migrations/        # Database migrations
+│   ├── seeders/          # Database seeders
+│   └── factories/        # Model factories
 ├── resources/
-│   ├── views/           # Blade templates
-│   ├── css/            # Stylesheets
-│   └── js/             # JavaScript files
+│   ├── views/            # Blade templates
+│   ├── css/             # Stylesheets
+│   └── js/              # JavaScript files
 ├── routes/
-│   ├── web.php         # Web routes
-│   └── auth.php        # Authentication routes
-└── public/
-    ├── images/         # Static images
-    └── ...
+│   ├── web.php          # Web routes
+│   └── auth.php         # Authentication routes
+├── public/
+│   ├── images/          # Static images
+│   └── ...              # Other public assets
+└── tests/               # Application tests
 ```
 
 ## 🎨 Key Components
 
 ### Models
 - `User` - User management and authentication
-- `Post` - Lessons, fatawa, and blog posts
+- `Post` - Multi-type content (lessons, fatawa, articles, videos, audio)
+- `Blog` - Multi-section blog posts and articles
+- `Section` - A section within a blog post
 - `Author` - Islamic scholars and content creators
-- `Category` - Content categorization
-- `Examination` - Quiz and test system
+- `Category` - Content categorization with hierarchical structure
+- `Examination` - Quiz and test system with time restrictions
+- `Question` - Questions for examinations
+- `Answer` - Answers for examination questions
 - `Chapter` & `Verse` - Quran structure
+- `Reciter` - Quran reciters with audio URLs
 - `Suggestion` - Community feedback
+- `Setting` - Application settings for different pages
 
 ### Controllers
 - `HomeController` - Main dashboard and homepage
-- `QuranHadithController` - Quran and Hadith display
-- `ExaminationController` - Quiz management
-- `PostController` - Content management
-- `HadithSearchController` - Advanced search functionality
+- `BlogController` - Handles blog listing and display
+- `QuranHadithController` - Quran and Hadith display with Adhkar
+- `ExaminationController` - Quiz management and user exam tracking
+- `PostController` - Content management for lessons
+- `FatwaController` - Fatawa management
+- `HadithSearchController` - Advanced search functionality with multiple filters
+- `AuthorController` - Scholar profile management
+- `CategoryController` - Category-based content display
+- `SuggestionController` - Community suggestions handling
 
 ## 🤝 Contributing
 
