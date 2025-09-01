@@ -33,52 +33,177 @@ class YoutubeImport extends Command
         $authorName = $this->option('author');
         $categoryName = $this->option('category');
 
+        // Clean and validate the URL
+        $playlistUrl = $this->cleanPlaylistUrl($playlistUrl);
+        
+        if (!$this->isValidPlaylistUrl($playlistUrl)) {
+            $this->error('Invalid YouTube playlist URL. Please provide a valid URL like: https://www.youtube.com/playlist?list=PLAYLIST_ID');
+            return 1;
+        }
+
+        $this->info("Processing playlist: {$playlistUrl}");
+
         $author = Author::firstOrCreate(['name' => $authorName], ['is_published' => true]);
         $category = Category::firstOrCreate(['name' => $categoryName], ['is_published' => true]);
 
+        // Check if yt-dlp is available
+        if (!$this->checkYtDlp()) {
+            $this->error('yt-dlp is not installed or not accessible. Please install it first.');
+            return 1;
+        }
+
         $process = new Process(['yt-dlp', '--dump-single-json', '--flat-playlist', $playlistUrl]);
+        $process->setTimeout(300); // 5 minutes timeout
+        
+        $this->info('Fetching playlist data...');
         $process->run();
 
         if (!$process->isSuccessful()) {
-            $this->error('Failed to fetch playlist data. Make sure yt-dlp is installed and the playlist URL is correct.');
+            $this->error('Failed to fetch playlist data: ' . $process->getErrorOutput());
+            $this->error('Make sure yt-dlp is installed and the playlist URL is correct.');
             return 1;
         }
 
         $playlistData = json_decode($process->getOutput(), true);
+        
+        if (!$playlistData || !isset($playlistData['entries'])) {
+            $this->error('Invalid playlist data received. The playlist might be private or unavailable.');
+            return 1;
+        }
+
         $videos = $playlistData['entries'];
+        $this->info("Found " . count($videos) . " videos in playlist.");
+
+        if (empty($videos)) {
+            $this->warn('No videos found in the playlist.');
+            return 0;
+        }
 
         $bar = $this->output->createProgressBar(count($videos));
         $bar->start();
 
-        foreach ($videos as $video) {
-            $videoUrl = 'https://www.youtube.com/watch?v=' . $video['id'];
-            $this->info("Fetching video data for {$videoUrl}");
-            $process = new Process(['yt-dlp', '--dump-single-json', $videoUrl]);
-            $process->run();
+        $importedCount = 0;
+        $failedCount = 0;
 
-            if (!$process->isSuccessful()) {
-                $this->error("Failed to fetch video data for {$videoUrl}");
+        foreach ($videos as $video) {
+            if (!isset($video['id'])) {
+                $this->warn('Skipping video without ID');
                 continue;
             }
 
-            $videoData = json_decode($process->getOutput(), true);
+            $videoUrl = 'https://www.youtube.com/watch?v=' . $video['id'];
+            
+            try {
+                $process = new Process(['yt-dlp', '--dump-single-json', $videoUrl]);
+                $process->setTimeout(120); // 2 minutes timeout
+                $process->run();
 
-            Post::create([
-                'title' => $videoData['title'],
-                'description' => $videoData['description'],
-                'video' => $videoUrl,
-                'author_id' => $author->id,
-                'category_id' => $category->id,
-                'is_published' => true,
-                'type' => 'video',
-            ]);
+                if (!$process->isSuccessful()) {
+                    $this->warn("Failed to fetch video data for {$videoUrl}: " . $process->getErrorOutput());
+                    $failedCount++;
+                    continue;
+                }
 
-            $bar->advance();
+                $videoData = json_decode($process->getOutput(), true);
+                
+                if (!$videoData || !isset($videoData['title'])) {
+                    $this->warn("Invalid video data for {$videoUrl}");
+                    $failedCount++;
+                    continue;
+                }
+
+                // Check if post already exists
+                $existingPost = Post::where('video', $videoUrl)->first();
+                if ($existingPost) {
+                    $this->warn("Video already exists: {$videoData['title']}");
+                    continue;
+                }
+
+                Post::create([
+                    'title' => $videoData['title'],
+                    'description' => $videoData['description'] ?? '',
+                    'video' => $videoUrl,
+                    'author_id' => $author->id,
+                    'category_id' => $category->id,
+                    'is_published' => true,
+                    'type' => 'video',
+                ]);
+
+                $importedCount++;
+                $bar->advance();
+                
+            } catch (\Exception $e) {
+                $this->warn("Error processing video {$videoUrl}: " . $e->getMessage());
+                $failedCount++;
+                continue;
+            }
         }
 
         $bar->finish();
-        $this->info('\nPlaylist imported successfully.');
+        $this->newLine();
+        $this->info("Import completed successfully!");
+        $this->info("Imported: {$importedCount} videos");
+        if ($failedCount > 0) {
+            $this->warn("Failed: {$failedCount} videos");
+        }
 
         return 0;
+    }
+
+    /**
+     * Clean and normalize the playlist URL
+     */
+    private function cleanPlaylistUrl(string $url): string
+    {
+        // Remove any backslashes that might have been added
+        $url = str_replace('\\', '', $url);
+        
+        // Decode URL if it's encoded
+        $url = urldecode($url);
+        
+        // Ensure proper YouTube playlist format
+        if (strpos($url, 'youtube.com/playlist') !== false) {
+            return $url;
+        }
+        
+        // If it's a shortened URL, try to expand it
+        if (strpos($url, 'youtu.be') !== false) {
+            return $url;
+        }
+        
+        return $url;
+    }
+
+    /**
+     * Validate if the URL is a proper YouTube playlist URL
+     */
+    private function isValidPlaylistUrl(string $url): bool
+    {
+        $patterns = [
+            '/^https?:\/\/(www\.)?youtube\.com\/playlist\?list=[a-zA-Z0-9_-]+/',
+            '/^https?:\/\/(www\.)?youtu\.be\/[a-zA-Z0-9_-]+/',
+        ];
+        
+        foreach ($patterns as $pattern) {
+            if (preg_match($pattern, $url)) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+
+    /**
+     * Check if yt-dlp is available and working
+     */
+    private function checkYtDlp(): bool
+    {
+        try {
+            $process = new Process(['yt-dlp', '--version']);
+            $process->run();
+            return $process->isSuccessful();
+        } catch (\Exception $e) {
+            return false;
+        }
     }
 }
