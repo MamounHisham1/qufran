@@ -52,6 +52,7 @@ class YoutubeImport extends Command
 
         foreach ($videos as $video) {
             $videoUrl = 'https://www.youtube.com/watch?v=' . $video['id'];
+            $this->info("Fetching video data for {$videoUrl}");
             $process = new Process(['yt-dlp', '--dump-single-json', $videoUrl]);
             $process->run();
 
