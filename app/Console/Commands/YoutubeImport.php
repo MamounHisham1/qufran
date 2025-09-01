@@ -52,7 +52,18 @@ class YoutubeImport extends Command
             return 1;
         }
 
-        $process = new Process(['yt-dlp', '--dump-single-json', '--flat-playlist', $playlistUrl]);
+        // Use more robust yt-dlp options for server environments
+        $ytDlpArgs = [
+            'yt-dlp',
+            '--dump-single-json',
+            '--flat-playlist',
+            '--user-agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+            '--extractor-args', 'youtube:player_client=web',
+            '--no-check-certificates',
+            $playlistUrl
+        ];
+        
+        $process = new Process($ytDlpArgs);
         $process->setTimeout(300); // 5 minutes timeout
         
         $this->info('Fetching playlist data...');
@@ -94,7 +105,17 @@ class YoutubeImport extends Command
             $videoUrl = 'https://www.youtube.com/watch?v=' . $video['id'];
             
             try {
-                $process = new Process(['yt-dlp', '--dump-single-json', $videoUrl]);
+                // Use more robust yt-dlp options for server environments
+                $ytDlpArgs = [
+                    'yt-dlp',
+                    '--dump-single-json',
+                    '--user-agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+                    '--extractor-args', 'youtube:player_client=web',
+                    '--no-check-certificates',
+                    $videoUrl
+                ];
+                
+                $process = new Process($ytDlpArgs);
                 $process->setTimeout(120); // 2 minutes timeout
                 $process->run();
 
