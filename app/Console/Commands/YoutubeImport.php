@@ -5,8 +5,10 @@ namespace App\Console\Commands;
 use App\Models\Author;
 use App\Models\Category;
 use App\Models\Post;
+use Google\Client;
+use Google\Service\YouTube;
 use Illuminate\Console\Command;
-use Symfony\Component\Process\Process;
+use GuzzleHttp\Client as GuzzleClient;
 
 class YoutubeImport extends Command
 {
@@ -46,49 +48,34 @@ class YoutubeImport extends Command
         $author = Author::firstOrCreate(['name' => $authorName], ['is_published' => true]);
         $category = Category::firstOrCreate(['name' => $categoryName], ['is_published' => true]);
 
-        // Check if yt-dlp is available
-        if (!$this->checkYtDlp()) {
-            $this->error('yt-dlp is not installed or not accessible. Please install it first.');
+        $apiKey = config('services.youtube.api_key');
+        if (empty($apiKey)) {
+            $this->error('YouTube API key is not configured. Please add YOUTUBE_API_KEY to your .env file.');
             return 1;
         }
 
-        // Use more robust yt-dlp options for server environments
-        $ytDlpArgs = [
-            'yt-dlp',
-            '--dump-single-json',
-            '--flat-playlist',
-            '--user-agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-            '--extractor-args', 'youtube:player_client=web',
-            '--no-check-certificates',
-            $playlistUrl
-        ];
-        
-        $process = new Process($ytDlpArgs);
-        $process->setTimeout(300); // 5 minutes timeout
+        $client = new Client();
+        $client->setApplicationName('YoutubeImportCommand');
+        $client->setDeveloperKey($apiKey);
+        $youtube = new YouTube($client);
+
+        $playlistId = $this->getPlaylistIdFromUrl($playlistUrl);
+
+        if (!$playlistId) {
+            $this->error('Could not extract playlist ID from the URL.');
+            return 1;
+        }
         
         $this->info('Fetching playlist data...');
-        $process->run();
-
-        if (!$process->isSuccessful()) {
-            $this->error('Failed to fetch playlist data: ' . $process->getErrorOutput());
-            $this->error('Make sure yt-dlp is installed and the playlist URL is correct.');
-            return 1;
-        }
-
-        $playlistData = json_decode($process->getOutput(), true);
         
-        if (!$playlistData || !isset($playlistData['entries'])) {
-            $this->error('Invalid playlist data received. The playlist might be private or unavailable.');
-            return 1;
-        }
-
-        $videos = $playlistData['entries'];
-        $this->info("Found " . count($videos) . " videos in playlist.");
+        $videos = $this->fetchPlaylistItems($youtube, $playlistId);
 
         if (empty($videos)) {
-            $this->warn('No videos found in the playlist.');
+            $this->warn('No videos found in the playlist or an error occurred.');
             return 0;
         }
+
+        $this->info("Found " . count($videos) . " videos in playlist.");
 
         $bar = $this->output->createProgressBar(count($videos));
         $bar->start();
@@ -96,39 +83,15 @@ class YoutubeImport extends Command
         $importedCount = 0;
         $failedCount = 0;
 
-        foreach ($videos as $video) {
-            if (!isset($video['id'])) {
-                $this->warn('Skipping video without ID');
-                continue;
-            }
+        foreach ($videos as $videoItem) {
+            $videoId = $videoItem->getSnippet()->getResourceId()->getVideoId();
+            $videoUrl = 'https://www.youtube.com/watch?v=' . $videoId;
 
-            $videoUrl = 'https://www.youtube.com/watch?v=' . $video['id'];
-            
             try {
-                // Use more robust yt-dlp options for server environments
-                $ytDlpArgs = [
-                    'yt-dlp',
-                    '--dump-single-json',
-                    '--user-agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-                    '--extractor-args', 'youtube:player_client=web',
-                    '--no-check-certificates',
-                    $videoUrl
-                ];
-                
-                $process = new Process($ytDlpArgs);
-                $process->setTimeout(120); // 2 minutes timeout
-                $process->run();
+                $videoData = $this->fetchVideoData($youtube, $videoId);
 
-                if (!$process->isSuccessful()) {
-                    $this->warn("Failed to fetch video data for {$videoUrl}: " . $process->getErrorOutput());
-                    $failedCount++;
-                    continue;
-                }
-
-                $videoData = json_decode($process->getOutput(), true);
-                
-                if (!$videoData || !isset($videoData['title'])) {
-                    $this->warn("Invalid video data for {$videoUrl}");
+                if (!$videoData) {
+                    $this->warn("Failed to fetch video data for {$videoUrl}");
                     $failedCount++;
                     continue;
                 }
@@ -136,13 +99,13 @@ class YoutubeImport extends Command
                 // Check if post already exists
                 $existingPost = Post::where('video', $videoUrl)->first();
                 if ($existingPost) {
-                    $this->warn("Video already exists: {$videoData['title']}");
+                    $this->warn("Video already exists: {$videoData->getSnippet()->getTitle()}");
                     continue;
                 }
 
                 Post::create([
-                    'title' => $videoData['title'],
-                    'description' => $videoData['description'] ?? '',
+                    'title' => $videoData->getSnippet()->getTitle(),
+                    'description' => $videoData->getSnippet()->getDescription() ?? '',
                     'video' => $videoUrl,
                     'author_id' => $author->id,
                     'category_id' => $category->id,
@@ -182,16 +145,9 @@ class YoutubeImport extends Command
         // Decode URL if it's encoded
         $url = urldecode($url);
         
-        // Ensure proper YouTube playlist format
-        if (strpos($url, 'youtube.com/playlist') !== false) {
-            return $url;
-        }
-        
-        // If it's a shortened URL, try to expand it
-        if (strpos($url, 'youtu.be') !== false) {
-            return $url;
-        }
-        
+        // No longer need to ensure proper YouTube playlist format here, as getPlaylistIdFromUrl handles extraction.
+        // If it's a shortened URL, try to expand it - not strictly necessary for API but good practice.
+        // This method can be simplified to just clean the URL without complex validation.
         return $url;
     }
 
@@ -200,31 +156,62 @@ class YoutubeImport extends Command
      */
     private function isValidPlaylistUrl(string $url): bool
     {
-        $patterns = [
-            '/^https?:\/\/(www\.)?youtube\.com\/playlist\?list=[a-zA-Z0-9_-]+/',
-            '/^https?:\/\/(www\.)?youtu\.be\/[a-zA-Z0-9_-]+/',
-        ];
-        
-        foreach ($patterns as $pattern) {
-            if (preg_match($pattern, $url)) {
-                return true;
-            }
-        }
-        
-        return false;
+        // The validation now relies on successful extraction of the playlist ID.
+        return (bool) $this->getPlaylistIdFromUrl($url);
     }
 
-    /**
-     * Check if yt-dlp is available and working
-     */
-    private function checkYtDlp(): bool
+    private function getPlaylistIdFromUrl(string $url): ?string
+    {
+        $query = parse_url($url, PHP_URL_QUERY);
+        if ($query) {
+            parse_str($query, $params);
+            if (isset($params['list'])) {
+                return $params['list'];
+            }
+        }
+        return null;
+    }
+
+    private function fetchPlaylistItems(YouTube $youtube, string $playlistId): array
+    {
+        $videos = [];
+        $pageToken = null;
+
+        do {
+            try {
+                $playlistItemsResponse = $youtube->playlistItems->listPlaylistItems('snippet,contentDetails', [
+                    'playlistId' => $playlistId,
+                    'maxResults' => 50,
+                    'pageToken' => $pageToken,
+                ]);
+
+                foreach ($playlistItemsResponse['items'] as $playlistItem) {
+                    $videos[] = $playlistItem;
+                }
+
+                $pageToken = $playlistItemsResponse->nextPageToken;
+            } catch (\Google\Service\Exception $e) {
+                $this->error('Error fetching playlist items: ' . $e->getMessage());
+                return [];
+            }
+        } while ($pageToken);
+
+        return $videos;
+    }
+
+    private function fetchVideoData(YouTube $youtube, string $videoId)
     {
         try {
-            $process = new Process(['yt-dlp', '--version']);
-            $process->run();
-            return $process->isSuccessful();
-        } catch (\Exception $e) {
-            return false;
+            $videoResponse = $youtube->videos->listVideos('snippet,contentDetails', [
+                'id' => $videoId,
+            ]);
+
+            if (!empty($videoResponse['items'])) {
+                return $videoResponse['items'][0];
+            }
+        } catch (\Google\Service\Exception $e) {
+            $this->error('Error fetching video data: ' . $e->getMessage());
         }
+        return null;
     }
 }
