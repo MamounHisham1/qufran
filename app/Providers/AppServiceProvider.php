@@ -10,6 +10,7 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Pagination\Paginator;
 use Faker\Factory as FakerFactory;
 use Faker\Generator;
 
@@ -30,6 +31,10 @@ class AppServiceProvider extends ServiceProvider
     {
         Select::configureUsing(fn(Select $select) => $select->native(false));
         Field::configureUsing(fn(Field $input) => $input->translateLabel());
+
+        // Set default pagination view to custom Arabic template
+        Paginator::defaultView('pagination::custom-arabic');
+        Paginator::defaultSimpleView('pagination::custom-arabic');
 
         Gate::define('fatwa-auth', function (User $user, Post $post) {
             return $user->id === $post->user_id;

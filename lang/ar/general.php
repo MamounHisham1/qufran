@@ -176,4 +176,6 @@ return [
   "click_dhikr_instruction" => "اضغط على الذكر لكي يعمل العداد",
   "completed_praise" => "تم بحمد الله",
   "reset" => "إعادة",
+  "next" => "التالي",
+  "previous" => "السابق"
 ];
